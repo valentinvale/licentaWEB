@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.UUID;
 
 @RestController
 @RequestMapping(path = "api/v1/pet")
@@ -24,6 +25,19 @@ public class PetController {
     @PostMapping("/add")
     public void addPet(@RequestBody Pet pet) {
         petService.addPet(pet);
+    }
+
+    @DeleteMapping(path = "/delete/{petId}")
+    public void deletePet(@PathVariable("petId") UUID petId) {
+        petService.deletePet(petId);
+    }
+
+    @PutMapping(path = "/update/{petId}")
+    public void updatePet(@PathVariable("petId") UUID petId, @RequestParam(required = false) String name,
+                          @RequestParam(required = false) String petType, @RequestParam(required = false) String breed,
+                          @RequestParam(required = false) String description, @RequestParam(required = false) String birthDate,
+                          @RequestParam(required = false) Integer age) {
+        petService.updatePet(petId, name, petType, breed, description, birthDate, age);
     }
 
 }
