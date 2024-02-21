@@ -22,6 +22,7 @@ public class Pet {
     @Transient
     private Integer age;
     private String description;
+    private LocalDate dateAdded;
 
     public Pet() {
         this.id = UUID.randomUUID();
@@ -34,6 +35,7 @@ public class Pet {
         this.breed = breed;
         this.birthDate = birthDate;
         this.description = description;
+        this.dateAdded = LocalDate.now();
     }
 
     public Pet(String name, String petType, String breed, LocalDate birthDate, Integer age, String description) {
@@ -43,6 +45,7 @@ public class Pet {
         this.breed = breed;
         this.birthDate = birthDate;
         this.description = description;
+        this.dateAdded = LocalDate.now();
     }
 
     public UUID getId() {
@@ -87,6 +90,9 @@ public class Pet {
         return Period.between(this.birthDate, LocalDate.now()).getYears();
     }
 
+    public LocalDate getDateAdded() {
+        return dateAdded;
+    }
     public void setAge(Integer age) {
         this.age = age;
     }
@@ -99,6 +105,10 @@ public class Pet {
         this.description = description;
     }
 
+    public void setDateAdded(LocalDate dateAdded) {
+        this.dateAdded = dateAdded;
+    }
+
     @Override
     public String toString() {
         return "Pet{" +
@@ -106,8 +116,11 @@ public class Pet {
                 ", name='" + name + '\'' +
                 ", petType='" + petType + '\'' +
                 ", breed='" + breed + '\'' +
+                ", birthDate=" + birthDate +
                 ", age=" + age +
                 ", description='" + description + '\'' +
+                ", dateAdded='" + dateAdded + "\'" +
                 '}';
+
     }
 }
