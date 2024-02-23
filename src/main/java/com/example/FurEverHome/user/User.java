@@ -4,6 +4,10 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.Enumerated;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -12,8 +16,12 @@ import java.util.Collection;
 import java.util.List;
 import java.util.UUID;
 
+@Data
 @Entity
 @Table(name = "_user")
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
 public class User implements UserDetails {
     @Id
     private UUID id;
