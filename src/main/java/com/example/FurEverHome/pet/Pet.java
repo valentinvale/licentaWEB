@@ -19,6 +19,9 @@ public class Pet {
     private String petType;
     private String breed;
     private LocalDate birthDate;
+    private String judet;
+    private String oras;
+    //private String adresa;
     @Transient
     private Integer age;
     private String description;
@@ -28,7 +31,7 @@ public class Pet {
         this.id = UUID.randomUUID();
     }
 
-    public Pet(UUID id, String name, String petType, String breed, LocalDate birthDate, String description) {
+    public Pet(UUID id, String name, String petType, String breed, LocalDate birthDate, String description, String judet, String oras) {
         this.id = id;
         this.name = name;
         this.petType = petType;
@@ -36,9 +39,11 @@ public class Pet {
         this.birthDate = birthDate;
         this.description = description;
         this.dateAdded = LocalDate.now();
+        this.judet = judet;
+        this.oras = oras;
     }
 
-    public Pet(String name, String petType, String breed, LocalDate birthDate, Integer age, String description) {
+    public Pet(String name, String petType, String breed, LocalDate birthDate, Integer age, String description, String judet, String oras) {
         this.id = UUID.randomUUID();
         this.name = name;
         this.petType = petType;
@@ -46,6 +51,8 @@ public class Pet {
         this.birthDate = birthDate;
         this.description = description;
         this.dateAdded = LocalDate.now();
+        this.judet = judet;
+        this.oras = oras;
     }
 
     public UUID getId() {
@@ -107,6 +114,22 @@ public class Pet {
 
     public void setDateAdded(LocalDate dateAdded) {
         this.dateAdded = dateAdded;
+    }
+
+    public String getJudet() {
+        return judet;
+    }
+
+    public void setJudet(String judet) {
+        this.judet = judet;
+    }
+
+    public String getOras() {
+        return oras;
+    }
+
+    public void setOras(String oras) {
+        this.oras = oras;
     }
 
     @Override

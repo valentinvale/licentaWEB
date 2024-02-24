@@ -1,13 +1,11 @@
 package com.example.FurEverHome.user;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.Enumerated;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.GenericGenerator;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -24,6 +22,7 @@ import java.util.UUID;
 @AllArgsConstructor
 public class User implements UserDetails {
     @Id
+    @GeneratedValue(generator = "uuid2", strategy = GenerationType.AUTO)
     private UUID id;
     private String username;
     private String firstName;
