@@ -1,5 +1,7 @@
 package com.example.FurEverHome.user;
 
+import com.example.FurEverHome.pet.Pet;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -10,9 +12,7 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
-import java.util.Collection;
-import java.util.List;
-import java.util.UUID;
+import java.util.*;
 
 @Data
 @Entity
@@ -29,6 +29,10 @@ public class User implements UserDetails {
     private String lastName;
     private String email;
     private String password;
+
+    @JsonIgnore
+    @OneToMany(mappedBy = "user")
+    private Set<Pet> pets = new HashSet<>();
 
     @Enumerated(jakarta.persistence.EnumType.STRING)
     private Role role;

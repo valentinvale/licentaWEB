@@ -1,9 +1,8 @@
 package com.example.FurEverHome.pet;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
-import jakarta.persistence.Transient;
+import com.example.FurEverHome.user.User;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import jakarta.persistence.*;
 
 import java.time.LocalDate;
 import java.time.Period;
@@ -27,12 +26,16 @@ public class Pet {
     private String description;
     private LocalDate dateAdded;
 
+    @ManyToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "user_id", referencedColumnName = "id")
+    private User user;
+
     public Pet() {
         this.id = UUID.randomUUID();
     }
 
-    public Pet(UUID id, String name, String petType, String breed, LocalDate birthDate, String description, String judet, String oras) {
-        this.id = id;
+    public Pet(String name, String petType, String breed, LocalDate birthDate, String description, String judet, String oras) {
+        this.id = UUID.randomUUID();
         this.name = name;
         this.petType = petType;
         this.breed = breed;
@@ -130,6 +133,13 @@ public class Pet {
 
     public void setOras(String oras) {
         this.oras = oras;
+    }
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
     }
 
     @Override

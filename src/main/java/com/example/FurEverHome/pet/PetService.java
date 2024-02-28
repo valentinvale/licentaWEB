@@ -1,5 +1,7 @@
 package com.example.FurEverHome.pet;
 
+import com.example.FurEverHome.user.User;
+import com.example.FurEverHome.user.UserRepository;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -13,9 +15,12 @@ public class PetService {
 
     private final PetRepository petRepository;
 
+    private final UserRepository userRepository;
+
     @Autowired
-    public PetService(PetRepository petRepository) {
+    public PetService(PetRepository petRepository, UserRepository userRepository) {
         this.petRepository = petRepository;
+        this.userRepository = userRepository;
     }
     public List<Pet> getPets() {
         return petRepository.findAll();
@@ -61,4 +66,12 @@ public class PetService {
             pet.setAge(age);
         }
     }
+
+    public void setPetUser(UUID petId, UUID userId) {
+        Pet pet = petRepository.findById(petId).orElseThrow(() -> new IllegalStateException("Pet with id " + petId + " does not exist"));
+        User user = userRepository.findById(userId).orElseThrow(() -> new IllegalStateException("User with id " + userId + " does not exist"));
+        pet.setUser(user);
+        petRepository.save(pet);
+    }
+
 }

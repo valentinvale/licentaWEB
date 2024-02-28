@@ -40,4 +40,9 @@ public class PetController {
         petService.updatePet(petId, name, petType, breed, description, birthDate, age);
     }
 
+    @PutMapping(path = "/setpetuser/{petId}/{userId}")
+    public void setPetUser(@PathVariable("petId") UUID petId, @PathVariable("userId") UUID userId) {
+        petService.setPetUser(petId, userId);
+    }
+
 }
