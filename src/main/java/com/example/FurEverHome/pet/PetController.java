@@ -45,4 +45,9 @@ public class PetController {
         petService.setPetUser(petId, userId);
     }
 
+    @PutMapping(path = "/adoptpet/{petId}/{userId}")
+    public void adoptPet(@PathVariable("petId") UUID petId, @PathVariable("userId") UUID userId) {
+        petService.adoptPet(petId, userId);
+    }
+
 }

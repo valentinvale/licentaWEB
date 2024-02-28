@@ -30,8 +30,15 @@ public class Pet {
     @JoinColumn(name = "user_id", referencedColumnName = "id")
     private User user;
 
+    private boolean hasBeenAdopted;
+    @ManyToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "adoptive_user_id", referencedColumnName = "id")
+    private User adoptiveUser;
+
     public Pet() {
         this.id = UUID.randomUUID();
+        this.hasBeenAdopted = false;
+        this.dateAdded = LocalDate.now();
     }
 
     public Pet(String name, String petType, String breed, LocalDate birthDate, String description, String judet, String oras) {
@@ -44,6 +51,7 @@ public class Pet {
         this.dateAdded = LocalDate.now();
         this.judet = judet;
         this.oras = oras;
+        this.hasBeenAdopted = false;
     }
 
     public Pet(String name, String petType, String breed, LocalDate birthDate, Integer age, String description, String judet, String oras) {
@@ -56,6 +64,7 @@ public class Pet {
         this.dateAdded = LocalDate.now();
         this.judet = judet;
         this.oras = oras;
+        this.hasBeenAdopted = false;
     }
 
     public UUID getId() {
@@ -140,6 +149,22 @@ public class Pet {
 
     public void setUser(User user) {
         this.user = user;
+    }
+
+    public boolean getHasBeenAdopted() {
+        return hasBeenAdopted;
+    }
+
+    public void setHasBeenAdopted(boolean hasBeenAdopted) {
+        this.hasBeenAdopted = hasBeenAdopted;
+    }
+
+    public User getAdoptiveUser() {
+        return adoptiveUser;
+    }
+
+    public void setAdoptiveUser(User adoptiveUser) {
+        this.adoptiveUser = adoptiveUser;
     }
 
     @Override

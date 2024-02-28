@@ -34,8 +34,14 @@ public class User implements UserDetails {
     @OneToMany(mappedBy = "user")
     private Set<Pet> pets = new HashSet<>();
 
+    @JsonIgnore
+    @OneToMany(mappedBy = "adoptiveUser")
+    private Set<Pet> adoptedPets = new HashSet<>();
+
     @Enumerated(jakarta.persistence.EnumType.STRING)
     private Role role;
+
+    // flags and ratings to be added
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {

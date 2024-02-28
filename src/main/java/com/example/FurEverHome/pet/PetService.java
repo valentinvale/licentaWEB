@@ -74,4 +74,18 @@ public class PetService {
         petRepository.save(pet);
     }
 
+    public void adoptPet(UUID petId, UUID userId) {
+        Pet pet = petRepository.findById(petId).orElseThrow(() -> new IllegalStateException("Pet with id " + petId + " does not exist"));
+        User user = userRepository.findById(userId).orElseThrow(() -> new IllegalStateException("User with id " + userId + " does not exist"));
+        if(pet.getHasBeenAdopted()) {
+            throw new IllegalStateException("Pet with id " + petId + " has already been adopted");
+        }
+        else {
+            pet.setAdoptiveUser(user);
+            pet.setHasBeenAdopted(true);
+            petRepository.save(pet);
+        }
+
+    }
+
 }
