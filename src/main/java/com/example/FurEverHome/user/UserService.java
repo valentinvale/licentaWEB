@@ -22,4 +22,9 @@ public class UserService {
         return userRepository.findAll();
     }
 
+    public UserDTO getUserByEmail(String email) {
+        User user = userRepository.findByEmail(email).orElseThrow(() -> new RuntimeException("User not found"));
+        return UserDTO.fromUser(user);
+    }
+
 }
