@@ -2,7 +2,7 @@ import React, { useEffect } from "react";
 import AuthenticationService from "../services/AuthenticationService";
 import { useNavigate } from "react-router-dom";
 
-function AuthenticationPage() {
+function AuthenticationPage(props) {
     const [email, setEmail] = React.useState("");
     const [password, setPassword] = React.useState("");
     const navigate = useNavigate();
@@ -27,7 +27,8 @@ function AuthenticationPage() {
         AuthenticationService.authenticate({ email, password })
             .then((response) => {
                 localStorage.setItem("jwtToken", response.data.token);
-                navigate("/");
+                // navigate("/", {token: response.data.token});
+               window.location.href = "/"; // to fix
             })
             .catch((error) => {
                 alert("Login failed");

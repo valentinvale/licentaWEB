@@ -1,8 +1,8 @@
-import React from "react";
+import React, {useEffect} from "react";
 import AuthenticationService from "../services/AuthenticationService";
 import { useNavigate } from "react-router-dom";
 
-function RegisterPage() {
+function RegisterPage(props) {
     const [email, setEmail] = React.useState("");
     const [username, setUsername] = React.useState("");
     const [firstName, setFirstName] = React.useState("");
@@ -11,6 +11,13 @@ function RegisterPage() {
     const [confirmPassword, setConfirmPassword] = React.useState("");
 
     const navigate = useNavigate();
+
+    useEffect(() => {
+        const isUserLoggedIn = localStorage.getItem("jwtToken") !== null;
+        if (isUserLoggedIn) {
+            navigate("/");
+        }
+    }, [navigate]);
 
     const renderRegisterPage = () => {
         return (

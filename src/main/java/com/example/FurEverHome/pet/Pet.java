@@ -46,6 +46,7 @@ public class Pet {
         this.name = name;
         this.petType = petType;
         this.breed = breed;
+        this.age = Period.between(birthDate, LocalDate.now()).getYears();
         this.birthDate = birthDate;
         this.description = description;
         this.dateAdded = LocalDate.now();
@@ -54,12 +55,12 @@ public class Pet {
         this.hasBeenAdopted = false;
     }
 
-    public Pet(String name, String petType, String breed, LocalDate birthDate, Integer age, String description, String judet, String oras) {
+    public Pet(String name, String petType, String breed, Integer age, String description, String judet, String oras) {
         this.id = UUID.randomUUID();
         this.name = name;
         this.petType = petType;
         this.breed = breed;
-        this.birthDate = birthDate;
+        this.age = age;
         this.description = description;
         this.dateAdded = LocalDate.now();
         this.judet = judet;
@@ -106,7 +107,7 @@ public class Pet {
         this.birthDate = birthDate;
     }
     public Integer getAge() {
-        return Period.between(this.birthDate, LocalDate.now()).getYears();
+        return age;
     }
 
     public LocalDate getDateAdded() {

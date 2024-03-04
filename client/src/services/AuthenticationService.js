@@ -10,5 +10,9 @@ class AuthenticationService {
     async authenticate(authenticationRequest) {
         return await axios.post(`${API_URL}/authenticate`, authenticationRequest);
     }   
+
+    async logOut(){
+        localStorage.removeItem("jwtToken");
+      }
 }
 export default new AuthenticationService();

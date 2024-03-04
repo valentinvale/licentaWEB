@@ -9,5 +9,6 @@ class UserService {
 
     return await axios.get(`${API_URL}/getbyemail/${email}`, config);
   }
+
 }
 export default new UserService();
