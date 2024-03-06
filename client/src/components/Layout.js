@@ -19,6 +19,7 @@ function Layout(props) {
                 return '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2);
             }).join(''));
     
+            //console.log(JSON.parse(jsonPayload).sub);
             return JSON.parse(jsonPayload).sub;
         } catch (e) {
             return null;
@@ -35,7 +36,7 @@ function Layout(props) {
                 setUsername(response.data.username);
             });
         }
-        console.log(isUserLoggedIn);
+        //console.log(isUserLoggedIn);
     }, [token, isUserLoggedIn, username, userEmail]);
 
     

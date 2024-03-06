@@ -13,9 +13,16 @@ import {
   DropdownItem,
   NavbarText,
 } from 'reactstrap';
+
+import 'bootstrap-icons/font/bootstrap-icons.css';
 import AuthenticationService from '../services/AuthenticationService';
 import { useNavigate } from 'react-router-dom';
 import UserService from '../services/UserService';
+
+import logoImage from '../Resources/LogoFurEverHome_v2.png';
+
+import '../Styles/NavMenu.css';
+
 
 function NavMenu(args) {
   const [isOpen, setIsOpen] = useState(false);
@@ -25,7 +32,7 @@ function NavMenu(args) {
   const [isUserLoggedIn, setIsUserLoggedIn] = useState(false);
   const [username, setUsername] = useState("");
   const [email, setEmail] = useState("");
-  const [token, setToken] = useState(args.token);
+  const [token, setToken] = useState("");
 
   const navigate = useNavigate();
 
@@ -40,7 +47,7 @@ function NavMenu(args) {
         return JSON.parse(jsonPayload).sub;
     } catch (e) {
         return null;
-    }
+  }
 }
 
 
@@ -48,12 +55,24 @@ function NavMenu(args) {
     setToken(localStorage.getItem("jwtToken"));
     setIsUserLoggedIn(localStorage.getItem("jwtToken") !== null);
     if (isUserLoggedIn) {
+       // console.log("Token exists");
         const token = localStorage.getItem("jwtToken");
-        const mail = getEmailFromToken(token);
-        setEmail(mail);
-        UserService.getUserByEmail(mail, token).then((response) => {
+        if(AuthenticationService.isTokenExpired(token) == true){
+          //console.log("Token expired");
+          AuthenticationService.logOut();
+          setIsUserLoggedIn(false);
+          setToken("");
+          window.location.href = '/';
+        }
+        else{
+          //console.log("Token not expired");
+          const mail = getEmailFromToken(token);
+            setEmail(mail);
+            UserService.getUserByEmail(mail, token).then((response) => {
             setUsername(response.data.username);
-        });
+          });
+        }
+        
     }
   }, [isUserLoggedIn]);
 
@@ -84,41 +103,47 @@ function NavMenu(args) {
 
   return (
     <div>
-      <Navbar {...args}>
-        <NavbarBrand href="/">FurEverHome</NavbarBrand>
+      <Navbar className='navBar'{...args}>
+        <NavbarBrand href="/">
+          <img
+            alt="FurEverHome"
+            src={logoImage}
+            style={{ width: "150px", height: "150px" }}
+          />
+        </NavbarBrand>
         <NavbarToggler onClick={toggle} />
         <Collapse isOpen={isOpen} navbar>
-          <Nav className="me-auto" navbar>
-            <NavItem>
+          <Nav className="ms-auto" navbar>
+            <NavItem >
               { isUserLoggedIn ? 
               (
-              <UncontrolledDropdown nav inNavbar>
-                <DropdownToggle nav caret>
-                  {username}
+              <UncontrolledDropdown className='navDropdown' nav inNavbar>
+                <DropdownToggle nav>
+                <i class="bi bi-person-circle"> </i>{username}
                 </DropdownToggle>
                 <DropdownMenu right>
-                  <DropdownItem>Contul Tău</DropdownItem>
-                  <DropdownItem onClick={logOut}>Ieși din cont</DropdownItem>
+                  <DropdownItem>Contul Tau</DropdownItem>
                   <DropdownItem divider />
-                  <DropdownItem>Reset</DropdownItem>
+                  <DropdownItem onClick={logOut}>Iesi din cont</DropdownItem>
                 </DropdownMenu>
               </UncontrolledDropdown>) : 
               (
-              <UncontrolledDropdown nav inNavbar>
-                <DropdownToggle nav caret>
-                  Contul Tău
+              <UncontrolledDropdown className='navDropdown' nav inNavbar>
+                <DropdownToggle nav>
+                <i class="bi bi-person-circle"> </i>Contul Tău
                 </DropdownToggle>
                 <DropdownMenu right>
                   <DropdownItem onClick={() => navigate("/login")}>Autentificare</DropdownItem>
-                  <DropdownItem onClick={() => navigate("/signup")}>Înscriere</DropdownItem>
                   <DropdownItem divider />
-                  <DropdownItem>Reset</DropdownItem>
+                  <DropdownItem onClick={() => navigate("/signup")}>Înscriere</DropdownItem>
                 </DropdownMenu>
               </UncontrolledDropdown>
               )}
             </NavItem>
+            <NavItem className='navLink'>
+              <NavLink href="/">Posteaza un Animalut</NavLink>
+            </NavItem>
           </Nav>
-          <NavbarText>Simple Text</NavbarText>
         </Collapse>
       </Navbar>
     </div>

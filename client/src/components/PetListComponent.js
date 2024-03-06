@@ -43,7 +43,7 @@ class PetListComponent extends React.Component {
                 this.setState({ userEmail: mail });
                 UserService.getUserByEmail(mail, token).then((response) => {
                     this.setState({ user: response.data });
-                    console.log(response.data);
+                    //console.log(response.data);
                     this.setState({ username: response.data.username });
                 });
             });
@@ -53,7 +53,6 @@ class PetListComponent extends React.Component {
     render() {
         return (
         <div>
-            <h1>username: {this.state.username}</h1>
             <h1>Pet List</h1>
             <table className="table">
                 <thead>
