@@ -1,6 +1,7 @@
 package com.example.FurEverHome.pet;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -23,8 +24,9 @@ public class PetController {
     }
 
     @PostMapping("/add")
-    public void addPet(@RequestBody Pet pet) {
-        petService.addPet(pet);
+    public ResponseEntity<Pet> addPet(@RequestBody Pet pet) {
+        Pet newPet = petService.addPet(pet);
+        return ResponseEntity.ok(newPet);
     }
 
     @DeleteMapping(path = "/delete/{petId}")

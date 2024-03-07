@@ -26,8 +26,8 @@ public class PetService {
         return petRepository.findAll();
     }
 
-    public void addPet(Pet pet) {
-        petRepository.save(pet);
+    public Pet addPet(Pet pet) {
+        return petRepository.save(pet);
     }
 
     public void deletePet(UUID petId) {

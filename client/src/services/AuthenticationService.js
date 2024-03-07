@@ -29,6 +29,14 @@ class AuthenticationService {
         }
     }
 
+    getEmailFromToken(token){
+        const decodedToken = this.decodeToken(token);
+        if(decodedToken === null){
+            return null;
+        }
+        return decodedToken.sub;
+    }
+
     isTokenExpired(token){
         const decodedToken = this.decodeToken(token);
         if(decodedToken === null){
