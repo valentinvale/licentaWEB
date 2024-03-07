@@ -9,7 +9,7 @@ function AuthenticationPage(props) {
 
     useEffect(() => {
         const isUserLoggedIn = localStorage.getItem("jwtToken") !== null;
-        if (isUserLoggedIn) {
+        if (isUserLoggedIn && AuthenticationService.isTokenExpired(localStorage.getItem("jwtToken")) == false){
             navigate("/");
         }
     }, [navigate]);

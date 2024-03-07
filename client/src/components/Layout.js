@@ -2,6 +2,7 @@ import React, { useEffect } from "react";
 import { Container } from "reactstrap";
 import NavMenu from "./NavMenu";
 import UserService from "../services/UserService";
+import "../Styles/Layout.css";
 
 function Layout(props) {
 
@@ -42,8 +43,8 @@ function Layout(props) {
     
     return (
         <div>
-            <NavMenu expand="sm"/>
-            <Container tag="menu">
+            <NavMenu expand="sm" fixed="top"/>
+            <Container className="main-content" tag="menu">
                 {props.children}
             </Container>
         </div>

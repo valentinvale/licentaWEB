@@ -15,7 +15,7 @@ class AuthenticationService {
         localStorage.removeItem("jwtToken");
     }
 
-    async decodeToken(token){
+    decodeToken(token){
         try {
             const base64Url = token.split('.')[1];
             const base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
@@ -29,8 +29,8 @@ class AuthenticationService {
         }
     }
 
-    async isTokenExpired(token){
-        const decodedToken = await this.decodeToken(token);
+    isTokenExpired(token){
+        const decodedToken = this.decodeToken(token);
         if(decodedToken === null){
             return true;
         }
@@ -39,6 +39,10 @@ class AuthenticationService {
         // console.log(currentTime);
         // console.log(decodedToken.exp < currentTime);
         return decodedToken.exp < currentTime;
+    }
+
+    isUserLoggedIn() {
+        return localStorage.getItem("jwtToken") !== null;
     }
 }
 export default new AuthenticationService();

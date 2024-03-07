@@ -19,7 +19,7 @@ import AuthenticationService from '../services/AuthenticationService';
 import { useNavigate } from 'react-router-dom';
 import UserService from '../services/UserService';
 
-import logoImage from '../Resources/LogoFurEverHome_v2.png';
+import logoImage from '../Resources/LogoFurEverHome_v3.png';
 
 import '../Styles/NavMenu.css';
 
@@ -103,12 +103,12 @@ function NavMenu(args) {
 
   return (
     <div>
-      <Navbar className='navBar'{...args}>
+      <Navbar className='navBar' {...args}>
         <NavbarBrand href="/">
           <img
             alt="FurEverHome"
             src={logoImage}
-            style={{ width: "150px", height: "150px" }}
+            style={{ width: "208px", height: "80px" }}
           />
         </NavbarBrand>
         <NavbarToggler onClick={toggle} />
@@ -130,7 +130,7 @@ function NavMenu(args) {
               (
               <UncontrolledDropdown className='navDropdown' nav inNavbar>
                 <DropdownToggle nav>
-                <i class="bi bi-person-circle"> </i>Contul Tău
+                <i class="bi bi-person-circle"> </i>Contul Tau
                 </DropdownToggle>
                 <DropdownMenu right>
                   <DropdownItem onClick={() => navigate("/login")}>Autentificare</DropdownItem>
@@ -141,7 +141,7 @@ function NavMenu(args) {
               )}
             </NavItem>
             <NavItem className='navLink'>
-              <NavLink href="/">Posteaza un Animalut</NavLink>
+              <NavLink href="/postpet">Posteaza un Animalut</NavLink>
             </NavItem>
           </Nav>
         </Collapse>

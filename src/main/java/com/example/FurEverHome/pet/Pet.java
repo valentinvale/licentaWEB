@@ -68,6 +68,18 @@ public class Pet {
         this.hasBeenAdopted = false;
     }
 
+    public Pet(String name, String petType, String breed, String description, String judet, String oras) {
+        this.id = UUID.randomUUID();
+        this.name = name;
+        this.petType = petType;
+        this.breed = breed;
+        this.description = description;
+        this.dateAdded = LocalDate.now();
+        this.judet = judet;
+        this.oras = oras;
+        this.hasBeenAdopted = false;
+    }
+
     public UUID getId() {
         return id;
     }

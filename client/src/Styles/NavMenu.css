@@ -67,5 +67,21 @@
 }
 
 i{
-    color: var(--primary-text-color) !important;
+    color: var(--secondary-orange) !important;
+}
+
+.navbar .container-fluid{
+    align-items: flex-end !important;
+    padding-bottom: 0px !important;
+}
+
+.navBar {
+    height: auto !important; /* adjust as necessary */
+    min-height: 50px; /* adjust as necessary */
+    padding: 0 !important;
+    box-shadow: 2px 2px 2px 2px var(--primary-text-color) !important;
+}
+
+.navBar .navbar-brand{
+    margin-top: 0 !important;
 }
