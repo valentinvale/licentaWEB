@@ -13,8 +13,8 @@
 //    @Bean
 //    CommandLineRunner commandLineRunner(PetRepository repository) {
 //        return args -> {
-//            Pet pisi = new Pet("pisi", "cat", "siamese", LocalDate.of(2017, 1, 1), "cute", "Bucuresti", "Bucuresti");
-//            Pet mimi = new Pet("mimi", "cat", "siamese", LocalDate.of(2019, 1, 1), "cute", "Mehedinti", "Drobeta Turnu Severin");
+//            Pet pisi = new Pet("pisi", "cat", "siamese", "2020-02-09", "cute", "Bucuresti", "Bucuresti");
+//            Pet mimi = new Pet("mimi", "cat", "siamese", "2020-02-09", "cute", "Mehedinti", "Drobeta Turnu Severin");
 //
 //            repository.saveAll(List.of(pisi, mimi));
 //        };

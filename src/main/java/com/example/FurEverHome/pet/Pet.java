@@ -1,18 +1,22 @@
 package com.example.FurEverHome.pet;
 
 import com.example.FurEverHome.user.User;
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.*;
+import org.springframework.cglib.core.Local;
 
 import java.time.LocalDate;
 import java.time.Period;
 import java.util.UUID;
+import java.util.logging.Logger;
 
 @Entity
 @Table
 public class Pet {
-
     @Id
+    @GeneratedValue(generator = "uuid2", strategy = GenerationType.AUTO)
     private UUID id;
     private String name;
     private String petType;
@@ -21,7 +25,6 @@ public class Pet {
     private String judet;
     private String oras;
     //private String adresa;
-    @Transient
     private Integer age;
     private String description;
     private LocalDate dateAdded;
@@ -36,48 +39,8 @@ public class Pet {
     private User adoptiveUser;
 
     public Pet() {
-        this.id = UUID.randomUUID();
         this.hasBeenAdopted = false;
         this.dateAdded = LocalDate.now();
-    }
-
-    public Pet(String name, String petType, String breed, LocalDate birthDate, String description, String judet, String oras) {
-        this.id = UUID.randomUUID();
-        this.name = name;
-        this.petType = petType;
-        this.breed = breed;
-        this.age = Period.between(birthDate, LocalDate.now()).getYears();
-        this.birthDate = birthDate;
-        this.description = description;
-        this.dateAdded = LocalDate.now();
-        this.judet = judet;
-        this.oras = oras;
-        this.hasBeenAdopted = false;
-    }
-
-    public Pet(String name, String petType, String breed, Integer age, String description, String judet, String oras) {
-        this.id = UUID.randomUUID();
-        this.name = name;
-        this.petType = petType;
-        this.breed = breed;
-        this.age = age;
-        this.description = description;
-        this.dateAdded = LocalDate.now();
-        this.judet = judet;
-        this.oras = oras;
-        this.hasBeenAdopted = false;
-    }
-
-    public Pet(String name, String petType, String breed, String description, String judet, String oras) {
-        this.id = UUID.randomUUID();
-        this.name = name;
-        this.petType = petType;
-        this.breed = breed;
-        this.description = description;
-        this.dateAdded = LocalDate.now();
-        this.judet = judet;
-        this.oras = oras;
-        this.hasBeenAdopted = false;
     }
 
     public UUID getId() {
@@ -119,6 +82,9 @@ public class Pet {
         this.birthDate = birthDate;
     }
     public Integer getAge() {
+        if(age == null && birthDate != null) {
+            return Period.between(birthDate, LocalDate.now()).getYears();
+        }
         return age;
     }
 

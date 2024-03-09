@@ -82,7 +82,9 @@ function PostPet(props) {
                 breed: petBreed,
                 judet: selectedCounty,
                 oras: selectedCity,
-                description: petDescription
+                description: petDescription,
+                age: null,
+                birthDate: null
             }
         }
         else if(petAge.length !== 0){
@@ -93,15 +95,22 @@ function PostPet(props) {
                 age: petAge,
                 judet: selectedCounty,
                 oras: selectedCity,
-                description: petDescription
+                description: petDescription,
+                birthDate: null
             }
         }
         else if(petDateOfBirth.length !== 0){
+
+            const currentDate = new Date();
+            const formattedDate = petDateOfBirth.split("-").join("-");
+            const calculatedAge = currentDate.getFullYear() - new Date(formattedDate).getFullYear();
+
             petRequest = {
                 name: petName,
                 petType: petType,
                 breed: petBreed,
-                birthDate: petDateOfBirth,
+                age: calculatedAge,
+                birthDate: formattedDate,
                 judet: selectedCounty,
                 oras: selectedCity,
                 description: petDescription
@@ -174,12 +183,12 @@ function PostPet(props) {
                 {' '}
                 <FormGroup>
                     <Label for="petAge">Varsta</Label>
-                    <Input type="number" min={0} name="petAge" id="petAge" placeholder="Varsta animalului" disabled={knowsDateOfBirth} onChange={(e) => setPetAge(e.target.value)} />
+                    <Input type="number" value={knowsDateOfBirth ? "" : petAge} min={0} name="petAge" id="petAge" placeholder="Varsta animalului" disabled={knowsDateOfBirth} onChange={(e) => {e.target.value >= 0 ? (setPetAge(e.target.value)) : (setPetAge(0))}} />
                 </FormGroup>
                 {' '}
                 <FormGroup>
                     <Label for="petDateOfBirth">Data Nasterii</Label>
-                    <Input type="date" name="petDateOfBirth" id="petDateOfBirth" placeholder="Data Nasterii animalului" disabled={!knowsDateOfBirth} onChange={(e) => setPetDateOfBirth(e.target.value)} />
+                    <Input type="date" value={knowsDateOfBirth ? petDateOfBirth : ""} max={new Date().toISOString().split('T')[0]} name="petDateOfBirth" id="petDateOfBirth" placeholder="Data Nasterii animalului" disabled={!knowsDateOfBirth} onChange={(e) => setPetDateOfBirth(e.target.value)} />
                 </FormGroup>
                 {' '}
                 <FormGroup>

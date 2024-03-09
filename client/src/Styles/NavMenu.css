@@ -2,6 +2,15 @@
     background-color: var(--primary-green);
 }
 
+.navBar .navbar-nav .nav-item .nav-link{
+    color: var(--text-black) !important;
+    font-size: 20px;
+    margin-bottom: 0;
+    padding-left: 50px;
+    padding-right: 50px;
+    height: 100%;
+}
+
 .navLink{
     background-color: var(--primary-green) !important;
     border-bottom: 3px solid var(--primary-green) !important;
@@ -15,14 +24,31 @@
 }
 
 .navLink:hover{
-    background-color: var(--primary-green-yellow) !important;
-    border-bottom: 3px solid var(--secondary-green) !important;        /*   ma mai gandesc la asta */
+    /* background-color: var(--primary-green-yellow) !important; */
+    color: var(--primary-green-yellow) !important;
+    border-bottom: 3px solid var(--primary-orange) !important;        /*   ma mai gandesc la asta */
+}
+/**/
+
+.navLink:hover .nav-link{
+    color: var(--primary-green-yellow) !important;
 }
 
 .navDropdown:hover {
-    background-color: var(--primary-green-yellow) !important;
-    border-bottom: 3px solid var(--secondary-green) !important;
+    /* background-color: var(--primary-green-yellow) !important; */
+    color: var(--primary-green-yellow) !important;
+    border-bottom: 3px solid var(--primary-orange) !important;
 }
+
+
+.navDropdown .dropdown-menu .dropdown-item:hover {
+    color: var(--primary-green-yellow) !important; 
+}
+
+.navDropdown .dropdown-toggle:hover {
+    color: var(--primary-green-yellow) !important; 
+}
+
 
 .navDropdown .dropdown-menu {
     background-color: var(--primary-green) !important; 
@@ -36,9 +62,9 @@
     margin: 0 !important; */
 }
 
-.navDropdown .dropdown-menu .dropdown-item:hover {
+/* .navDropdown .dropdown-menu .dropdown-item:hover {
     background-color: var(--primary-green-yellow) !important; 
-}
+} */
 
 .navDropdown .dropdown-menu .dropdown-divider{
     padding: 0 !important;
@@ -56,14 +82,6 @@
 .navBar{
     margin: 0;
     padding: 0;
-}
-
-.navBar .navbar-nav .nav-item .nav-link{
-    color: var(--text-black) !important;
-    font-size: 20px;
-    margin-bottom: 0;
-    padding-left: 50px;
-    padding-right: 50px;
 }
 
 i{
