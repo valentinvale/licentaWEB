@@ -4,7 +4,7 @@ import UserService from "../services/UserService";
 import PetService from "../services/PetService";
 import { useNavigate } from "react-router-dom";
 import { FormGroup } from "reactstrap";
-import { Form, Label, Input,  Button} from "reactstrap";
+import { Form, Label, Input,  Button, FormText} from "reactstrap";
 
 import counties_with_cities from "../Resources/counties_with_cities.json";
 
@@ -24,6 +24,7 @@ function PostPet(props) {
     const [isCat, setIsCat] = useState(false);
     const [petAge, setPetAge] = useState("");
     const [petDateOfBirth, setPetDateOfBirth] = useState("");
+    const [petImages, setPetImages] = useState([]);
     const [petDescription, setPetDescription] = useState("");
 
     const [countiesWithCities, setCountiesWithCities] = useState([]);
@@ -63,13 +64,32 @@ function PostPet(props) {
         console.log(cities[0].cities);
     }
 
+    const handleImageChange = (e) => {
+        const files = e.target.files;
+        const maxFiles = 10;
+        const maxFileSize = 5 * 1024 * 1024;
+        if (files.length > maxFiles) {
+            alert("Poti incarca maxim 10 poze.");
+            return;
+        }
+        for (let i = 0; i < files.length; i++) {
+            if (files[i].size > maxFileSize) {
+                alert("Fisierul " + files[i].name + " are dimensiunea prea mare. Dimensiunea maxima este de 5MB.");
+                return;
+            }
+        }
+        setPetImages(files);
+    }
+
     const handleSubmit = (e) => {
         e.preventDefault();
         console.log(user);
-        if(petName.length === 0 || petBreed.length === 0 || (isDog === false && isCat === false)  || selectedCounty.length === 0 || selectedCity.length === 0 || petDescription.length === 0){
+        if(petName.length === 0 || petBreed.length === 0 || (isDog === false && isCat === false)  || selectedCounty.length === 0 || selectedCity.length === 0 || petDescription.length === 0 || petImages.length === 0){
             alert("Toate campurile sunt obligatorii.");
             return;
         }
+
+        console.log(petImages);
         
         const petType = isDog ? "Caine" : "Pisica";
 
@@ -120,16 +140,20 @@ function PostPet(props) {
             if(response.status === 200){
                 alert("Animalul a fost postat cu succes.");
                 console.log(response.data);
-                PetService.setPetUser(response.data.id, user.id, token).then((response) => {
+                PetService.uploadPetImages(response.data.id, petImages, token).then((response) => {
                     if(response.status === 200){
-                        alert("Animalul a fost asociat cu contul tau.");
-                        navigate("/");
-                    }
-                    else{
-                        alert("A aparut o eroare la asocierea animalului cu contul tau.");
+                        alert("Pozele au fost incarcate cu succes.");
+                        PetService.setPetUser(response.data.id, user.id, token).then((response) => {
+                            if(response.status === 200){
+                                alert("Animalul a fost adaugat in lista ta de animale.");
+                                navigate("/");
+                            }
+                        }).catch((error) => {
+                            alert("A aparut o eroare la adaugarea animalului in lista ta de animale.");
+                        });
                     }
                 }).catch((error) => {
-                    alert("A aparut o eroare la asocierea animalului cu contul tau.");
+                    alert("A aparut o eroare la incarcarea pozelor.");
                 });
             }
         }).catch((error) => {
@@ -140,7 +164,7 @@ function PostPet(props) {
 
     return (
         <div>
-            <h1>Post Pet</h1>
+            <h1>Posteaza un Animalut</h1>
             <Form>
                 <FormGroup>
                     <Label for="petName">Nume</Label>
@@ -193,7 +217,7 @@ function PostPet(props) {
                 {' '}
                 <FormGroup>
                 <Label for="petCounty">
-                Judet
+                    Judet
                 </Label>
                 <Input
                 id="petCounty"
@@ -210,7 +234,7 @@ function PostPet(props) {
             {' '}
             <FormGroup>
                 <Label for="petCity">
-                Oras
+                    Oras
                 </Label>
                 <Input
                 id="petCity"
@@ -225,6 +249,24 @@ function PostPet(props) {
                 ))}
                 </Input>
             </FormGroup>
+            {' '}
+            <FormGroup>
+                <Label for="imageFiles">
+                    Poze
+                </Label>
+                <Input
+                id="imageFiles"
+                name="imageFiles"
+                type="file"
+                multiple
+                accept=".jpg, .jpeg, .png"
+                onChange={handleImageChange}
+                />
+                <FormText>
+                Alege intre 1 si 10 poze cu animalul tau. Pozele pot avea dimensioni maxime de 5MB.
+                </FormText>
+            </FormGroup>
+            {' '}
             <FormGroup>
                 <Label for="petDescription">
                     Descriere

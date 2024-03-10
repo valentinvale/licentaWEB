@@ -22,5 +22,22 @@ class PetService {
         return await axios.put(`${API_URL}/setpetuser/${petId}/${userId}`, null, config);
     }
 
+    async uploadPetImages(petId, images, token) {
+        const formData = new FormData();
+        for (let i = 0; i < images.length; i++) {
+            formData.append("images", images[i]);
+        }
+    
+        const config = {
+            headers: {
+                'Authorization': `Bearer ${token}`,
+                'Content-Type': 'multipart/form-data',
+            },
+        };
+    
+        return await axios.put(`${API_URL}/uploadimages/${petId}`, formData, config);
+    }
+    
+
 }
 export default new PetService();

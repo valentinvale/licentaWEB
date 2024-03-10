@@ -5,8 +5,10 @@ import com.example.FurEverHome.user.UserRepository;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
@@ -86,6 +88,24 @@ public class PetService {
             petRepository.save(pet);
         }
 
+    }
+
+    public Pet uploadImages(UUID petId, MultipartFile[] images) {
+        Pet pet = petRepository.findById(petId).orElseThrow(() -> new IllegalStateException("Pet with id " + petId + " does not exist"));
+
+        List<String> imageUrls = new ArrayList<>();
+
+        for (MultipartFile file : images) {
+            // Generate a unique file name, upload to S3, and get the URL
+            String fileName = System.currentTimeMillis() + "_" + file.getOriginalFilename();
+//            Path tempFile = Files.createTempFile(fileName, ".tmp");
+//            String imageUrl = s3Service.uploadFile(fileName, tempFile);
+            String imageUrl = "https://fureverhome.test/" + fileName;
+            imageUrls.add(imageUrl);
+        }
+
+        pet.setImageUrls(imageUrls);
+        return petRepository.save(pet);
     }
 
 }

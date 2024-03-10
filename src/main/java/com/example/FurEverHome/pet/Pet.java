@@ -9,6 +9,7 @@ import org.springframework.cglib.core.Local;
 
 import java.time.LocalDate;
 import java.time.Period;
+import java.util.List;
 import java.util.UUID;
 import java.util.logging.Logger;
 
@@ -26,6 +27,8 @@ public class Pet {
     private String oras;
     //private String adresa;
     private Integer age;
+    @ElementCollection
+    private List<String> imageUrls;
     private String description;
     private LocalDate dateAdded;
 
@@ -144,6 +147,10 @@ public class Pet {
 
     public void setAdoptiveUser(User adoptiveUser) {
         this.adoptiveUser = adoptiveUser;
+    }
+
+    public void setImageUrls(List<String> imageUrls) {
+        this.imageUrls = imageUrls;
     }
 
     @Override

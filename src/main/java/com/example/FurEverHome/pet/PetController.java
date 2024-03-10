@@ -3,6 +3,7 @@ package com.example.FurEverHome.pet;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 import java.util.UUID;
@@ -50,6 +51,12 @@ public class PetController {
     @PutMapping(path = "/adoptpet/{petId}/{userId}")
     public void adoptPet(@PathVariable("petId") UUID petId, @PathVariable("userId") UUID userId) {
         petService.adoptPet(petId, userId);
+    }
+
+    @PutMapping(path = "/uploadimages/{petId}")
+    public ResponseEntity<Pet> uploadImages(@PathVariable("petId") UUID petId, @RequestParam("images") MultipartFile[] images) {
+        Pet updatedPet = petService.uploadImages(petId, images);
+        return ResponseEntity.ok(updatedPet);
     }
 
 }
