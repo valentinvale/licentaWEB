@@ -1,5 +1,6 @@
 package com.example.FurEverHome.pet;
 
+import com.example.FurEverHome.S3.S3Service;
 import com.example.FurEverHome.user.User;
 import com.example.FurEverHome.user.UserRepository;
 import jakarta.transaction.Transactional;
@@ -10,6 +11,7 @@ import org.springframework.web.multipart.MultipartFile;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.UUID;
 
 @Service
@@ -19,10 +21,13 @@ public class PetService {
 
     private final UserRepository userRepository;
 
+    private final S3Service s3Service;
+
     @Autowired
-    public PetService(PetRepository petRepository, UserRepository userRepository) {
+    public PetService(PetRepository petRepository, UserRepository userRepository, S3Service s3Service) {
         this.petRepository = petRepository;
         this.userRepository = userRepository;
+        this.s3Service = s3Service;
     }
     public List<Pet> getPets() {
         return petRepository.findAll();
@@ -97,10 +102,10 @@ public class PetService {
 
         for (MultipartFile file : images) {
             // Generate a unique file name, upload to S3, and get the URL
-            String fileName = System.currentTimeMillis() + "_" + file.getOriginalFilename();
-//            Path tempFile = Files.createTempFile(fileName, ".tmp");
-//            String imageUrl = s3Service.uploadFile(fileName, tempFile);
-            String imageUrl = "https://fureverhome.test/" + fileName;
+            String fileName = UUID.randomUUID() + "_" + file.getOriginalFilename();
+            //String Extension = Objects.requireNonNull(file.getOriginalFilename()).substring(file.getOriginalFilename().lastIndexOf("."));
+            String key = fileName;// + Extension;
+            String imageUrl = s3Service.uploadFile(key, file);
             imageUrls.add(imageUrl);
         }
 

@@ -40,9 +40,15 @@
     border-bottom: 3px solid var(--primary-orange) !important;
 }
 
+.navDropdown .dropdown-menu .dropdown-item {
+    /* color: var(--primary-green-yellow) !important; */
+    border: 2px solid var(--primary-green) !important;
+    text-align: center !important; 
+}
 
 .navDropdown .dropdown-menu .dropdown-item:hover {
-    color: var(--primary-green-yellow) !important; 
+    /* color: var(--primary-green-yellow) !important; */
+    border: 2px solid var(--primary-orange) !important; 
 }
 
 .navDropdown .dropdown-toggle:hover {
