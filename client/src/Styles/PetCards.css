@@ -1,0 +1,38 @@
+.pet-card {
+    height: 100%;
+    width: 100%;
+    overflow: hidden;
+    position: relative;
+    background-color: var(--primary-green) !important;
+}
+  
+.pet-card-body {
+    display: flex;
+    flex-direction: column;
+}
+
+.pet-card-text {
+    flex-grow: 1;
+}
+
+.pet-card-img {
+    height: 200px !important;
+    width: 100% !important;
+    object-fit: cover !important;
+    transition: transform 0.3s ease-in-out;
+}
+
+.pet-card:hover .pet-card-img {
+    transform: scale(1.1);
+    z-index: 0;
+}
+
+.pet-card:hover {
+    box-shadow: 0 0 20px 5px var(--primary-orange) !important;
+    transition: box-shadow 0.3s ease-in-out !important;
+}
+
+.pet-card-link{
+    text-decoration: none; 
+    color: inherit;
+}

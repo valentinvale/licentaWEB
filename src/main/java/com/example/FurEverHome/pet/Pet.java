@@ -29,6 +29,8 @@ public class Pet {
     private Integer age;
     @ElementCollection
     private List<String> imageUrls;
+
+    private String imageFolder;
     private String description;
     private LocalDate dateAdded;
 
@@ -60,6 +62,19 @@ public class Pet {
 
     public void setName(String name) {
         this.name = name;
+        updateImageFolder();
+    }
+
+    public void updateImageFolder() {
+        this.imageFolder = name + "_" + UUID.randomUUID().toString();
+    }
+
+    public String getImageFolder() {
+        return imageFolder;
+    }
+
+    public List<String> getImageUrls() {
+        return imageUrls;
     }
 
     public String getPetType() {

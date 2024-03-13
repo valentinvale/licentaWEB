@@ -104,7 +104,7 @@ public class PetService {
             // Generate a unique file name, upload to S3, and get the URL
             String fileName = UUID.randomUUID() + "_" + file.getOriginalFilename();
             //String Extension = Objects.requireNonNull(file.getOriginalFilename()).substring(file.getOriginalFilename().lastIndexOf("."));
-            String key = fileName;// + Extension;
+            String key = pet.getImageFolder() + "/" + fileName;
             String imageUrl = s3Service.uploadFile(key, file);
             imageUrls.add(imageUrl);
         }
