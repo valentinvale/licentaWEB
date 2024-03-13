@@ -113,4 +113,7 @@ public class PetService {
         return petRepository.save(pet);
     }
 
+    public Pet getPetById(UUID petId) {
+        return petRepository.findById(petId).orElseThrow(() -> new IllegalStateException("Pet with id " + petId + " does not exist"));
+    }
 }

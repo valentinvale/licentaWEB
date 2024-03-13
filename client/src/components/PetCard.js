@@ -8,8 +8,10 @@ function PetCard(props) {
         console.log("PetCard props: ", props);
     }, [props]);
 
+    const petPath = `/pets/${props.pet.id}`
+
     return (
-        <Link className="pet-card-link">
+        <Link to={petPath} className="pet-card-link">
             <Card className="pet-card">
                 <CardImg className="pet-card-img" top src={props.pet.imageUrls[0]} alt="Pet Card image" />
                 <CardBody className="pet-card-body">

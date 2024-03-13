@@ -24,6 +24,11 @@ public class PetController {
         return petService.getPets();
     }
 
+    @GetMapping("/getbyid/{petId}")
+    public Pet getPet(@PathVariable("petId") UUID petId) {
+        return petService.getPetById(petId);
+    }
+
     @PostMapping("/add")
     public ResponseEntity<Pet> addPet(@RequestBody Pet pet) {
         Pet newPet = petService.addPet(pet);

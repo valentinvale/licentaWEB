@@ -33,7 +33,7 @@ const PetListComponent = () => {
     };
 
     useEffect(() => {
-        PetService.getPet().then((response) => {
+        PetService.getPets().then((response) => {
             setPets(response.data);
         });
         if (isUserLoggedIn()) {
