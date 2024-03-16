@@ -17,7 +17,7 @@ function PetCard(props) {
                 <CardBody className="pet-card-body">
                     <CardTitle>{props.pet.name}</CardTitle>
                     <CardSubtitle>{props.pet.breed}</CardSubtitle>
-                    <CardText className="pet-card-text"><i class="bi bi-geo-alt"></i>{props.pet.oras + ", " + props.pet.judet}</CardText>
+                    <CardText className="pet-card-text"><i class="bi bi-geo-alt"></i>{" " + props.pet.oras + ", " + props.pet.judet}</CardText>
                     <CardText className="pet-card-text">{props.pet.description}</CardText>
                 </CardBody>
             </Card>

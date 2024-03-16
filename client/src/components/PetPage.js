@@ -3,19 +3,25 @@ import PetService from "../services/PetService";
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 
-import '../Styles/PetPage.css';
-
 import {
     Carousel,
     CarouselItem,
     CarouselControl,
     CarouselIndicators,
     CarouselCaption,
+    Button
   } from 'reactstrap';
+
+import '../Styles/PetPage.css';
+
+import { formatDate } from "../services/StringUtils";
+
+
 
 function PetPage(args) {
     const { id } = useParams();
     const [pet, setPet] = useState({});
+    const [petUsername, setPetUsername] = useState('');
 
     const [activeIndex, setActiveIndex] = useState(0);
     const [animating, setAnimating] = useState(false);
@@ -31,7 +37,9 @@ function PetPage(args) {
 
     useEffect(() => {
         PetService.getPetById(id).then((response) => {
+            console.log(response.data);
             setPet(response.data);
+            setPetUsername(response.data.user.realUsername);
         });
     }, [id]);
 
@@ -61,39 +69,62 @@ function PetPage(args) {
             key={item.src}
         >
             <img src={item.src} alt={item.altText} className="custom-carousel-img"/>
-            <CarouselCaption
+            {/* <CarouselCaption
             captionText={item.caption}
             captionHeader={item.caption}
-            />
+            /> */}
         </CarouselItem>
         );
     });
 
     return (
-        <Carousel
-        activeIndex={activeIndex}
-        next={next}
-        previous={previous}
-        className="custom-carousel"
-        {...args}
-        >
-        <CarouselIndicators
-            items={items}
+        <div className="pet-page">
+            <Carousel
             activeIndex={activeIndex}
-            onClickHandler={goToIndex}
-        />
-        {slides}
-        <CarouselControl
-            direction="prev"
-            directionText="Previous"
-            onClickHandler={previous}
-        />
-        <CarouselControl
-            direction="next"
-            directionText="Next"
-            onClickHandler={next}
-        />
-        </Carousel>
+            next={next}
+            previous={previous}
+            className="custom-carousel"
+            {...args}
+            >
+            <CarouselIndicators
+                items={items}
+                activeIndex={activeIndex}
+                onClickHandler={goToIndex}
+            />
+            {slides}
+            <CarouselControl
+                direction="prev"
+                directionText="Previous"
+                onClickHandler={previous}
+            />
+            <CarouselControl
+                direction="next"
+                directionText="Next"
+                onClickHandler={next}
+            />
+            </Carousel>
+            <div className="pet-info">
+                <h1>Nume: {pet.name}</h1>
+                <h3>Rasa: {pet.breed}</h3>
+                <h3>{pet.age ? "Varsta: " + pet.age + " ani" : "Varsta necunoscuta"}</h3>
+                <h3>{pet.birthDate ? "Data nasterii: " + formatDate(pet.birthDate) : "Data nasterii necunoscuta"}</h3>
+                <h3>Postat de: {petUsername}</h3>
+                <h3>Postat la data de: {formatDate(pet.dateAdded)}</h3>
+                <h3><i class="bi bi-geo-alt"></i>{" " + pet.oras + ", " + pet.judet}</h3>
+                <div className="pet-description">
+                    <h3>Descriere:</h3>
+                    <p>{pet.description}</p>
+                </div>
+            </div>
+            <div className="contact-user">
+                <Button
+                    size="lg"
+                    className="message-user-button"
+                >
+                    <i class="bi bi-chat"></i> Trimite mesaj
+                </Button>
+            </div>
+        </div>
     );
 
 }
