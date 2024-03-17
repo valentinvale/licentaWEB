@@ -106,6 +106,7 @@ function PetPage(args) {
             <div className="pet-info">
                 <h1>Nume: {pet.name}</h1>
                 <h3>Rasa: {pet.breed}</h3>
+                <h3>Sex: {pet.sex}</h3>
                 <h3>{pet.age ? "Varsta: " + pet.age + " ani" : "Varsta necunoscuta"}</h3>
                 <h3>{pet.birthDate ? "Data nasterii: " + formatDate(pet.birthDate) : "Data nasterii necunoscuta"}</h3>
                 <h3>Postat de: {petUsername}</h3>

@@ -22,6 +22,8 @@ function PostPet(props) {
     const [petBreed, setPetBreed] = useState("");
     const [isDog, setIsDog] = useState(true);
     const [isCat, setIsCat] = useState(false);
+    const [isFemale, setIsFemale] = useState(true);
+    const [isMale, setIsMale] = useState(false);
     const [petAge, setPetAge] = useState("");
     const [petDateOfBirth, setPetDateOfBirth] = useState("");
     const [petImages, setPetImages] = useState([]);
@@ -84,7 +86,7 @@ function PostPet(props) {
     const handleSubmit = (e) => {
         e.preventDefault();
         console.log(user);
-        if(petName.length === 0 || petBreed.length === 0 || (isDog === false && isCat === false)  || selectedCounty.length === 0 || selectedCity.length === 0 || petDescription.length === 0 || petImages.length === 0){
+        if(petName.length === 0 || petBreed.length === 0 || (isDog === false && isCat === false) || (isFemale === false && isMale === false) || selectedCounty.length === 0 || selectedCity.length === 0 || petDescription.length === 0 || petImages.length === 0){
             alert("Toate campurile sunt obligatorii.");
             return;
         }
@@ -92,6 +94,7 @@ function PostPet(props) {
         console.log(petImages);
         
         const petType = isDog ? "Caine" : "Pisica";
+        const petSex = isFemale ? "Femela" : "Mascul";
 
         let petRequest = {};
 
@@ -104,7 +107,8 @@ function PostPet(props) {
                 oras: selectedCity,
                 description: petDescription,
                 age: null,
-                birthDate: null
+                birthDate: null,
+                sex: petSex
             }
         }
         else if(petAge.length !== 0){
@@ -116,7 +120,8 @@ function PostPet(props) {
                 judet: selectedCounty,
                 oras: selectedCity,
                 description: petDescription,
-                birthDate: null
+                birthDate: null,
+                sex: petSex
             }
         }
         else if(petDateOfBirth.length !== 0){
@@ -133,7 +138,8 @@ function PostPet(props) {
                 birthDate: formattedDate,
                 judet: selectedCounty,
                 oras: selectedCity,
-                description: petDescription
+                description: petDescription,
+                sex: petSex
             }
         }
         PetService.postPet(petRequest, token).then((response) => {
@@ -192,6 +198,30 @@ function PostPet(props) {
                 {' '}
                 <Label check>
                     Pisica
+                </Label>
+                </FormGroup>
+                {' '}
+                <FormGroup check>
+                <Input
+                    name="radio2"
+                    type="radio"
+                    defaultChecked={true}
+                    onClick={() => {setIsFemale(true); setIsMale(false)}}
+                />
+                {' '}
+                <Label check>
+                    Femela
+                </Label>
+                </FormGroup>
+                <FormGroup check>
+                <Input
+                    name="radio2"
+                    type="radio"
+                    onClick={() => {setIsMale(true); setIsFemale(false)}}
+                />
+                {' '}
+                <Label check>
+                    Mascul
                 </Label>
                 </FormGroup>
                 {' '}

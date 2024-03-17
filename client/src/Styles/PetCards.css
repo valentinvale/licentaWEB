@@ -3,7 +3,8 @@
     width: 100%;
     overflow: hidden;
     position: relative;
-    background-color: var(--primary-green) !important;
+    /* background-color: var(--primary-green) !important; */
+    background-image: linear-gradient(to right, var(--primary-green), var(--primary-green-yellow));
 }
   
 .pet-card-body {

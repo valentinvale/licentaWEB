@@ -15,6 +15,9 @@
     /* background-color: var(--primary-green); */
     /* border: 2px solid var(--primary-green); */
     box-shadow: 0 0 20px 5px var(--primary-green) !important;
+    background-image: url(../Resources/pawprints.jpg);
+    background-size: cover;
+    background-position: center;
 }
 
 .pet-info{
@@ -40,7 +43,8 @@
 }
 
 .message-user-button{
-    background-color: var(--primary-green) !important;
+    /* background-color: var(--primary-green) !important; */
+    background-image: linear-gradient(to right, var(--primary-green), var(--primary-green-yellow)) !important;
     color: var(--text-black) !important;
     padding: 20px 40px !important; /* Add more padding to increase size */
     font-size: 1.5rem !important; /* Adjust font size as desired */

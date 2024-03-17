@@ -46,7 +46,8 @@ public class PetService {
     }
 
     @Transactional
-    public void updatePet(UUID petId, String name, String petType, String breed, String description, String birthDate, Integer age) {
+    public void updatePet(UUID petId, String name, String petType, String breed, String description,
+                          String birthDate, Integer age, String judet, String oras, String sex) {
         Pet pet = petRepository.findById(petId).orElseThrow(() -> new IllegalStateException("Pet with id " + petId + " does not exist"));
 
         if (name != null && !name.isEmpty() && !name.equals(pet.getName())) {
@@ -72,6 +73,19 @@ public class PetService {
         if (age != null && age > 0 && !age.equals(pet.getAge())) {
             pet.setAge(age);
         }
+
+        if (judet != null && !judet.isEmpty() && !judet.equals(pet.getJudet())) {
+            pet.setJudet(judet);
+        }
+
+        if (oras != null && !oras.isEmpty() && !oras.equals(pet.getOras())) {
+            pet.setOras(oras);
+        }
+
+        if (sex != null && !sex.isEmpty() && !sex.equals(pet.getSex())) {
+            pet.setSex(sex);
+        }
+
     }
 
     public void setPetUser(UUID petId, UUID userId) {

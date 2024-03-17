@@ -1,5 +1,6 @@
 .navBar {
-    background-color: var(--primary-green);
+    /* background-image: linear-gradient(to right, var(--primary-green), var(--secondary-green)); */
+    background-image: linear-gradient(to right, var(--primary-green), var(--primary-green-yellow));
 }
 
 .navBar .navbar-nav .nav-item .nav-link{
@@ -12,14 +13,16 @@
 }
 
 .navLink{
-    background-color: var(--primary-green) !important;
-    border-bottom: 3px solid var(--primary-green) !important;
+    /* background-color: var(--primary-green) !important; */
+    /* border-bottom: 3px solid var(--secondary-green) !important; */
+    border-bottom: 3px solid var(--primary-green-yellow) !important;
     border-radius: 5px;
 }
 
 .navDropdown{
-    background-color: var(--primary-green) !important;
-    border-bottom: 3px solid var(--primary-green) !important;
+    /* background-color: var(--primary-green) !important; */
+    /* border-bottom: 3px solid var(--secondary-green) !important; */
+    border-bottom: 3px solid var(--primary-green-yellow) !important;
     border-radius: 5px;
 }
 
@@ -63,7 +66,7 @@
 }
 
 .navDropdown .dropdown-menu .dropdown-item {
-    background-color: var(--primary-green) !important; 
+    background-image: linear-gradient(to right, var(--primary-green), var(--primary-green-yellow)) !important;
     /* padding: 0 !important; 
     margin: 0 !important; */
 }

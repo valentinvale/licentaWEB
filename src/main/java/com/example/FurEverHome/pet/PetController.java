@@ -44,8 +44,8 @@ public class PetController {
     public void updatePet(@PathVariable("petId") UUID petId, @RequestParam(required = false) String name,
                           @RequestParam(required = false) String petType, @RequestParam(required = false) String breed,
                           @RequestParam(required = false) String description, @RequestParam(required = false) String birthDate,
-                          @RequestParam(required = false) Integer age) {
-        petService.updatePet(petId, name, petType, breed, description, birthDate, age);
+                          @RequestParam(required = false) Integer age, @RequestParam(required = false) String judet, @RequestParam(required = false) String oras, @RequestParam(required = false) String sex) {
+        petService.updatePet(petId, name, petType, breed, description, birthDate, age, judet, oras, sex);
     }
 
     @PutMapping(path = "/setpetuser/{petId}/{userId}")

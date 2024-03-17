@@ -27,6 +27,8 @@ public class Pet {
     private String oras;
     //private String adresa;
     private Integer age;
+
+    private String sex;
     @ElementCollection
     private List<String> imageUrls;
 
@@ -166,6 +168,14 @@ public class Pet {
 
     public void setImageUrls(List<String> imageUrls) {
         this.imageUrls = imageUrls;
+    }
+
+    public String getSex() {
+        return sex;
+    }
+
+    public void setSex(String sex){
+        this.sex = sex;
     }
 
     @Override
