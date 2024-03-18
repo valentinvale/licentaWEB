@@ -37,14 +37,17 @@ function PostPet(props) {
     useEffect(() => {
         setCountiesWithCities(counties_with_cities);
         setToken(localStorage.getItem("jwtToken"));
-        const userResponse = UserService.getUserByToken(localStorage.getItem("jwtToken")).then((response) => {
-            if(response.status === 200){
-                setUser(response.data);
+        if(localStorage.getItem("jwtToken")){
+            const userResponse = UserService.getUserByToken(localStorage.getItem("jwtToken")).then((response) => {
+                if(response.status === 200){
+                    setUser(response.data);
+                }
+            }).catch((error) => {
+                alert("A aparut o eroare la incarcarea datelor utilizatorului.");
             }
-        }).catch((error) => {
-            alert("A aparut o eroare la incarcarea datelor utilizatorului.");
+            );
         }
-        );
+        
     }, []);
 
     useEffect(() => {

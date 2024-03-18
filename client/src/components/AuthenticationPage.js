@@ -2,6 +2,8 @@ import React, { useEffect } from "react";
 import AuthenticationService from "../services/AuthenticationService";
 import { useNavigate } from "react-router-dom";
 
+import "../Styles/AuthenticationPage.css";
+
 function AuthenticationPage(props) {
     const [email, setEmail] = React.useState("");
     const [password, setPassword] = React.useState("");
@@ -36,31 +38,35 @@ function AuthenticationPage(props) {
     };
 
     return (
-        <div className="rl-container">
-            <h1 className="rl-title">Login</h1>
+        <div className="auth-container">
+            <h1 className="auth-title">Login</h1>
             <form onSubmit={handleSubmit}>
-                <div className="rl-form-group">
+                <div className="auth-form">
                     <label htmlFor="email">Email</label>
                     <input
                         type="email"
-                        className="rl-form-control"
+                        className="auth-form-control"
                         id="email"
                         placeholder="Email"
                         onChange={(e) => setEmail(e.target.value)}
                     />
                 </div>
-                <div className="rl-form-group">
+                <div className="auth-form">
                     <label htmlFor="password">Password</label>
                     <input
                         type="password"
-                        className="rl-form-control"
+                        className="auth-form-control"
                         id="password"
                         placeholder="Password"
                         onChange={(e) => setPassword(e.target.value)}
                     />
                 </div>
-                <div className="rl-center-container">
-                    <button type="submit" className="rl-btn rl-btn-primary">
+                <div className="auth-links">
+                    <a className="forgot-pass-link" href="/forgotpassword">Ai uitat parola?</a>
+                    <a className="register-link" href="/signup">Nu ai cont? Inregistreaza-te.</a>
+                </div>
+                <div className="auth-center-container">
+                    <button type="submit" className="auth-btn">
                         Submit
                     </button>
                 </div>

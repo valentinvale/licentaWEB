@@ -2,6 +2,8 @@ import React, {useEffect} from "react";
 import AuthenticationService from "../services/AuthenticationService";
 import { useNavigate } from "react-router-dom";
 
+import "../Styles/AuthenticationPage.css";
+
 function RegisterPage(props) {
     const [email, setEmail] = React.useState("");
     const [username, setUsername] = React.useState("");
@@ -21,36 +23,38 @@ function RegisterPage(props) {
 
     const renderRegisterPage = () => {
         return (
-            <div className="rl-container">
-                <h1 className="rl-title">Register</h1>
+            <div className="auth-container">
+                <h1 className="auth-title">Register</h1>
                 <form onSubmit={(e) => handleSubmit(e)}>
-                    <div className="rl-form-group">
+                    <div className="auth-form">
                         <label htmlFor="email">Email address</label>
-                        <input type="email" className="rl-form-control" id="email" aria-describedby="emailHelp" placeholder="Enter email" onChange={(e) => setEmail(e.target.value)} />
-                        <small id="emailHelp" className="rl-form-text text-muted">We'll never share your email with anyone else.</small>
+                        <input type="email" className="auth-form-control" id="email" aria-describedby="emailHelp" placeholder="Enter email" onChange={(e) => setEmail(e.target.value)} />
                     </div>
-                    <div className="rl-form-group">
+                    <div className="auth-form">
                         <label htmlFor="username">Username</label>
-                        <input type="username" className="rl-form-control" id="username" placeholder="Username" onChange={(e) => setUsername(e.target.value)} />
+                        <input type="username" className="auth-form-control" id="username" placeholder="Username" onChange={(e) => setUsername(e.target.value)} />
                     </div>
-                    <div className="rl-form-group">
+                    <div className="auth-form">
                         <label htmlFor="firstName">First Name</label>
-                        <input type="firstName" className="rl-form-control" id="firstName" placeholder="First Name" onChange={(e) => setFirstName(e.target.value)} />
+                        <input type="firstName" className="auth-form-control" id="firstName" placeholder="First Name" onChange={(e) => setFirstName(e.target.value)} />
                     </div>
-                    <div className="rl-form-group">
+                    <div className="auth-form">
                         <label htmlFor="lastName">Last Name</label>
-                        <input type="lastName" className="rl-form-control" id="lastName" placeholder="Last Name" onChange={(e) => setLastName(e.target.value)} />
+                        <input type="lastName" className="auth-form-control" id="lastName" placeholder="Last Name" onChange={(e) => setLastName(e.target.value)} />
                     </div>
-                    <div className="rl-form-group">
+                    <div className="auth-form">
                         <label htmlFor="password">Password</label>
-                        <input type="password" className="rl-form-control" id="password" placeholder="Password" onChange={(e) => setPassword(e.target.value)} />
+                        <input type="password" className="auth-form-control" id="password" placeholder="Password" onChange={(e) => setPassword(e.target.value)} />
                     </div>
-                    <div className="rl-form-group">
+                    <div className="auth-form">
                         <label htmlFor="confirmPassword">Confirm Password</label>
-                        <input type="password" className="rl-form-control" id="confirmPassword" placeholder="Confirm Password" onChange={(e) => setConfirmPassword(e.target.value)} />
+                        <input type="password" className="auth-form-control" id="confirmPassword" placeholder="Confirm Password" onChange={(e) => setConfirmPassword(e.target.value)} />
                     </div>
-                    <div className="rl-center-container">
-                        <button type="submit" className="rl-btn rl-btn-primary">Submit</button>
+                    <div className="auth-links">
+                        <a className="login-link" href="/login">Ai deja cont? Autentifica-te.</a>
+                    </div>
+                    <div className="auth-center-container">
+                        <button type="submit" className="auth-btn">Submit</button>
                     </div>
                 </form>
             </div>

@@ -48,6 +48,7 @@
     color: var(--text-black) !important;
     padding: 20px 40px !important; /* Add more padding to increase size */
     font-size: 1.5rem !important; /* Adjust font size as desired */
+    transition: box-shadow 0.3s ease;
 }
 
 .message-user-button:hover{
