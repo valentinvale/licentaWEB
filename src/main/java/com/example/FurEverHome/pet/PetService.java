@@ -1,6 +1,8 @@
 package com.example.FurEverHome.pet;
 
 import com.example.FurEverHome.S3.S3Service;
+import com.example.FurEverHome.nominatim.GeoUtils;
+import com.example.FurEverHome.nominatim.GeocodingService;
 import com.example.FurEverHome.user.User;
 import com.example.FurEverHome.user.UserRepository;
 import jakarta.transaction.Transactional;
@@ -9,10 +11,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Objects;
-import java.util.UUID;
+import java.util.*;
+import java.util.stream.Collectors;
 
 @Service
 public class PetService {
@@ -23,17 +23,37 @@ public class PetService {
 
     private final S3Service s3Service;
 
+    private final GeocodingService geocodingService;
+
     @Autowired
-    public PetService(PetRepository petRepository, UserRepository userRepository, S3Service s3Service) {
+    public PetService(PetRepository petRepository, UserRepository userRepository, S3Service s3Service, GeocodingService geocodingService) {
         this.petRepository = petRepository;
         this.userRepository = userRepository;
         this.s3Service = s3Service;
+        this.geocodingService = geocodingService;
     }
     public List<Pet> getPets() {
         return petRepository.findAll();
     }
 
+    public List<Pet> getPetsSortedByDistance(Double userLatitude, Double userLongitude){
+        List<Pet> pets = petRepository.findAll();
+
+        return pets.stream()
+                .sorted((Pet p1, Pet p2) -> {
+                    double dist1 = GeoUtils.haversineDistance(userLatitude, userLongitude, p1.getLatitude(), p1.getLongitude());
+                    double dist2 = GeoUtils.haversineDistance(userLatitude, userLongitude, p2.getLatitude(), p2.getLongitude());
+                    return Double.compare(dist1, dist2);
+                })
+                .collect(Collectors.toList());
+    }
+
     public Pet addPet(Pet pet) {
+        Map<String, Double> coordinates = geocodingService.getCoordinates(pet.getOras(), pet.getJudet());
+        if (coordinates != null) {
+            pet.setLatitude(coordinates.get("latitude"));
+            pet.setLongitude(coordinates.get("longitude"));
+        }
         return petRepository.save(pet);
     }
 

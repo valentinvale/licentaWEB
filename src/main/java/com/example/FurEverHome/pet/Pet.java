@@ -36,6 +36,9 @@ public class Pet {
     private String description;
     private LocalDate dateAdded;
 
+    private Double latitude;
+    private Double longitude;
+
     @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "user_id", referencedColumnName = "id")
     private User user;
@@ -176,6 +179,22 @@ public class Pet {
 
     public void setSex(String sex){
         this.sex = sex;
+    }
+
+    public Double getLatitude() {
+        return latitude;
+    }
+
+    public void setLatitude(Double latitude) {
+        this.latitude = latitude;
+    }
+
+    public Double getLongitude() {
+        return longitude;
+    }
+
+    public void setLongitude(Double longitude) {
+        this.longitude = longitude;
     }
 
     @Override

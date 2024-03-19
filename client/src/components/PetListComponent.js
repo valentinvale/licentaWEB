@@ -13,6 +13,9 @@ const PetListComponent = () => {
     const [user, setUser] = useState('');
     const [username, setUsername] = useState('');
     const [userEmail, setUserEmail] = useState('');
+    const [userLatitude, setUserLatitude] = useState('');
+    const [userLongitude, setUserLongitude] = useState('');
+    const [userAllowsLocation, setUserAllowsLocation] = useState(false);
 
     const getEmailFromToken = (token) => {
         try {
@@ -33,9 +36,7 @@ const PetListComponent = () => {
     };
 
     useEffect(() => {
-        PetService.getPets().then((response) => {
-            setPets(response.data);
-        });
+
         if (isUserLoggedIn()) {
             const token = localStorage.getItem("jwtToken");
             setToken(token);
@@ -46,6 +47,26 @@ const PetListComponent = () => {
                 setUsername(response.data.username);
             });
         }
+
+        if("geolocation" in navigator) {
+            navigator.geolocation.getCurrentPosition(function(position) {
+                console.log("Latitude is :", position.coords.latitude);
+                console.log("Longitude is :", position.coords.longitude);
+                setUserLatitude(position.coords.latitude);
+                setUserLongitude(position.coords.longitude);
+                setUserAllowsLocation(true);
+                PetService.getPetsSortedByDistance(position.coords.latitude, position.coords.longitude).then((response) => {
+                    setPets(response.data);
+                });
+            }, function(error) {
+                console.error("Error Code = " + error.code + " - " + error.message);
+                setUserAllowsLocation(false);
+                PetService.getPets().then((response) => {
+                    setPets(response.data);
+                });
+            });
+        }
+
     }, []);
 
 

@@ -7,6 +7,15 @@ class PetService {
         return await axios.get(`${API_URL}/get`);
     }
 
+    async getPetsSortedByDistance(latitude, longitude) {
+        return await axios.get(`${API_URL}/getbydistance`, {
+            params: {
+                latitude: latitude,
+                longitude: longitude
+            }
+        });
+    }
+
     async getPetById(petId) {
         return await axios.get(`${API_URL}/getbyid/${petId}`);
     }
