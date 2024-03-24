@@ -4,9 +4,11 @@ import UserService from "../services/UserService";
 import PetService from "../services/PetService";
 import { useNavigate } from "react-router-dom";
 import { FormGroup } from "reactstrap";
-import { Form, Label, Input,  Button, FormText} from "reactstrap";
+import { Form, Label, Input,  Button, FormText, Spinner} from "reactstrap";
 
 import counties_with_cities from "../Resources/counties_with_cities.json";
+
+import "../Styles/PostPet.css";
 
 function PostPet(props) {
 
@@ -33,6 +35,8 @@ function PostPet(props) {
     const [selectedCounty, setSelectedCounty] = useState("");
     const [cityList, setCityList] = useState([]);
     const [selectedCity, setSelectedCity] = useState("");
+
+    const [isLoading, setIsLoading] = useState(false);
 
     useEffect(() => {
         setCountiesWithCities(counties_with_cities);
@@ -88,13 +92,15 @@ function PostPet(props) {
 
     const handleSubmit = (e) => {
         e.preventDefault();
-        console.log(user);
+        //console.log(user);
         if(petName.length === 0 || petBreed.length === 0 || (isDog === false && isCat === false) || (isFemale === false && isMale === false) || selectedCounty.length === 0 || selectedCity.length === 0 || petDescription.length === 0 || petImages.length === 0){
             alert("Toate campurile sunt obligatorii.");
             return;
         }
 
-        console.log(petImages);
+        //console.log(petImages);
+
+        setIsLoading(true);
         
         const petType = isDog ? "Caine" : "Pisica";
         const petSex = isFemale ? "Femela" : "Mascul";
@@ -147,176 +153,190 @@ function PostPet(props) {
         }
         PetService.postPet(petRequest, token).then((response) => {
             if(response.status === 200){
-                alert("Animalul a fost postat cu succes.");
+                //alert("Animalul a fost postat cu succes.");
                 console.log(response.data);
                 PetService.uploadPetImages(response.data.id, petImages, token).then((response) => {
                     if(response.status === 200){
-                        alert("Pozele au fost incarcate cu succes.");
+                        //alert("Pozele au fost incarcate cu succes.");
                         PetService.setPetUser(response.data.id, user.id, token).then((response) => {
                             if(response.status === 200){
-                                alert("Animalul a fost adaugat in lista ta de animale.");
+                                setIsLoading(false);
+                                //alert("Animalul a fost adaugat in lista de animale.");
                                 navigate("/");
                             }
                         }).catch((error) => {
-                            alert("A aparut o eroare la adaugarea animalului in lista ta de animale.");
+                            setIsLoading(false);
+                            alert("A aparut o eroare la adaugarea animalului in lista de animale.");
                         });
                     }
                 }).catch((error) => {
+                    setIsLoading(false);
                     alert("A aparut o eroare la incarcarea pozelor.");
                 });
             }
         }).catch((error) => {
+            setIsLoading(false);
             alert("A aparut o eroare la postarea animalului.");
         });
 
     }
 
     return (
-        <div>
-            <h1>Posteaza un Animalut</h1>
-            <Form>
-                <FormGroup>
-                    <Label for="petName">Nume</Label>
-                    <Input type="text" name="petName" id="petName" placeholder="Numele animalului" onChange={(e) => setPetName(e.target.value)} />
-                </FormGroup>
-                {' '}
-                <FormGroup check>
-                <Input
-                    name="radio1"
-                    type="radio"
-                    defaultChecked={true}
-                    onClick={() => {setIsDog(true); setIsCat(false)}}
-                />
-                {' '}
-                <Label check>
-                    Caine
-                </Label>
-                </FormGroup>
-                <FormGroup check>
-                <Input
-                    name="radio1"
-                    type="radio"
-                    onClick={() => {setIsCat(true); setIsDog(false)}}
-                />
-                {' '}
-                <Label check>
-                    Pisica
-                </Label>
-                </FormGroup>
-                {' '}
-                <FormGroup check>
-                <Input
-                    name="radio2"
-                    type="radio"
-                    defaultChecked={true}
-                    onClick={() => {setIsFemale(true); setIsMale(false)}}
-                />
-                {' '}
-                <Label check>
-                    Femela
-                </Label>
-                </FormGroup>
-                <FormGroup check>
-                <Input
-                    name="radio2"
-                    type="radio"
-                    onClick={() => {setIsMale(true); setIsFemale(false)}}
-                />
-                {' '}
-                <Label check>
-                    Mascul
-                </Label>
-                </FormGroup>
-                {' '}
-                <FormGroup>
-                    <Label for="petBreed">Rasa</Label>
-                    <Input type="text" name="petBreed" id="petBreed" placeholder="Rasa animalului" onChange={(e) => setPetBreed(e.target.value)} />
-                </FormGroup>
-                {' '}
-                <FormGroup switch>
-                <Input type="switch" role="switch"  onClick={() => {setKnowsDateOfBirth(!knowsDateOfBirth)}} />
-                <Label check>Cunosc data de nastere a animalului.</Label>
-                </FormGroup>
-                {' '}
-                <FormGroup>
-                    <Label for="petAge">Varsta</Label>
-                    <Input type="number" value={knowsDateOfBirth ? "" : petAge} min={0} name="petAge" id="petAge" placeholder="Varsta animalului" disabled={knowsDateOfBirth} onChange={(e) => {e.target.value >= 0 ? (setPetAge(e.target.value)) : (setPetAge(0))}} />
-                </FormGroup>
-                {' '}
-                <FormGroup>
-                    <Label for="petDateOfBirth">Data Nasterii</Label>
-                    <Input type="date" value={knowsDateOfBirth ? petDateOfBirth : ""} max={new Date().toISOString().split('T')[0]} name="petDateOfBirth" id="petDateOfBirth" placeholder="Data Nasterii animalului" disabled={!knowsDateOfBirth} onChange={(e) => setPetDateOfBirth(e.target.value)} />
-                </FormGroup>
-                {' '}
-                <FormGroup>
-                <Label for="petCounty">
-                    Judet
-                </Label>
-                <Input
-                id="petCounty"
-                name="petCounty"
-                type="select"
-                onChange={handleCountyChange}
-                >
-                <option>Alege Judetul</option>
-                {countiesWithCities.map((county, index) => (
-                    <option key={index}>{county.county_name}</option>
-                ))}
-                </Input>
-            </FormGroup>
-            {' '}
-            <FormGroup>
-                <Label for="petCity">
-                    Oras
-                </Label>
-                <Input
-                id="petCity"
-                name="petCity"
-                type="select"
-                disabled={!selectedCounty}
-                onChange={(e) => setSelectedCity(e.target.value)}
-                >
-                <option>Alege Orasul</option>
-                {cityList.map((city, index) => (
-                    <option key={index}>{city.nume}</option>
-                ))}
-                </Input>
-            </FormGroup>
-            {' '}
-            <FormGroup>
-                <Label for="imageFiles">
-                    Poze
-                </Label>
-                <Input
-                id="imageFiles"
-                name="imageFiles"
-                type="file"
-                multiple
-                accept=".jpg, .jpeg, .png"
-                onChange={handleImageChange}
-                />
-                <FormText>
-                Alege intre 1 si 10 poze cu animalul tau. Pozele pot avea dimensioni maxime de 5MB.
-                </FormText>
-            </FormGroup>
-            {' '}
-            <FormGroup>
-                <Label for="petDescription">
-                    Descriere
-                </Label>
-                <Input
-                id="petDescription"
-                name="petDescription"
-                type="textarea"
-                onChange={(e) => setPetDescription(e.target.value)}
-                />
-            </FormGroup>
-            {' '}
-            <Button onClick={handleSubmit}>
-                Submit
-            </Button>
-            {' '}
-        </Form>
+        <div className="post-pet-container">
+
+            {isLoading ? (
+            <div className="loading-container">
+                <Spinner className="large-spinner" style={{ width: '3rem', height: '3rem' }}/> 
+                {/* <p>Loading...</p> */}
+            </div>) : (
+            
+            <div>
+                <h1>Posteaza un Animalut</h1>
+                <Form>
+                    <FormGroup>
+                        <Label for="petName">Nume</Label>
+                        <Input type="text" name="petName" id="petName" placeholder="Numele animalului" onChange={(e) => setPetName(e.target.value)} />
+                    </FormGroup>
+                    {' '}
+                    <FormGroup check>
+                    <Input
+                        name="radio1"
+                        type="radio"
+                        defaultChecked={true}
+                        onClick={() => {setIsDog(true); setIsCat(false)}}
+                    />
+                    {' '}
+                    <Label check>
+                        Caine
+                    </Label>
+                    </FormGroup>
+                    <FormGroup check>
+                    <Input
+                        name="radio1"
+                        type="radio"
+                        onClick={() => {setIsCat(true); setIsDog(false)}}
+                    />
+                    {' '}
+                    <Label check>
+                        Pisica
+                    </Label>
+                    </FormGroup>
+                    {' '}
+                    <FormGroup check>
+                    <Input
+                        name="radio2"
+                        type="radio"
+                        defaultChecked={true}
+                        onClick={() => {setIsFemale(true); setIsMale(false)}}
+                    />
+                    {' '}
+                    <Label check>
+                        Femela
+                    </Label>
+                    </FormGroup>
+                    <FormGroup check>
+                    <Input
+                        name="radio2"
+                        type="radio"
+                        onClick={() => {setIsMale(true); setIsFemale(false)}}
+                    />
+                    {' '}
+                    <Label check>
+                        Mascul
+                    </Label>
+                    </FormGroup>
+                    {' '}
+                    <FormGroup>
+                        <Label for="petBreed">Rasa</Label>
+                        <Input type="text" name="petBreed" id="petBreed" placeholder="Rasa animalului" onChange={(e) => setPetBreed(e.target.value)} />
+                    </FormGroup>
+                    {' '}
+                    <FormGroup switch>
+                    <Input type="switch" role="switch"  onClick={() => {setKnowsDateOfBirth(!knowsDateOfBirth)}} />
+                    <Label check>Cunosc data de nastere a animalului.</Label>
+                    </FormGroup>
+                    {' '}
+                    <FormGroup>
+                        <Label for="petAge">Varsta</Label>
+                        <Input type="number" value={knowsDateOfBirth ? "" : petAge} min={0} name="petAge" id="petAge" placeholder="Varsta animalului" disabled={knowsDateOfBirth} onChange={(e) => {e.target.value >= 0 ? (setPetAge(e.target.value)) : (setPetAge(0))}} />
+                    </FormGroup>
+                    {' '}
+                    <FormGroup>
+                        <Label for="petDateOfBirth">Data Nasterii</Label>
+                        <Input type="date" value={knowsDateOfBirth ? petDateOfBirth : ""} max={new Date().toISOString().split('T')[0]} name="petDateOfBirth" id="petDateOfBirth" placeholder="Data Nasterii animalului" disabled={!knowsDateOfBirth} onChange={(e) => setPetDateOfBirth(e.target.value)} />
+                    </FormGroup>
+                    {' '}
+                    <FormGroup>
+                    <Label for="petCounty">
+                        Judet
+                    </Label>
+                    <Input
+                    id="petCounty"
+                    name="petCounty"
+                    type="select"
+                    onChange={handleCountyChange}
+                    >
+                    <option>Alege Judetul</option>
+                    {countiesWithCities.map((county, index) => (
+                        <option key={index}>{county.county_name}</option>
+                    ))}
+                    </Input>
+                    </FormGroup>
+                    {' '}
+                    <FormGroup>
+                        <Label for="petCity">
+                            Oras
+                        </Label>
+                        <Input
+                        id="petCity"
+                        name="petCity"
+                        type="select"
+                        disabled={!selectedCounty}
+                        onChange={(e) => setSelectedCity(e.target.value)}
+                        >
+                        <option>Alege Orasul</option>
+                        {cityList.map((city, index) => (
+                            <option key={index}>{city.nume}</option>
+                        ))}
+                        </Input>
+                    </FormGroup>
+                    {' '}
+                    <FormGroup>
+                        <Label for="imageFiles">
+                            Poze
+                        </Label>
+                        <Input
+                        id="imageFiles"
+                        name="imageFiles"
+                        type="file"
+                        multiple
+                        accept=".jpg, .jpeg, .png"
+                        onChange={handleImageChange}
+                        />
+                        <FormText>
+                        Alege intre 1 si 10 poze cu animalul tau. Pozele pot avea dimensioni maxime de 5MB.
+                        </FormText>
+                    </FormGroup>
+                    {' '}
+                    <FormGroup>
+                        <Label for="petDescription">
+                            Descriere
+                        </Label>
+                        <Input
+                        id="petDescription"
+                        name="petDescription"
+                        type="textarea"
+                        onChange={(e) => setPetDescription(e.target.value)}
+                        />
+                    </FormGroup>
+                    {' '}
+                    <Button onClick={handleSubmit}>
+                        Submit
+                    </Button>
+                    {' '}
+                </Form>
+            </div>
+            )}
         </div>
         
     );
