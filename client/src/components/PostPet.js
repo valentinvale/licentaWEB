@@ -2,6 +2,7 @@ import React, {useEffect, useState} from "react";
 import AuthenticationService from "../services/AuthenticationService";
 import UserService from "../services/UserService";
 import PetService from "../services/PetService";
+import GenerateNameModal from "./GenerateNameModal";
 import { useNavigate } from "react-router-dom";
 import { FormGroup } from "reactstrap";
 import { Form, Label, Input,  Button, FormText, Spinner} from "reactstrap";
@@ -38,6 +39,8 @@ function PostPet(props) {
 
     const [isLoading, setIsLoading] = useState(false);
 
+    const [modalIsOpen, setModalIsOpen] = useState(false);
+
     useEffect(() => {
         setCountiesWithCities(counties_with_cities);
         setToken(localStorage.getItem("jwtToken"));
@@ -60,6 +63,15 @@ function PostPet(props) {
         }
     }, [navigate]);
 
+
+    const openModal = (e) => {
+        e.preventDefault();
+        setModalIsOpen(true);
+    };
+    
+    const closeModal = () => {
+        setModalIsOpen(false);
+    };
 
     const handleCountyChange = (e) => {
         if (e.target.value === "Alege Judetul") {
@@ -191,11 +203,15 @@ function PostPet(props) {
             </div>) : (
             
             <div>
-                <h1>Posteaza un Animalut</h1>
+                <h1 className="post-pet-title">Posteaza un Animalut</h1>
                 <Form>
-                    <FormGroup>
+                    <FormGroup className="name-input-group">
                         <Label for="petName">Nume</Label>
-                        <Input type="text" name="petName" id="petName" placeholder="Numele animalului" onChange={(e) => setPetName(e.target.value)} />
+                        <div className="name-action-container">
+                            <Input type="text" name="petName" id="petName" placeholder="Numele animalului" onChange={(e) => setPetName(e.target.value)} />
+                            <button onClick={(e) => openModal(e)} className="generate-name-btn">Genereaza nume</button>
+                            <GenerateNameModal isOpen={modalIsOpen} onRequestClose={closeModal} />
+                        </div>
                     </FormGroup>
                     {' '}
                     <FormGroup check>
@@ -204,6 +220,7 @@ function PostPet(props) {
                         type="radio"
                         defaultChecked={true}
                         onClick={() => {setIsDog(true); setIsCat(false)}}
+                        className="input-color"
                     />
                     {' '}
                     <Label check>
@@ -215,6 +232,7 @@ function PostPet(props) {
                         name="radio1"
                         type="radio"
                         onClick={() => {setIsCat(true); setIsDog(false)}}
+                        className="input-color"
                     />
                     {' '}
                     <Label check>
@@ -228,6 +246,7 @@ function PostPet(props) {
                         type="radio"
                         defaultChecked={true}
                         onClick={() => {setIsFemale(true); setIsMale(false)}}
+                        className="input-color"
                     />
                     {' '}
                     <Label check>
@@ -239,6 +258,7 @@ function PostPet(props) {
                         name="radio2"
                         type="radio"
                         onClick={() => {setIsMale(true); setIsFemale(false)}}
+                        className="input-color"
                     />
                     {' '}
                     <Label check>
@@ -252,7 +272,7 @@ function PostPet(props) {
                     </FormGroup>
                     {' '}
                     <FormGroup switch>
-                    <Input type="switch" role="switch"  onClick={() => {setKnowsDateOfBirth(!knowsDateOfBirth)}} />
+                    <Input type="switch" role="switch"  onClick={() => {setKnowsDateOfBirth(!knowsDateOfBirth)}} className="input-color"/>
                     <Label check>Cunosc data de nastere a animalului.</Label>
                     </FormGroup>
                     {' '}
@@ -330,9 +350,11 @@ function PostPet(props) {
                         />
                     </FormGroup>
                     {' '}
-                    <Button onClick={handleSubmit}>
-                        Submit
-                    </Button>
+                    <div className="submit-btn-container">
+                        <Button onClick={handleSubmit} className="submit-button">
+                            Submit
+                        </Button>
+                    </div>
                     {' '}
                 </Form>
             </div>

@@ -3,8 +3,99 @@
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    margin-top: 50px;
+    margin: 50px auto;
+    background-image: linear-gradient(to right, var(--primary-green), var(--primary-green-yellow));
+    box-shadow: 0 0 10px 5px var(--secondary-green);
+    max-width: 600px;
+    padding: 20px;
 }
+
+.post-pet-title {
+    text-align: center;
+    color: var(--text-black);
+    margin-bottom: 30px;
+    padding-bottom: 10px;
+}
+
+.generate-pet-container{
+    margin-bottom: 10px;
+}
+
+.name-input-group {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+  }
+  
+.name-action-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+  
+.name-action-container .generate-name-btn, .submit-button {
+    background-color: var(--primary-orange) !important;
+    border-color: var(--primary-orange) !important;
+    color: var(--text-black) !important;
+    border-radius: 10px !important;
+    font-size: 14px !important;
+    cursor: pointer !important;
+    /* margin: auto 10px; */
+    transition: box-shadow 0.3s ease !important;
+    white-space: nowrap !important; 
+    width: auto !important; 
+    padding: 8px 16px !important;
+    margin-left: 5px !important;
+}
+  
+.name-action-container .generate-name-btn:hover, .submit-button:hover {
+    box-shadow: 0 0 10px 5px var(--secondary-orange) !important;
+}
+  
+.name-action-container input[type="text"] {
+    flex-grow: 1;
+}
+
+.submit-button{
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2) !important;
+}
+
+.submit-btn-container {
+    display: flex;
+    justify-content: center;
+    margin-top: 20px;
+}
+
+.input-color:checked{
+    background-color: var(--primary-orange) !important;
+    accent-color: var(--primary-orange) !important;
+}
+
+input[type="radio"]:focus {
+    outline: 2px solid var(--primary-orange) !important;
+    box-shadow: 0 0 0 3px var(--primary-orange) !important;
+}
+
+input[type="checkbox"]:focus {
+    outline: 2px solid var(--primary-orange) !important;
+    box-shadow: 0 0 0 3px var(--primary-orange) !important;
+}
+
+input[type="checkbox"]:checked + label::after {
+    background-color: var(--primary-orange) !important;
+}
+  
+/* .datepicker .day.selected, .datepicker .day.today {
+    background-color: var(--primary-orange) !important;
+    color: var(--primary-orange) !important;
+  }
+  
+
+.datepicker .today-button {
+    background-color: var(--primary-orange) !important;
+    color: var(--primary-orange) !important;
+} */
+  
 
 .loading-container {
     display: flex;
