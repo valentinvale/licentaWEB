@@ -135,7 +135,6 @@ public class PetService {
         List<String> imageUrls = new ArrayList<>();
 
         for (MultipartFile file : images) {
-            // Generate a unique file name, upload to S3, and get the URL
             String fileName = UUID.randomUUID() + "_" + file.getOriginalFilename();
             //String Extension = Objects.requireNonNull(file.getOriginalFilename()).substring(file.getOriginalFilename().lastIndexOf("."));
             String key = pet.getImageFolder() + "/" + fileName;

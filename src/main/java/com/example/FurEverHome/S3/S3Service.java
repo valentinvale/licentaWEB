@@ -43,4 +43,14 @@ public class S3Service implements FileService{
         return String.format("https://%s.s3.amazonaws.com/%s", bucketName, key);
     }
 
+    @Override
+    public void deleteFile(String key) {
+        try {
+            amazonS3.deleteObject(bucketName, key);
+        } catch (Exception e) {
+            throw new IllegalStateException("Failed to delete file", e);
+        }
+    }
+
+
 }

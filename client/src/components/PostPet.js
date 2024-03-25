@@ -73,6 +73,11 @@ function PostPet(props) {
         setModalIsOpen(false);
     };
 
+    const handleNameChange = (name) => {
+        setPetName(name);
+
+    }
+
     const handleCountyChange = (e) => {
         if (e.target.value === "Alege Judetul") {
             setSelectedCounty("");
@@ -208,9 +213,16 @@ function PostPet(props) {
                     <FormGroup className="name-input-group">
                         <Label for="petName">Nume</Label>
                         <div className="name-action-container">
-                            <Input type="text" name="petName" id="petName" placeholder="Numele animalului" onChange={(e) => setPetName(e.target.value)} />
+                            <Input 
+                                type="text" 
+                                value={petName}
+                                name="petName" 
+                                id="petName" 
+                                placeholder="Numele animalului" 
+                                onChange={(e) => setPetName(e.target.value)} 
+                            />
                             <button onClick={(e) => openModal(e)} className="generate-name-btn">Genereaza nume</button>
-                            <GenerateNameModal isOpen={modalIsOpen} onRequestClose={closeModal} />
+                            <GenerateNameModal token={token} onData={handleNameChange} isOpen={modalIsOpen} onRequestClose={closeModal} />
                         </div>
                     </FormGroup>
                     {' '}

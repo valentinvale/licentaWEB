@@ -34,6 +34,8 @@
 }
   
 .name-action-container .generate-name-btn, .submit-button {
+    border: none !important;
+    box-shadow: 1px 1px 0 1px var(--primary-shadow-color) !important;
     background-color: var(--primary-orange) !important;
     border-color: var(--primary-orange) !important;
     color: var(--text-black) !important;
@@ -57,7 +59,7 @@
 }
 
 .submit-button{
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2) !important;
+    box-shadow: 1px 1px 0 1px var(--primary-shadow-color) !important;
 }
 
 .submit-btn-container {

@@ -1,19 +1,35 @@
 import React, { useEffect, useState } from 'react';
 import Modal from 'react-modal';
+import { Input, Spinner } from 'reactstrap'
 
 import '../Styles/GenerateNameModal.css';
 
+import AIService from '../services/AIService';
+
 Modal.setAppElement('#root');
 
-function GenerateNameModal({ isOpen, onRequestClose }) {
+function GenerateNameModal({ isOpen, onRequestClose, token, onData }) {
   const [selectedFile, setSelectedFile] = useState(null);
-  const [fileName, setFileName] = useState("No file uploaded");
+  const [fileName, setFileName] = useState("Niciun fisier selectat");
+  const [isLoading, setIsLoading] = useState(false);
+  const [generatedName, setGeneratedName] = useState(null);
 
 
  useEffect(() => {
-    setFileName("No file uploaded");
+    setFileName("Niciun fisier selectat");
     setSelectedFile(null);
+    setGeneratedName(null);
+    setIsLoading(false);
  }, []);
+
+ useEffect(() => {
+  if (generatedName) {
+      onData(generatedName);
+      // Reset after calling to prevent duplicate calls if generatedName doesn't change
+      setGeneratedName(null);
+  }
+}, [generatedName, onData]);
+
 
   const handleImageChange = (event) => {
     const file = event.target.files[0];
@@ -23,10 +39,28 @@ function GenerateNameModal({ isOpen, onRequestClose }) {
 
   const handleGenerateName = () => {
     if (!selectedFile) {
-      alert('Please select an image file first.');
+      alert('Alegeti o imagine mai intai!');
       return;
     }
-    // Call the function to send the image to your Python service
+    try {
+      setIsLoading(true);
+      AIService.generatePetName(selectedFile, token).then((response) => {
+        console.log(response.data);
+        setGeneratedName(response.data.petName);
+      }).catch((error) => {
+          alert('A aparut o eroare la generarea numelui');
+          setIsLoading(false);
+      }).finally(() => {
+          setSelectedFile(null);
+          setFileName("Niciun fisier selectat");
+          setIsLoading(false);
+          onRequestClose();
+      });
+    
+    } catch (error) {
+      alert('A aparut o eroare la generarea numelui');
+      setIsLoading(false);
+    }
     return;
   };
 
@@ -38,16 +72,34 @@ function GenerateNameModal({ isOpen, onRequestClose }) {
       className="react-modal-content"
       overlayClassName="react-modal-overlay"
     >
-      <h2>Genereaza un nume</h2>
-      <div className='file-upload-container'>
-        <label htmlFor='file-upload' className='react-modal-btn'>
-          Incarca fisier
-        </label>
-        <input id='file-upload' type="file" onChange={handleImageChange} style={{ display: 'none' }} />
-        <span className='file-name'>{fileName}</span>
-        <button className='react-modal-btn' onClick={handleGenerateName}>Genereaza</button>
-        <button className='react-modal-btn' onClick={onRequestClose}>Inchide</button>
-      </div>
+      {isLoading ? 
+      (
+        <div className="file-upload-container" id='spinner-container'>
+          <Spinner className="large-spinner" style={{ width: '20px', height: '20px' }}/> 
+          {/* <p>Loading...</p> */}
+        </div>) : 
+        (
+          <div>
+            <h2>Genereaza un nume</h2>
+            <div className='file-upload-container'>
+              <label htmlFor='file-upload' className='react-modal-btn' id='file-upload-label'>
+                Incarca fisier
+              </label>
+              <Input
+                id="file-upload"
+                name="pet-image"
+                type="file"
+                accept=".jpg, .jpeg, .png"
+                onChange={handleImageChange}
+                style={{ display: 'none' }}
+              />
+              <span className='file-name'>{fileName}</span>
+              <button className='react-modal-btn' onClick={handleGenerateName}>Genereaza</button>
+              <button className='react-modal-btn' onClick={onRequestClose}>Inchide</button>
+            </div>
+            
+          </div>
+        )}
       
     </Modal>
   );
