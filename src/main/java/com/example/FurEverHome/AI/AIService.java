@@ -28,7 +28,7 @@ public class AIService {
         this.restTemplate = restTemplate;
     }
 
-    public String generatePetName(MultipartFile image) {
+    public String generatePetName(MultipartFile image, String petType) {
         try{
             String generateNameUrl = apiUrl + "/generate-pet-name";
 
@@ -38,6 +38,7 @@ public class AIService {
             Map<String, String> request = new HashMap<>();
 
             request.put("imageUrl", imageUrl);
+            request.put("petType", petType);
 
             HttpHeaders headers = new HttpHeaders();
             headers.setContentType(org.springframework.http.MediaType.APPLICATION_JSON);

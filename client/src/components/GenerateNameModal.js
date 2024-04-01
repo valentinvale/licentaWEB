@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import Modal from 'react-modal';
-import { Input, Spinner } from 'reactstrap'
+import { Input, Spinner, Label, FormGroup } from 'reactstrap'
 
 import '../Styles/GenerateNameModal.css';
 
@@ -8,11 +8,12 @@ import AIService from '../services/AIService';
 
 Modal.setAppElement('#root');
 
-function GenerateNameModal({ isOpen, onRequestClose, token, onData }) {
+function GenerateNameModal({ isOpen, onRequestClose, petType, token, onData }) {
   const [selectedFile, setSelectedFile] = useState(null);
   const [fileName, setFileName] = useState("Niciun fisier selectat");
   const [isLoading, setIsLoading] = useState(false);
   const [generatedName, setGeneratedName] = useState(null);
+  const [usePetType, setUsePetType] = useState(false);
 
 
  useEffect(() => {
@@ -20,6 +21,7 @@ function GenerateNameModal({ isOpen, onRequestClose, token, onData }) {
     setSelectedFile(null);
     setGeneratedName(null);
     setIsLoading(false);
+    setUsePetType(false);
  }, []);
 
  useEffect(() => {
@@ -42,9 +44,13 @@ function GenerateNameModal({ isOpen, onRequestClose, token, onData }) {
       alert('Alegeti o imagine mai intai!');
       return;
     }
+    let selectedPetType = petType;
+    if(!usePetType){
+      selectedPetType = "pet";
+    }
     try {
       setIsLoading(true);
-      AIService.generatePetName(selectedFile, token).then((response) => {
+      AIService.generatePetName(selectedFile, selectedPetType, token).then((response) => {
         console.log(response.data);
         setGeneratedName(response.data.petName);
       }).catch((error) => {
@@ -94,6 +100,11 @@ function GenerateNameModal({ isOpen, onRequestClose, token, onData }) {
                 style={{ display: 'none' }}
               />
               <span className='file-name'>{fileName}</span>
+              <FormGroup switch>
+                <Input type='switch' role='switch' onChange={() => setUsePetType(!usePetType)}></Input>
+                <Label>Foloseste tipul animalului</Label>
+              </FormGroup>
+              
               <button className='react-modal-btn' onClick={handleGenerateName}>Genereaza</button>
               <button className='react-modal-btn' onClick={onRequestClose}>Inchide</button>
             </div>

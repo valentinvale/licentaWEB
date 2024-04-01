@@ -18,8 +18,8 @@ public class AIController {
     }
 
     @PostMapping("/generate-pet-name")
-    public String generatePetName(MultipartFile image) {
-        return aiService.generatePetName(image);
+    public String generatePetName(MultipartFile image, String petType) {
+        return aiService.generatePetName(image, petType);
     }
 
 }

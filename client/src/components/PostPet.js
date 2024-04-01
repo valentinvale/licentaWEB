@@ -222,7 +222,7 @@ function PostPet(props) {
                                 onChange={(e) => setPetName(e.target.value)} 
                             />
                             <button onClick={(e) => openModal(e)} className="generate-name-btn">Genereaza nume</button>
-                            <GenerateNameModal token={token} onData={handleNameChange} isOpen={modalIsOpen} onRequestClose={closeModal} />
+                            <GenerateNameModal token={token} petType={isDog ? "dog" : "cat"} onData={handleNameChange} isOpen={modalIsOpen} onRequestClose={closeModal} />
                         </div>
                     </FormGroup>
                     {' '}
