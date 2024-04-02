@@ -113,3 +113,26 @@ input[type="checkbox"]:checked + label::after {
     color: var(--primary-green);
 }
 
+.tooltip-inner {
+    background-image: linear-gradient(to right, var(--secondary-orange), var(--primary-orange)) !important; 
+    font-family: 'Acme', 'sans-serif' !important; 
+    color: var(--text-black) !important; 
+  }
+  
+
+.tooltip.bs-tooltip-top .tooltip-arrow::before, .tooltip.bs-tooltip-auto[data-popper-placement^="top"] .tooltip-arrow::before {
+    border-top-color: var(--secondary-orange) !important;
+  }
+  
+
+.tooltip.bs-tooltip-bottom .tooltip-arrow::before, .tooltip.bs-tooltip-auto[data-popper-placement^="bottom"] .tooltip-arrow::before {
+border-bottom-color: var(--secondary-orange) !important;
+}
+
+.tooltip.bs-tooltip-start .tooltip-arrow::before, .tooltip.bs-tooltip-auto[data-popper-placement^="left"] .tooltip-arrow::before {
+border-left-color: var(--secondary-orange) !important;
+}
+
+.tooltip.bs-tooltip-end .tooltip-arrow::before, .tooltip.bs-tooltip-auto[data-popper-placement^="right"] .tooltip-arrow::before {
+border-right-color: var(--secondary-orange) !important;
+}

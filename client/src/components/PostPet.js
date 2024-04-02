@@ -5,7 +5,7 @@ import PetService from "../services/PetService";
 import GenerateNameModal from "./GenerateNameModal";
 import { useNavigate } from "react-router-dom";
 import { FormGroup } from "reactstrap";
-import { Form, Label, Input,  Button, FormText, Spinner} from "reactstrap";
+import { Form, Label, Input,  Button, FormText, Spinner, Tooltip} from "reactstrap";
 
 import counties_with_cities from "../Resources/counties_with_cities.json";
 
@@ -40,6 +40,9 @@ function PostPet(props) {
     const [isLoading, setIsLoading] = useState(false);
 
     const [modalIsOpen, setModalIsOpen] = useState(false);
+
+    const [tooltipOpen, setTooltipOpen] = useState(false);
+    const toggle = () => setTooltipOpen(!tooltipOpen);
 
     useEffect(() => {
         setCountiesWithCities(counties_with_cities);
@@ -221,7 +224,11 @@ function PostPet(props) {
                                 placeholder="Numele animalului" 
                                 onChange={(e) => setPetName(e.target.value)} 
                             />
-                            <button onClick={(e) => openModal(e)} className="generate-name-btn">Genereaza nume</button>
+                            <button id="generate-name-btn" onClick={(e) => openModal(e)} className="generate-name-btn">Genereaza nume</button>
+                            <Tooltip placement="bottom" isOpen={tooltipOpen} target="generate-name-btn" toggle={toggle}>
+                                Genereaza un nume pentru animalutul tau, folosindu-se de inteligenta artificiala pentru a detecta culorile sale 
+                                si a cauta nume utilizate pentru animale de culorile respective pe forumuri populare.
+                            </Tooltip>
                             <GenerateNameModal token={token} petType={isDog ? "dog" : "cat"} onData={handleNameChange} isOpen={modalIsOpen} onRequestClose={closeModal} />
                         </div>
                     </FormGroup>

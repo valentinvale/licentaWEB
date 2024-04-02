@@ -99,4 +99,23 @@
     height: 50px !important;
     
   }
+
+  .input-color:checked{
+    background-color: var(--primary-orange) !important;
+    accent-color: var(--primary-orange) !important;
+}
+
+input[type="radio"]:focus {
+    outline: 2px solid var(--primary-orange) !important;
+    box-shadow: 0 0 0 3px var(--primary-orange) !important;
+}
+
+input[type="checkbox"]:focus {
+    outline: 2px solid var(--primary-orange) !important;
+    box-shadow: 0 0 0 3px var(--primary-orange) !important;
+}
+
+input[type="checkbox"]:checked + label::after {
+    background-color: var(--primary-orange) !important;
+}
   

@@ -101,7 +101,7 @@ function GenerateNameModal({ isOpen, onRequestClose, petType, token, onData }) {
               />
               <span className='file-name'>{fileName}</span>
               <FormGroup switch>
-                <Input type='switch' role='switch' onChange={() => setUsePetType(!usePetType)}></Input>
+                <Input className='input-color' type='switch' role='switch' onChange={() => setUsePetType(!usePetType)}></Input>
                 <Label>Foloseste tipul animalului</Label>
               </FormGroup>
               
