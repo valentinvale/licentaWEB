@@ -7,18 +7,23 @@ import Layout from './components/Layout';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import PostPet from './components/PostPet';
 import PetPage from './components/PetPage';
+import { AuthContextProvider } from './Context/AuthContext';
+import UserPage from './components/UserPage';
 
 function App() {
   return (
-    <Layout>
-      <Routes>
-        <Route path="/" element={<PetListComponent />} />
-        <Route path="/signup" element={<RegisterPage />} />
-        <Route path="/login" element={<AuthenticationPage />} />
-        <Route path="/postpet" element={<PostPet />} />
-        <Route path="/pets/:id" element={<PetPage />} />
-      </Routes>
-    </Layout>
+    <AuthContextProvider>
+      <Layout>
+        <Routes>
+          <Route path="/" element={<PetListComponent />} />
+          <Route path="/signup" element={<RegisterPage />} />
+          <Route path="/login" element={<AuthenticationPage />} />
+          <Route path="/postpet" element={<PostPet />} />
+          <Route path="/pets/:id" element={<PetPage />} />
+          <Route path="/user" element={<UserPage />} />
+        </Routes>
+      </Layout>
+    </AuthContextProvider>
   );
 }
 

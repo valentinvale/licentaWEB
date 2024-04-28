@@ -122,7 +122,7 @@ function NavMenu(args) {
                 <i class="bi bi-person-circle"> </i>{username}
                 </DropdownToggle>
                 <DropdownMenu right>
-                  <DropdownItem>Contul Tau</DropdownItem>
+                  <DropdownItem onClick={() => navigate("/user")}>Contul Tau</DropdownItem>
                   <DropdownItem divider />
                   <DropdownItem onClick={logOut}>Iesi din cont</DropdownItem>
                 </DropdownMenu>

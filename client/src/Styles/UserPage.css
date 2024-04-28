@@ -1,0 +1,48 @@
+.vertical-nav {
+    display: flex;
+    align-items: flex-start;
+    margin-top: 0 !important;
+    padding-top: 0 !important;
+}
+
+
+.vertical-nav .nav {
+    flex-direction: column;
+    width: 300px;
+    height: 100vh;
+    font-size: 20px;
+    /* border-right: 1px solid #ddd; */
+    background-image: linear-gradient(to right, var(--primary-green), var(--primary-green-yellow)) !important;
+    
+}
+
+.vertical-nav .nav .nav-link {
+    border: none;
+    color: var(--text-black) !important;
+    padding: 10px 15px;
+    text-align: center;
+   
+}
+
+/* active tab */
+.vertical-nav .nav .nav-link.active {
+    /* background-image: linear-gradient(to right, var(--primary-green-yellow), var(--primary-green)) !important; */
+    background-color: var(--primary-green) !important;
+    color: var(--secondary-orange) !important;
+    
+}
+
+/* hover effect on inactive tabs */
+.vertical-nav .nav .nav-link:not(.active):hover {
+    color: var(--secondary-orange) !important; 
+
+}
+
+.vertical-nav .tab-content {
+    flex-grow: 1;
+    padding-left: 20px; 
+}
+
+.vertical-nav .nav .nav-link, .vertical-nav .tab-content {
+    overflow: hidden !important; 
+}
