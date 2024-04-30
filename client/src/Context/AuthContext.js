@@ -2,7 +2,14 @@ import React, { createContext, useState, useEffect } from 'react';
 
 import UserService from '../services/UserService';
 
-export const AuthContext = createContext();
+export const AuthContext = createContext({
+    isAuthenticated: false,
+    userEmail: '',
+    token: '',
+    user: '',
+    username: '',
+    handleLogin: () => {}
+});
 
 export const AuthContextProvider = (props) => {
     const [isAuthenticated, setIsAuthenticated] = useState(false);
@@ -33,6 +40,16 @@ export const AuthContextProvider = (props) => {
         return localStorage.getItem("jwtToken") !== null;
     };
 
+    const handleLogin = (token) => {
+        setToken(token);
+        const mail = getEmailFromToken(token);
+        setUserEmail(mail);
+        UserService.getUserByEmail(mail, token).then((response) => {
+            setUser(response.data);
+            setUsername(response.data.username);
+        });
+    };
+
     useEffect(() => {
 
         if (isUserLoggedIn()) {
@@ -50,7 +67,7 @@ export const AuthContextProvider = (props) => {
     }, []);
     
     return (
-        <AuthContext.Provider value={{ isAuthenticated, setIsAuthenticated, userEmail, setUserEmail, token, setToken, user, setUser, username, setUsername }}>
+        <AuthContext.Provider value={{ isAuthenticated, setIsAuthenticated, userEmail, setUserEmail, token, setToken, user, setUser, username, setUsername, handleLogin }}>
             {props.children}
         </AuthContext.Provider>
     );

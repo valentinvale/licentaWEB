@@ -97,7 +97,7 @@ const PetListComponent = () => {
     const renderCardGrid = () => {
         return (
             <div>
-                <PetCardFrame pets={pets} />
+                <PetCardFrame pets={pets} sm="12" md="6" lg="4" xl="3" />
             </div>
         );
     };

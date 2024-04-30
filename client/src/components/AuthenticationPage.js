@@ -3,11 +3,13 @@ import AuthenticationService from "../services/AuthenticationService";
 import { useNavigate } from "react-router-dom";
 
 import "../Styles/AuthenticationPage.css";
+import { useAuth } from "../Context/AuthContext";
 
 function AuthenticationPage(props) {
     const [email, setEmail] = React.useState("");
     const [password, setPassword] = React.useState("");
     const navigate = useNavigate();
+    const auth = useAuth();
 
     useEffect(() => {
         const isUserLoggedIn = localStorage.getItem("jwtToken") !== null;
@@ -30,7 +32,8 @@ function AuthenticationPage(props) {
             .then((response) => {
                 localStorage.setItem("jwtToken", response.data.token);
                 // navigate("/", {token: response.data.token});
-               window.location.href = "/"; // to fix
+                auth.handleLogin(response.data.token);
+                window.location.href = "/"; // to fix
             })
             .catch((error) => {
                 alert("Login failed");

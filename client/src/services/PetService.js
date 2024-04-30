@@ -16,6 +16,15 @@ class PetService {
         });
     }
 
+    async getPetsByUserId(userId, token) {
+
+        const config = {
+            headers: { Authorization: `Bearer ${token}` },
+        };
+
+        return await axios.get(`${API_URL}/getbyuser/${userId}`, config);
+    }
+
     async getPetById(petId) {
         return await axios.get(`${API_URL}/getbyid/${petId}`);
     }

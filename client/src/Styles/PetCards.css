@@ -5,6 +5,7 @@
     position: relative;
     /* background-color: var(--primary-green) !important; */
     background-image: linear-gradient(to right, var(--primary-green), var(--primary-green-yellow));
+    max-width: 300px;
 }
   
 .pet-card-body {

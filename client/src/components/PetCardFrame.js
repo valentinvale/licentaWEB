@@ -5,7 +5,7 @@ import PetCard from "./PetCard";
 function PetCardFrame(props) {
     let petRows = props.pets.map(pet => {
         return(
-            <Col sm="12" md="6" lg="4" xl="3" className="mb-4">
+            <Col sm={props.sm} md={props.md} lg={props.lg} xl={props.xl} className="mb-4">
                 <PetCard pet={pet}/>
             </Col>
         )
@@ -13,8 +13,8 @@ function PetCardFrame(props) {
 
     return (
         <div>
-            <Container>
-                <Row>
+            <Container fluid>
+                <Row className="justify-content-center">
                     {petRows}
                 </Row>
             </Container>
