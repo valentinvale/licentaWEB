@@ -31,6 +31,11 @@ public class PetController {
         return petService.getPetsSortedByDistance(latitude, longitude);
     }
 
+    @GetMapping("/getbyuser/{userId}")
+    public List<Pet> getPetsByUser(@PathVariable("userId") UUID userId) {
+        return petService.getPetsByUser(userId);
+    }
+
     @GetMapping("/getbyid/{petId}")
     public Pet getPet(@PathVariable("petId") UUID petId) {
         return petService.getPetById(petId);

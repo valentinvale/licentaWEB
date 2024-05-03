@@ -36,6 +36,10 @@ public class PetService {
         return petRepository.findAll();
     }
 
+    public List<Pet> getPetsByUser(UUID userId) {
+        return petRepository.findByUserId(userId);
+    }
+
     public List<Pet> getPetsSortedByDistance(Double userLatitude, Double userLongitude){
         List<Pet> pets = petRepository.findAll();
 
