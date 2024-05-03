@@ -14,7 +14,7 @@ function PetCardFrame(props) {
     return (
         <div>
             <Container fluid>
-                <Row className="justify-content-center">
+                <Row>
                     {petRows}
                 </Row>
             </Container>

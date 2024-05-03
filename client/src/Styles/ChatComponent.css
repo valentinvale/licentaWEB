@@ -8,9 +8,21 @@
 }
 
 
-.vertical-nav .nav {
+.chatcomp-container{
+    width: 1020px;
+    height: 100vh;
+    display: flex;
     flex-direction: column;
-    width: 300px;
+    justify-content: space-between;
+    background-color: var(--primary-green-yellow);
+    /* box-shadow: 0 0 10px 0 var(--primary-shadow-color); */
+    overflow: hidden;
+    z-index: 1;
+}
+
+.chatcomp-container .vertical-nav .nav {
+    flex-direction: column;
+    width: 500px;
     height: 100vh;
     font-size: 20px;
     background-image: linear-gradient(to right, var(--primary-green), var(--primary-green-yellow)) !important;
@@ -52,63 +64,3 @@
 .vertical-nav .nav .nav-link, .vertical-nav .tab-content {
     overflow: hidden !important; 
 }
-
-
-.user-info {
-    display: flex;
-    flex-direction: column;
-    align-items: center;  
-    justify-content: center; 
-    width: 100%; 
-    min-height: 300px; 
-    margin-top: 20px;
-    padding: 20px 0;
-}
-
-
-.user-info-text {
-    font-size: 20px;
-    padding: 10px;
-    width: 100%; 
-    box-sizing: border-box;
-    text-align: center; 
-}
-
-.user-info-text:not(:last-child) {
-    border-bottom: 3px solid var(--primary-orange);
-    padding-bottom: 10px; 
-    margin-bottom: 10px;
-}
-
-/* .user-info i{
-    color: var(--secondary-text-color) !important; 
-} */
-
-.container-flex {
-    display: flex !important;
-    max-height: 100vh !important; 
-    overflow: hidden !important; 
-}
-
-.tab-content {
-    display: flex;
-    flex-wrap: wrap;  
-    justify-content: center; 
-    width: 1000px;
-    min-width: 600px;
-}
-
-@media (max-width: 640px) {
-    .tab-content {
-        width: 400px;  
-        min-width: 0; 
-    }
-}
-
-
-.user-posted-pets {
-    max-height: 100vh;  
-    overflow-y: auto;   
-    overflow-x: hidden; 
-}
-
