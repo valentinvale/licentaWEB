@@ -34,4 +34,7 @@ public class ChatMessageService {
         return chatMessageRepository.findAllByChatRoomId(chatRoom.getId());
     }
 
+    public List<ChatMessage> findMessagesContainingUser(UUID userId) {
+        return chatMessageRepository.findAllBySenderIdOrReceiverId(userId, userId);
+    }
 }

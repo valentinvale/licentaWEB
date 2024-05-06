@@ -21,5 +21,13 @@ class UserService {
     return await axios.get(`${API_URL}/getbyemail/${email}`, config);
   }
 
+  async getUserById(id, token) {
+    const config = {
+      headers: { Authorization: `Bearer ${token}` },
+    };
+
+    return await axios.get(`${API_URL}/getbyid/${id}`, config);
+  }
+
 }
 export default new UserService();

@@ -27,4 +27,8 @@ public class UserService {
         return UserDTO.fromUser(user);
     }
 
+    public UserDTO getUserById(String userId) {
+        User user = userRepository.findById(UUID.fromString(userId)).orElseThrow(() -> new RuntimeException("User not found"));
+        return UserDTO.fromUser(user);
+    }
 }

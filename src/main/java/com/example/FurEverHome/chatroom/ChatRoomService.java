@@ -3,6 +3,7 @@ package com.example.FurEverHome.chatroom;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.UUID;
 
 @Service
@@ -25,6 +26,10 @@ public class ChatRoomService {
             }
         }
         return chatRoom;
+    }
+
+    public List<ChatRoom> getUserChatRooms(UUID userId) {
+        return chatRoomRepository.findAllBySenderIdOrReceiverId(userId, userId);
     }
 
 }

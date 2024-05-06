@@ -1,5 +1,7 @@
 import React from "react";
 import PetService from "../services/PetService";
+import WebsocketService from "../services/WebsocketService";
+import { useAuth } from "../Context/AuthContext";
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 
@@ -22,9 +24,12 @@ function PetPage(args) {
     const { id } = useParams();
     const [pet, setPet] = useState({});
     const [petUsername, setPetUsername] = useState('');
+    const [petUserId, setPetUserId] = useState('');
 
     const [activeIndex, setActiveIndex] = useState(0);
     const [animating, setAnimating] = useState(false);
+
+    const auth = useAuth();
 
     const items = pet.imageUrls ? pet.imageUrls.map((url, index) => {
         return {
@@ -36,12 +41,39 @@ function PetPage(args) {
     }) : [];
 
     useEffect(() => {
-        PetService.getPetById(id).then((response) => {
-            console.log(response.data);
+        PetService.getPetById(id).then(response => {
             setPet(response.data);
-            setPetUsername(response.data.user.realUsername);
+            setPetUserId(response.data.user.id);
         });
-    }, [id]);
+
+        if (auth.user) {
+            WebsocketService.connect(auth.user.username, onMessageReceived, onConnected, onError);
+        }
+
+        return () => {
+            WebsocketService.disconnect();
+        };
+    }, [auth.user, id]);
+
+    const onMessageReceived = (message) => {
+        console.log("Received message:", message);
+    };
+
+    const onConnected = (frame) => {
+        console.log("WebSocket Connected:", frame);
+    };
+
+    const onError = (error) => {
+        console.error("WebSocket Error:", error);
+    };
+
+    const handleSendMessage = () => {
+        if (petUserId) {
+            WebsocketService.sendMessage(auth.user.id, petUserId, "Hello! I'd like to talk about your pet ad.");
+        } else {
+            console.error("Pet user ID is not available.");
+        }
+    };
 
 
     const next = () => {
@@ -117,14 +149,20 @@ function PetPage(args) {
                     <p>{pet.description}</p>
                 </div>
             </div>
-            <div className="contact-user">
-                <Button
-                    size="lg"
-                    className="message-user-button"
-                >
-                    <i class="bi bi-chat"></i> Trimite mesaj
-                </Button>
-            </div>
+            {
+                auth.user && auth.user.id !== petUserId ? (
+                    <div className="contact-user">
+                        <Button
+                            size="lg"
+                            className="message-user-button"
+                            onClick={handleSendMessage}
+                        >
+                            <i class="bi bi-chat"></i> Trimite mesaj
+                        </Button>
+                    </div>
+                ) : (null)
+            }
+            
         </div>
     );
 

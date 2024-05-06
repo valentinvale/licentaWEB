@@ -46,7 +46,7 @@
 
 .vertical-nav .tab-content {
     flex-grow: 1;
-    padding-left: 20px; 
+    /* padding-left: 20px;  */
 }
 
 .vertical-nav .nav .nav-link, .vertical-nav .tab-content {
@@ -86,7 +86,8 @@
 
 .container-flex {
     display: flex !important;
-    max-height: 100vh !important; 
+    /* max-height: 100vh !important;  */
+    height: 100%;
     overflow: hidden !important; 
 }
 
@@ -110,5 +111,6 @@
     max-height: 100vh;  
     overflow-y: auto;   
     overflow-x: hidden; 
+    padding-bottom: 200px;
 }
 
