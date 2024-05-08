@@ -8,7 +8,7 @@ class WebsocketService {
         this.client = null;
     }
 
-    connect(username, onMessageReceived, onConnected, onError) {
+    connect(userId, onMessageReceived, onConnected, onError) {
         this.client = new Client({
             brokerURL: "ws://localhost:8080/ws", 
             connectHeaders: {},
@@ -19,7 +19,7 @@ class WebsocketService {
             heartbeatIncoming: 4000,
             heartbeatOutgoing: 4000,
             onConnect: frame => {
-                this.client.subscribe(`/user/${username}/queue/messages`, message => {
+                this.client.subscribe(`/user/${userId}/queue/messages`, message => {
                     onMessageReceived(JSON.parse(message.body));
                 });
                 onConnected(frame);

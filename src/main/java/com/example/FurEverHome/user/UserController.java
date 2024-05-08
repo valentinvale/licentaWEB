@@ -37,4 +37,9 @@ public class UserController {
         return userService.getUserById(userId);
     }
 
+    @GetMapping("getusername/{userId}")
+    public String getUsernameById(@PathVariable String userId) {
+        return userService.getUsernameById(userId);
+    }
+
 }

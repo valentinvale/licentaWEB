@@ -20,13 +20,15 @@ public class ChatRoomService {
     public ChatRoom getOrCreateChatRoom(UUID senderID, UUID receiverID, boolean createIfNotExist){
         ChatRoom chatRoom = chatRoomRepository.findBySenderIdAndReceiverId(senderID, receiverID);
         if (chatRoom == null) {
-            if (createIfNotExist) {
+            chatRoom = chatRoomRepository.findBySenderIdAndReceiverId(receiverID, senderID);
+            if (chatRoom == null && createIfNotExist) {
                 chatRoom = ChatRoom.builder().senderId(senderID).receiverId(receiverID).build();
                 chatRoomRepository.save(chatRoom);
             }
         }
         return chatRoom;
     }
+
 
     public List<ChatRoom> getUserChatRooms(UUID userId) {
         return chatRoomRepository.findAllBySenderIdOrReceiverId(userId, userId);

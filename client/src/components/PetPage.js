@@ -47,7 +47,7 @@ function PetPage(args) {
         });
 
         if (auth.user) {
-            WebsocketService.connect(auth.user.username, onMessageReceived, onConnected, onError);
+            WebsocketService.connect(auth.user.id, onMessageReceived, onConnected, onError);
         }
 
         return () => {
@@ -69,7 +69,7 @@ function PetPage(args) {
 
     const handleSendMessage = () => {
         if (petUserId) {
-            WebsocketService.sendMessage(auth.user.id, petUserId, "Hello! I'd like to talk about your pet ad.");
+            WebsocketService.sendMessage(auth.user.id, petUserId, "Buna! As dori sa discutam despre animalutul tau.");
         } else {
             console.error("Pet user ID is not available.");
         }

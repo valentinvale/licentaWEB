@@ -119,4 +119,27 @@
     color: var(--text-white) !important;
 }
 
+.chat-messages-container {
+    flex-grow: 1;
+    overflow-y: auto !important; 
+    padding: 10px 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.message-card {
+    max-width: 80%;
+    align-self: flex-start; 
+    background-color: var(--secondary-green);
+    padding: 10px;
+    border-radius: 8px;
+    color: var(--text-white);
+}
+
+.message-card.current-user {
+    align-self: flex-end; 
+    background-color: var(--primary-green);
+}
+
 

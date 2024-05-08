@@ -4,6 +4,7 @@ import com.example.FurEverHome.chatroom.ChatRoomService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Date;
 import java.util.List;
 import java.util.UUID;
 
@@ -22,8 +23,8 @@ public class ChatMessageService {
     public ChatMessage save(ChatMessage chatMessage) {
         var chatRoom = chatRoomService.getOrCreateChatRoom(chatMessage.getSenderId(), chatMessage.getReceiverId(), true);
         chatMessage.setChatRoom(chatRoom);
-        chatMessageRepository.save(chatMessage);
-        return chatMessage;
+        chatMessage.setTimestamp(new Date());
+        return chatMessageRepository.save(chatMessage);
     }
 
     public List<ChatMessage> findChatMessages(UUID senderId, UUID receiverId) {

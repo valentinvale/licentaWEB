@@ -35,15 +35,30 @@ public class ChatMessageController {
     @MessageMapping("/chat")
     public void processMessage(ChatMessage chatMessage) {
         ChatMessage saved = chatMessageService.save(chatMessage);
-        simpMessagingTemplate.convertAndSendToUser(chatMessage.getReceiverId().toString(),
+
+        simpMessagingTemplate.convertAndSendToUser(
+                chatMessage.getReceiverId().toString(),
                 "/queue/messages",
                 ChatNotification.builder()
                         .id(saved.getId())
                         .senderId(saved.getSenderId())
+                        .receiverId(saved.getReceiverId())
+                        .content(saved.getContent())
+                        .build()
+        );
+
+        simpMessagingTemplate.convertAndSendToUser(
+                chatMessage.getSenderId().toString(),
+                "/queue/messages",
+                ChatNotification.builder()
+                        .id(saved.getId())
+                        .senderId(saved.getSenderId())
+                        .receiverId(saved.getReceiverId())
                         .content(saved.getContent())
                         .build()
         );
     }
+
 
     @GetMapping("/messages/{senderId}/{receiverId}")
     public ResponseEntity<List<ChatMessage>> getChatMessages(@PathVariable("senderId") UUID senderId, @PathVariable("receiverId") UUID receiverId) {
