@@ -76,11 +76,14 @@ function ChatComponent(props) {
 
     const onMessageReceived = (message) => {
         console.log("Received message:", message);
+
         if (message.senderId === activeTabRef.current || message.receiverId === activeTabRef.current) {
             setMessages(prevMessages => [...prevMessages, message]);
+        } else {
+            updateConversations();
         }
+
     };
-    
     
 
     const onConnected = (frame) => {
@@ -89,6 +92,22 @@ function ChatComponent(props) {
 
     const onError = (error) => {
         console.error("WebSocket Error:", error);
+    };
+
+    const updateConversations = () => {
+        WebsocketService.getConversations(auth.user.id, auth.token).then(response => {
+            console.log("Conversations:", response.data);
+            if (response.data.length > 0) {
+                setCorespondents(response.data);
+                response.data.forEach(corespondent => {
+                    UserService.getUsernameById(corespondent, auth.token).then(res => {
+                        setCorespondentUsernames(prev => ({ ...prev, [corespondent]: res.data }));
+                    });
+                });
+            } else {
+                console.log("No conversations found.");
+            }
+        }).catch(err => console.error("Failed to fetch conversations:", err));
     };
 
     const fetchMessages = (corespondentId) => {
