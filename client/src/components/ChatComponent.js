@@ -7,8 +7,8 @@ import { Nav, NavItem, NavLink, TabContent, TabPane, Row, Col, Card, CardTitle, 
 import '../Styles/ChatComponent.css';
 import UserService from '../services/UserService';
 
-function ChatComponent() {
-    const [activeTab, setActiveTab] = useState('');
+function ChatComponent(props) {
+    const [activeTab, setActiveTab] = useState(props.openedRecipient || '');
     const activeTabRef = React.useRef(activeTab);
     const [corespondents, setCorespondents] = useState([]);
     const [corespondentUsernames, setCorespondentUsernames] = useState([]);
@@ -17,11 +17,19 @@ function ChatComponent() {
     const auth = useAuth();
 
     useEffect(() => {
+        if(props.openedRecipient) {
+            console.log("Opened recipient:", props.openedRecipient);
+            setActiveTab(props.openedRecipient);
+        }
+    }, []);
+
+    useEffect(() => {
         activeTabRef.current = activeTab;
     }, [activeTab]);
 
     useEffect(() => {
         if (auth.user) {
+        
             console.log("Fetching conversations for user:", auth.user.id);
             WebsocketService.getConversations(auth.user.id, auth.token).then(response => {
                 console.log("Conversations:", response.data);
@@ -32,7 +40,12 @@ function ChatComponent() {
                             setCorespondentUsernames(prev => ({ ...prev, [corespondent]: res.data }));
                         });
                     });
-                    setActiveTab(response.data[0]);
+                    if(props.openedRecipient) {
+                        console.log("Opened recipient:", props.openedRecipient);
+                        setActiveTab(props.openedRecipient);
+                    } else {
+                        setActiveTab(response.data[0]);
+                    }
                     fetchMessages(response.data[0]);
                 } else {
                     console.log("No conversations found.");
@@ -46,10 +59,17 @@ function ChatComponent() {
 
     
     useEffect(() => {
-        console.log("corespondentsiiii:", corespondents);
         if (corespondents.length > 0) {
-            setActiveTab(corespondents[0]);
-            fetchMessages(corespondents[0]);
+            if(props.openedRecipient) {
+                console.log("Opened recipient:", props.openedRecipient);
+                setActiveTab(props.openedRecipient);
+                fetchMessages(props.openedRecipient);
+            }
+            else{
+                setActiveTab(corespondents[0]);
+                fetchMessages(corespondents[0]);
+            }
+            
         }
     }, [corespondents]);
     
@@ -124,26 +144,29 @@ function ChatComponent() {
                 </Nav>
                 <TabContent activeTab={activeTab} className='chat-tab-content'>
                     <TabPane tabId={activeTab}>
-                        <Row>
-                            <Col sm="12">
-                                <div className="chat-messages-container">
-                                    {messages.map((message, index) => (
-                                        <Card 
-                                            body 
-                                            key={index}
-                                            className={`message-card ${isCurrentUser(message.senderId) ? 'current-user' : ''}`}
-                                        >
-                                            <CardText>{message.content}</CardText>
-                                        </Card>
-                                    ))}
-                                </div>
-                            </Col>
-                        </Row>
+                        
+                        <div className='chat-main-content'>     
+                            <div className="chat-messages-container">
+                                {messages.map((message, index) => (
+                                    <Card 
+                                        body 
+                                        key={index}
+                                        className={`message-card ${isCurrentUser(message.senderId) ? 'current-user' : ''}`}
+                                    >
+                                        <CardText>{message.content}</CardText>
+                                        
+                                        <CardText className='message-hour'>{new Date(message.timestamp).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', hour12: false })}</CardText>
 
-                        <InputGroup className='message-input-group'>
-                            <Input placeholder="Scrie un mesaj..." value={messageInput} onChange={(e) => setMessageInput(e.target.value)} />
-                            <Button onClick={handleSendMessage}><i className="bi bi-send send-button-text"></i></Button>
-                        </InputGroup>
+                                    </Card>
+                                ))}
+                            </div>
+                            
+
+                            <InputGroup className='message-input-group'>
+                                <Input placeholder="Scrie un mesaj..." value={messageInput} onChange={(e) => setMessageInput(e.target.value)} />
+                                <Button onClick={handleSendMessage}><i className="bi bi-send send-button-text"></i></Button>
+                            </InputGroup>
+                        </div>
                     </TabPane>
                 </TabContent>
             </div>

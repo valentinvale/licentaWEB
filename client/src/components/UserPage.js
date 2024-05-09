@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useAuth } from '../Context/AuthContext';
 import AuthenticationService from '../services/AuthenticationService';
 import PetService from '../services/PetService';
-import { useNavigate } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import { Nav, NavItem, NavLink, TabContent, TabPane, Row, Col, Card, CardTitle, CardText, Button } from 'reactstrap';
 
 import '../Styles/UserPage.css';
@@ -13,15 +13,21 @@ import ChatComponent from './ChatComponent';
 function UserPage() {
     const auth = useAuth();
     const navigate = useNavigate();
+    const { state } = useLocation();
     const [activeTab, setActiveTab] = useState('1');  
 
     const [postedPets, setPostedPets] = useState([]);
 
     useEffect(() => {
+        if(state && state.openedTab) {
+            console.log("Opened tab:", state.openedTab);
+            setActiveTab(state.openedTab);
+        }
+
         if (AuthenticationService.isUserLoggedIn() === false || AuthenticationService.isTokenExpired(localStorage.getItem("jwtToken")) === true) {
             navigate("/login");
         }
-    }, [navigate]);
+    }, [navigate, state, auth.user]);
 
     useEffect(() => {
         if (auth.user) {
@@ -84,7 +90,7 @@ function UserPage() {
                         </div>
                     </TabPane>
                     <TabPane tabId="2">
-                        <ChatComponent />
+                        <ChatComponent openedRecipient={state ? state.recipientId : null} />
                     </TabPane>
                     <TabPane tabId="3">
                         <div className='user-posted-pets'>

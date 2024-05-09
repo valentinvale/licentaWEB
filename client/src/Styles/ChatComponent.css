@@ -68,7 +68,7 @@
 
 .chat-tab-content{
     display: flex;
-    flex-direction: column;
+    flex-direction: column !important;
     justify-content: space-between;
     height: 100%;
     width: 100%;
@@ -79,7 +79,7 @@
 
 
 .message-input-group{
-    display: flex;
+    display: flex !important;
     justify-content: space-between;
     align-items: center;
     padding: 30px;
@@ -119,27 +119,48 @@
     color: var(--text-white) !important;
 }
 
+.chat-main-content {
+    display: flex !important;
+    flex-direction: column !important;
+    flex-grow: 1 !important; 
+    height: 100vh !important; 
+    overflow: hidden !important; 
+    
+}
+
 .chat-messages-container {
-    flex-grow: 1;
+    padding-top: 400px !important;
+    flex-grow: 1 !important;
     overflow-y: auto !important; 
     padding: 10px 20px;
     display: flex;
     flex-direction: column;
     gap: 10px;
+    min-height: 0 !important;
 }
 
 .message-card {
     max-width: 80%;
+    min-height: 50px !important; 
     align-self: flex-start; 
-    background-color: var(--secondary-green);
+    background-color: var(--primary-orange) !important;
     padding: 10px;
     border-radius: 8px;
     color: var(--text-white);
+    flex-shrink: 0 !important;
 }
 
 .message-card.current-user {
     align-self: flex-end; 
-    background-color: var(--primary-green);
+    background-color: var(--primary-green) !important;
+}
+
+.message-hour {
+    margin: 0px !important;
+    padding: 0px !important;
+    font-size: 12px;
+    color: var(--text-white);
+    margin-top: 0px;
 }
 
 

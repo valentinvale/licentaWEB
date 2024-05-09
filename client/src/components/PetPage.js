@@ -1,9 +1,9 @@
-import React from "react";
+import React, { useRef } from "react";
 import PetService from "../services/PetService";
 import WebsocketService from "../services/WebsocketService";
 import { useAuth } from "../Context/AuthContext";
 import { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 
 import {
     Carousel,
@@ -25,11 +25,13 @@ function PetPage(args) {
     const [pet, setPet] = useState({});
     const [petUsername, setPetUsername] = useState('');
     const [petUserId, setPetUserId] = useState('');
+    const conversationExists = useRef(false);
 
     const [activeIndex, setActiveIndex] = useState(0);
     const [animating, setAnimating] = useState(false);
 
     const auth = useAuth();
+    const navigate = useNavigate();
 
     const items = pet.imageUrls ? pet.imageUrls.map((url, index) => {
         return {
@@ -55,6 +57,16 @@ function PetPage(args) {
         };
     }, [auth.user, id]);
 
+    useEffect(() => {
+        if (auth.user && petUserId) {
+            WebsocketService.getMessages(auth.user.id, petUserId, auth.token).then(response => {
+                if(response.data.length > 0) {
+                    conversationExists.current = true;
+                }
+            }).catch(err => console.error("Failed to fetch messages:", err));
+        }
+    }, [auth.user, petUserId]);
+
     const onMessageReceived = (message) => {
         console.log("Received message:", message);
     };
@@ -69,7 +81,16 @@ function PetPage(args) {
 
     const handleSendMessage = () => {
         if (petUserId) {
-            WebsocketService.sendMessage(auth.user.id, petUserId, "Buna! As dori sa discutam despre animalutul tau.");
+            console.log(conversationExists);
+            if(conversationExists.current === false) {
+                WebsocketService.sendMessage(auth.user.id, petUserId, "Buna! As dori sa discutam despre animalutul tau.").then(() => {
+                    navigate("/user", { state: { openedTab: '2', recipientId: petUserId } });
+                }).catch(err => console.error("Failed to send message:", err));
+            }
+            else {
+                // console.error("Conversation already exists.");
+                navigate("/user", { state: { openedTab: '2', recipientId: petUserId } });
+            }
         } else {
             console.error("Pet user ID is not available.");
         }
