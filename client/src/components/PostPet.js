@@ -3,6 +3,7 @@ import AuthenticationService from "../services/AuthenticationService";
 import UserService from "../services/UserService";
 import PetService from "../services/PetService";
 import GenerateNameModal from "./GenerateNameModal";
+import PredictBreedModal from "./PredictBreedModal";
 import { useNavigate } from "react-router-dom";
 import { FormGroup } from "reactstrap";
 import { Form, Label, Input,  Button, FormText, Spinner, Tooltip} from "reactstrap";
@@ -40,9 +41,13 @@ function PostPet(props) {
     const [isLoading, setIsLoading] = useState(false);
 
     const [modalIsOpen, setModalIsOpen] = useState(false);
+    const [modalBreedIsOpen, setModalBreedIsOpen] = useState(false);
 
     const [tooltipOpen, setTooltipOpen] = useState(false);
     const toggle = () => setTooltipOpen(!tooltipOpen);
+
+    const [tooltipBreedOpen, setTooltipBreedOpen] = useState(false);
+    const toggleBreed = () => setTooltipBreedOpen(!tooltipBreedOpen);
 
     useEffect(() => {
         setCountiesWithCities(counties_with_cities);
@@ -76,9 +81,22 @@ function PostPet(props) {
         setModalIsOpen(false);
     };
 
+    const openBreedModal = (e) => {
+        e.preventDefault();
+        setModalBreedIsOpen(true);
+    };
+
+    const closeBreedModal = () => {
+        setModalBreedIsOpen(false);
+    };
+
     const handleNameChange = (name) => {
         setPetName(name);
 
+    }
+
+    const handleBreedChange = (breed) => {
+        setPetBreed(breed);
     }
 
     const handleCountyChange = (e) => {
@@ -287,7 +305,15 @@ function PostPet(props) {
                     {' '}
                     <FormGroup>
                         <Label for="petBreed">Rasa</Label>
-                        <Input type="text" name="petBreed" id="petBreed" placeholder="Rasa animalului" onChange={(e) => setPetBreed(e.target.value)} />
+                        <div className="breed-action-container">
+                            <Input type="text" name="petBreed" id="petBreed" value={petBreed} placeholder="Rasa animalului" onChange={(e) => setPetBreed(e.target.value)} />
+                            <button id="predict-breed-btn" onClick={(e) => openBreedModal(e)} className="predict-breed-btn">Detecteaza Rasa</button>
+                            <Tooltip placement="bottom" isOpen={tooltipBreedOpen} target="predict-breed-btn" toggle={toggleBreed}>
+                                Detecteaza rasa animalutului tau, folosindu-se de inteligenta artificiala pentru a observa trasaturile sale 
+                                si a cauta rasa care se potriveste cel mai bine. Alegeti tipul animalului corescpunzator pentru a obtine rezultate mai precise.
+                            </Tooltip>
+                            <PredictBreedModal token={token} petType={isDog ? "dog" : "cat"} onData={handleBreedChange} isOpen={modalBreedIsOpen} onRequestClose={closeBreedModal} />
+                        </div>
                     </FormGroup>
                     {' '}
                     <FormGroup switch>

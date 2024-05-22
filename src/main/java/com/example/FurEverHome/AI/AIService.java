@@ -55,4 +55,33 @@ public class AIService {
             return null;
         }
     }
+
+    public Map<String, String> predictPetBreed(MultipartFile image, String petType) {
+        try{
+            String predictBreedUrl = apiUrl + "/predict-pet-breed";
+
+            String key = "ai/" + UUID.randomUUID() + "_" + image.getOriginalFilename();
+            String imageUrl = s3Service.uploadFile(key, image);
+
+            Map<String, String> request = new HashMap<>();
+
+            request.put("imageUrl", imageUrl);
+            request.put("petType", petType);
+
+            HttpHeaders headers = new HttpHeaders();
+            headers.setContentType(org.springframework.http.MediaType.APPLICATION_JSON);
+
+            HttpEntity<Map<String, String>> entity = new HttpEntity<>(request, headers);
+            ResponseEntity<Map> response = restTemplate.postForEntity(predictBreedUrl, entity, Map.class);
+
+            s3Service.deleteFile(key);
+
+            return response.getBody();
+        }
+        catch (Exception e){
+            e.printStackTrace();
+            return null;
+        }
+
+    }
 }

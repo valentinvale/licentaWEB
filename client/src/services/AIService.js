@@ -17,5 +17,21 @@ class AIService {
 
         return await axios.post(`${API_URL}/generate-pet-name`, formData, config);
     }
+
+    async predictPetBreed(image, petType, token){
+        const formData = new FormData();
+        formData.append("image", image);
+        formData.append("petType", petType);
+
+        const config = {
+            headers: {
+                'Content-Type': 'multipart/form-data',
+                'Authorization': `Bearer ${token}`,
+            },
+        };
+
+        return await axios.post(`${API_URL}/predict-pet-breed`, formData, config);
+    }
+
 }
 export default new AIService();
