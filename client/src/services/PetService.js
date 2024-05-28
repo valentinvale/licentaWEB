@@ -16,6 +16,18 @@ class PetService {
         });
     }
 
+    async getPetsFiltered(keyWords, county, city, latitude, longitude) {
+        return await axios.get(`${API_URL}/getfiltered`, {
+            params: {
+                keyWords: keyWords,
+                county: county,
+                city: city,
+                latitude: latitude,
+                longitude: longitude
+            }
+        });
+    }
+
     async getPetsByUserId(userId, token) {
 
         const config = {

@@ -24,7 +24,7 @@ public class SecurityConfig {
         http
                 .csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/api/v1/auth/**", "/api/v1/pet/get", "/api/v1/pet/getbyid/**", "/api/v1/pet/getbydistance", "/ws/**").permitAll() // to be changed
+                        .requestMatchers("/api/v1/auth/**", "/api/v1/pet/get", "/api/v1/pet/getbyid/**", "/api/v1/pet/getbydistance", "/api/v1/pet/getfiltered", "/ws/**").permitAll() // to be changed
                         .anyRequest().authenticated()
                 )
                 .sessionManagement(session -> session

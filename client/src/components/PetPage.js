@@ -44,7 +44,9 @@ function PetPage(args) {
 
     useEffect(() => {
         PetService.getPetById(id).then(response => {
+            console.log("Pet response:", response.data);
             setPet(response.data);
+            setPetUsername(response.data.user.realUsername);
             setPetUserId(response.data.user.id);
         });
 

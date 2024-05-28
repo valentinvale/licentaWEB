@@ -41,6 +41,13 @@ public class PetController {
         return petService.getPetById(petId);
     }
 
+    @GetMapping("/getfiltered")
+    public List<Pet> getFilteredPets(@RequestParam(required = false) String keyWords, @RequestParam(required = false) String county,
+                                     @RequestParam(required = false) String city, @RequestParam(required = false) Double latitude,
+                                     @RequestParam(required = false) Double longitude) {
+        return petService.getFilteredPets(keyWords, county, city, latitude, longitude);
+    }
+
     @PostMapping("/add")
     public ResponseEntity<Pet> addPet(@RequestBody Pet pet) {
         Pet newPet = petService.addPet(pet);

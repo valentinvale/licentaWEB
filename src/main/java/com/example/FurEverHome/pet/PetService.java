@@ -5,6 +5,7 @@ import com.example.FurEverHome.nominatim.GeoUtils;
 import com.example.FurEverHome.nominatim.GeocodingService;
 import com.example.FurEverHome.user.User;
 import com.example.FurEverHome.user.UserRepository;
+import com.example.FurEverHome.utils.StringUtils;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -152,5 +153,27 @@ public class PetService {
 
     public Pet getPetById(UUID petId) {
         return petRepository.findById(petId).orElseThrow(() -> new IllegalStateException("Pet with id " + petId + " does not exist"));
+    }
+
+    public List<Pet> getFilteredPets(String keyWords, String county, String city, Double userLatitude, Double userLongitude) {
+        List<Pet> pets;
+        System.out.println("Searching for pets with keywords: " + keyWords + ", county: " + county + ", city: " + city);
+        if (keyWords == null && county == null && city == null) {
+            pets =  petRepository.findAll();
+        }
+        else{
+            pets = petRepository.findFilteredPets(StringUtils.replaceDiacritics(keyWords), StringUtils.replaceDiacritics(county), StringUtils.replaceDiacritics(city));
+        }
+
+        if(userLatitude != null && userLongitude != null) {
+            return pets.stream()
+                    .sorted((Pet p1, Pet p2) -> {
+                        double dist1 = GeoUtils.haversineDistance(userLatitude, userLongitude, p1.getLatitude(), p1.getLongitude());
+                        double dist2 = GeoUtils.haversineDistance(userLatitude, userLongitude, p2.getLatitude(), p2.getLongitude());
+                        return Double.compare(dist1, dist2);
+                    })
+                    .collect(Collectors.toList());
+        }
+        return pets;
     }
 }

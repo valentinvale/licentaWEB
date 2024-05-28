@@ -12,13 +12,18 @@ import {
   DropdownMenu,
   DropdownItem,
   NavbarText,
+  InputGroup,
+  Input,
+  Button,
+  ButtonDropdown,
+  Label
 } from 'reactstrap';
 
 import 'bootstrap-icons/font/bootstrap-icons.css';
 import AuthenticationService from '../services/AuthenticationService';
 import { useNavigate } from 'react-router-dom';
 import UserService from '../services/UserService';
-
+import counties_with_cities from "../Resources/counties_with_cities.json";
 import logoImage from '../Resources/LogoFurEverHome_v3.png';
 
 import '../Styles/NavMenu.css';
@@ -33,6 +38,12 @@ function NavMenu(args) {
   const [username, setUsername] = useState("");
   const [email, setEmail] = useState("");
   const [token, setToken] = useState("");
+
+  const [keyWords, setKeyWords] = useState("");
+  const [countiesWithCities, setCountiesWithCities] = useState(counties_with_cities);
+  const [selectedCounty, setSelectedCounty] = useState("");
+  const [cityList, setCityList] = useState([]);
+  const [selectedCity, setSelectedCity] = useState("");
 
   const navigate = useNavigate();
 
@@ -50,9 +61,32 @@ function NavMenu(args) {
   }
 }
 
+const handleCountyChange = (e) => {
+  if (e.target.value === "") {
+      setSelectedCounty("");
+      setCityList([]);
+      return;
+  }
+  setSelectedCounty(e.target.value);
+  const cities = countiesWithCities.filter((county) => county.county_name === e.target.value);
+  setCityList(cities[0].cities);
+  console.log(cities[0].cities);
+}
+
+const handleNavigateHome = () => {
+  navigate("/", { state: { refreshAll: true } });
+}
+
+const handleSearch = () => {
+  if (keyWords === "" && selectedCounty === "" && selectedCity === "") {
+    return;
+  }
+  navigate("/", { state: { keyWords: keyWords, county: selectedCounty, city: selectedCity } });
+}
 
   useEffect(() => {
     setToken(localStorage.getItem("jwtToken"));
+    setCountiesWithCities(counties_with_cities);
     setIsUserLoggedIn(localStorage.getItem("jwtToken") !== null);
     if (isUserLoggedIn) {
        // console.log("Token exists");
@@ -75,6 +109,16 @@ function NavMenu(args) {
         
     }
   }, [isUserLoggedIn]);
+
+  useEffect(() => {
+    if (selectedCounty === "") {
+      setCityList([]);
+      return;
+    }
+    const cities = countiesWithCities.filter((county) => county.county_name === selectedCounty);
+    setCityList(cities[0].cities);
+  }, [keyWords, selectedCounty, selectedCity]);
+
 
   // useEffect(() => {
   //   if (token) {
@@ -104,13 +148,52 @@ function NavMenu(args) {
   return (
     <div>
       <Navbar className='navBar' {...args}>
-        <NavbarBrand href="/">
+        <NavbarBrand href="#" onClick={handleNavigateHome}>
           <img
             alt="FurEverHome"
             src={logoImage}
             style={{ width: "208px", height: "80px" }}
           />
         </NavbarBrand>
+        <div>
+          <InputGroup>
+            <Input onChange={(e) => setKeyWords(e.target.value)} />
+            <Input
+              id="countySelect"
+              name="countySelect"
+              type="select"
+              defaultValue=""
+              onChange={handleCountyChange}
+            >
+              <option value="" disabled>Judet</option>
+              <option value="">Toate</option>
+              {countiesWithCities.map((county) => (
+                <option value={county.county_name} key={county.county_name}>
+                  {county.county_name}
+                </option>
+              ))}
+            </Input>
+            <Input
+              id="citySelect"
+              name="select"
+              type="select"
+              defaultValue=""
+              disabled={selectedCounty === ""}
+              onChange={(e) => setSelectedCity(e.target.value)}
+            >
+              <option value="" disabled>Localitate</option>
+              <option value="">Toate</option>
+              {cityList.map((city) => (
+                <option value={city.nume} key={city.nume}>
+                  {city.nume}
+                </option>
+              ))}
+            </Input>
+            <Button onClick={handleSearch}>
+              <i class="bi bi-search"></i>
+            </Button>
+          </InputGroup>
+        </div>
         <NavbarToggler onClick={toggle} />
         <Collapse isOpen={isOpen} navbar>
           <Nav className="ms-auto" navbar>

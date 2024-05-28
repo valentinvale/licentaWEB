@@ -4,7 +4,7 @@ import UserService from '../services/UserService';
 
 import { Card, Button, CardGroup } from 'reactstrap';
 import PetCardFrame from './PetCardFrame';
-
+import { useLocation } from 'react-router-dom';
 import '../Styles/PetCards.css';
 
 const PetListComponent = () => {
@@ -16,6 +16,9 @@ const PetListComponent = () => {
     const [userLatitude, setUserLatitude] = useState('');
     const [userLongitude, setUserLongitude] = useState('');
     const [userAllowsLocation, setUserAllowsLocation] = useState(false);
+
+    const location = useLocation();
+    const searchParams = location.state;
 
     const getEmailFromToken = (token) => {
         try {
@@ -35,8 +38,18 @@ const PetListComponent = () => {
         return localStorage.getItem("jwtToken") !== null;
     };
 
-    useEffect(() => {
+    const executeSearch = (lat, long) => {
+        const keyWords = searchParams?.keyWords || '';
+        const county = searchParams?.county || '';
+        const city = searchParams?.city || '';
 
+        PetService.getPetsFiltered(keyWords, county, city, lat, long).then((response) => {
+            setPets(response.data);
+        });
+    };
+
+    useEffect(() => {
+        console.log("Location state: ", location.state);
         if (isUserLoggedIn()) {
             const token = localStorage.getItem("jwtToken");
             setToken(token);
@@ -48,26 +61,53 @@ const PetListComponent = () => {
             });
         }
 
-        if("geolocation" in navigator) {
-            navigator.geolocation.getCurrentPosition(function(position) {
+        if ("geolocation" in navigator) {
+            navigator.geolocation.getCurrentPosition(function (position) {
                 console.log("Latitude is :", position.coords.latitude);
                 console.log("Longitude is :", position.coords.longitude);
                 setUserLatitude(position.coords.latitude);
                 setUserLongitude(position.coords.longitude);
                 setUserAllowsLocation(true);
-                PetService.getPetsSortedByDistance(position.coords.latitude, position.coords.longitude).then((response) => {
-                    setPets(response.data);
-                });
-            }, function(error) {
+                if (searchParams?.refreshAll) {
+                    PetService.getPets().then((response) => {
+                        setPets(response.data);
+                    });
+                } else if (searchParams?.keyWords || searchParams?.county || searchParams?.city) {
+                    executeSearch(position.coords.latitude, position.coords.longitude);
+                } else {
+                    PetService.getPetsSortedByDistance(position.coords.latitude, position.coords.longitude).then((response) => {
+                        setPets(response.data);
+                    });
+                }
+            }, function (error) {
                 console.error("Error Code = " + error.code + " - " + error.message);
                 setUserAllowsLocation(false);
+                if (searchParams?.refreshAll) {
+                    PetService.getPets().then((response) => {
+                        setPets(response.data);
+                    });
+                } else if (searchParams?.keyWords || searchParams?.county || searchParams?.city) {
+                    executeSearch();
+                } else {
+                    PetService.getPets().then((response) => {
+                        setPets(response.data);
+                    });
+                }
+            });
+        } else {
+            if (searchParams?.refreshAll) {
                 PetService.getPets().then((response) => {
                     setPets(response.data);
                 });
-            });
+            } else if (searchParams?.keyWords || searchParams?.county || searchParams?.city) {
+                executeSearch();
+            } else {
+                PetService.getPets().then((response) => {
+                    setPets(response.data);
+                });
+            }
         }
-
-    }, []);
+    }, [location.state]);
 
 
     const oldRender = () => {
