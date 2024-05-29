@@ -9,13 +9,16 @@ import PostPet from './components/PostPet';
 import PetPage from './components/PetPage';
 import { AuthContextProvider } from './Context/AuthContext';
 import UserPage from './components/UserPage';
+import HomePage from './components/HomePage';
 
 function App() {
   return (
     <AuthContextProvider>
       <Layout>
         <Routes>
-          <Route path="/" element={<PetListComponent />} />
+          <Route path="/" element={<HomePage />} />
+          <Route path="/home" element={<HomePage />} />
+          <Route path="/petlist" element={<PetListComponent />} />
           <Route path="/signup" element={<RegisterPage />} />
           <Route path="/login" element={<AuthenticationPage />} />
           <Route path="/postpet" element={<PostPet />} />

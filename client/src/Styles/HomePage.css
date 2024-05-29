@@ -1,0 +1,52 @@
+
+
+h1, h2 {
+    margin-top: 20px;
+    color: #333;
+}
+
+h1 {
+    text-align: left;
+    font-size: 2.5rem;
+}
+
+#close-pets-header{
+    text-align: left;
+}
+
+h2 {
+    text-align: right;
+    font-size: 2rem;
+    margin-top: 10px;
+}
+
+/* Carousel styling */
+.carousel-item img {
+    width: 100%;
+    height: auto;
+    max-height: 400px;
+    object-fit: cover;
+    border-radius: 10px;
+    margin-bottom: 20px;
+}
+
+/* Button styling */
+.dog-filter-button, .cat-filter-button {
+    display: inline-block;
+    margin: 10px;
+    padding: 0;
+    border: none;
+    background: none;
+    cursor: pointer;
+}
+
+.dog-filter-button img, .cat-filter-button img {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    transition: transform 0.3s ease;
+}
+
+.dog-filter-button img:hover, .cat-filter-button img:hover {
+    transform: scale(1.1);
+}

@@ -176,4 +176,12 @@ public class PetService {
         }
         return pets;
     }
+
+    public List<Pet> getRecentThreePets() {
+        List<Pet> pets = petRepository.findAll();
+        return pets.stream()
+                .sorted(Comparator.comparing(Pet::getDateAdded).reversed())
+                .limit(3)
+                .collect(Collectors.toList());
+    }
 }

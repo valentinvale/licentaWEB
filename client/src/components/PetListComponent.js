@@ -1,13 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import PetService from '../services/PetService';
 import UserService from '../services/UserService';
-
-import { Card, Button, CardGroup } from 'reactstrap';
-import PetCardFrame from './PetCardFrame';
 import { useLocation } from 'react-router-dom';
+import PetCardFrame from './PetCardFrame';
 import '../Styles/PetCards.css';
 
-const PetListComponent = () => {
+const PetListComponent = ({ onlyDogs, onlyCats }) => {
     const [pets, setPets] = useState([]);
     const [token, setToken] = useState('');
     const [user, setUser] = useState('');
@@ -44,8 +42,18 @@ const PetListComponent = () => {
         const city = searchParams?.city || '';
 
         PetService.getPetsFiltered(keyWords, county, city, lat, long).then((response) => {
-            setPets(response.data);
+            filterPets(response.data);
         });
+    };
+
+    const filterPets = (petsData) => {
+        let filteredPets = petsData;
+        if (onlyDogs) {
+            filteredPets = filteredPets.filter(pet => pet.petType === 'Caine');
+        } else if (onlyCats) {
+            filteredPets = filteredPets.filter(pet => pet.petType === 'Pisica');
+        }
+        setPets(filteredPets);
     };
 
     useEffect(() => {
@@ -68,82 +76,41 @@ const PetListComponent = () => {
                 setUserLatitude(position.coords.latitude);
                 setUserLongitude(position.coords.longitude);
                 setUserAllowsLocation(true);
-                if (searchParams?.refreshAll) {
-                    PetService.getPets().then((response) => {
-                        setPets(response.data);
-                    });
-                } else if (searchParams?.keyWords || searchParams?.county || searchParams?.city) {
+
+                if (searchParams?.keyWords || searchParams?.county || searchParams?.city) {
                     executeSearch(position.coords.latitude, position.coords.longitude);
                 } else {
                     PetService.getPetsSortedByDistance(position.coords.latitude, position.coords.longitude).then((response) => {
-                        setPets(response.data);
+                        filterPets(response.data);
                     });
                 }
             }, function (error) {
                 console.error("Error Code = " + error.code + " - " + error.message);
                 setUserAllowsLocation(false);
-                if (searchParams?.refreshAll) {
-                    PetService.getPets().then((response) => {
-                        setPets(response.data);
-                    });
-                } else if (searchParams?.keyWords || searchParams?.county || searchParams?.city) {
+
+                if (searchParams?.keyWords || searchParams?.county || searchParams?.city) {
                     executeSearch();
                 } else {
                     PetService.getPets().then((response) => {
-                        setPets(response.data);
+                        filterPets(response.data);
                     });
                 }
             });
         } else {
-            if (searchParams?.refreshAll) {
-                PetService.getPets().then((response) => {
-                    setPets(response.data);
-                });
-            } else if (searchParams?.keyWords || searchParams?.county || searchParams?.city) {
+            if (searchParams?.keyWords || searchParams?.county || searchParams?.city) {
                 executeSearch();
             } else {
                 PetService.getPets().then((response) => {
-                    setPets(response.data);
+                    filterPets(response.data);
                 });
             }
         }
-    }, [location.state]);
-
-
-    const oldRender = () => {
-        return (
-            <div>
-                <h1>Pet List</h1>
-                <table className="table">
-                    <thead>
-                        <tr>
-                            <th>Pet ID</th>
-                            <th>Pet Name</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {pets.map((pet) => (
-                            <tr key={pet.id}>
-                                <td>{pet.id}</td>
-                                <td>{pet.name}</td>
-                            </tr>
-                        ))}
-                    </tbody>
-                </table>
-            </div>
-        );
-    };
-
-    const renderCardGrid = () => {
-        return (
-            <div>
-                <PetCardFrame pets={pets} sm="12" md="6" lg="4" xl="3" />
-            </div>
-        );
-    };
+    }, [location.state, onlyDogs, onlyCats]);
 
     return (
-       renderCardGrid()
+        <div>
+            <PetCardFrame pets={pets} sm="12" md="6" lg="4" xl="3" />
+        </div>
     );
 };
 

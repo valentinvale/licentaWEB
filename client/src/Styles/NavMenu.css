@@ -103,12 +103,84 @@ i{
 }
 
 .navBar {
-    height: auto !important; /* adjust as necessary */
-    min-height: 50px; /* adjust as necessary */
+    height: auto !important; 
+    min-height: 50px;
     padding: 0 !important;
     box-shadow: 2px 2px 2px 2px var(--primary-text-color) !important;
 }
 
 .navBar .navbar-brand{
     margin-top: 0 !important;
+}
+
+/* Container for search inputs */
+.search-div {
+    flex-grow: 1;
+    margin-left: 50px;
+    /* margin-right: 20px; */
+    align-items: center;
+    display: flex;
+    justify-content: center;
+    width: 40%;
+}
+
+.search-input-group {
+    display: flex;
+    align-items: center;
+    width: 100%;
+    padding-bottom: 0.6rem;
+}
+
+.search-box {
+    flex-grow: 2;
+    border-top-left-radius: 20px !important;
+    border-bottom-left-radius: 20px !important;
+    border: 1px solid var(--primary-green-yellow);
+    padding: 0.5rem;
+    font-size: 16px;
+    color: var(--text-black);
+    width: 50% !important;
+}
+
+.county-select {
+    flex-grow: 1;
+    border-left: 0;
+    border-right: 0;
+    border-top: 1px solid var(--primary-green-yellow);
+    border-bottom: 1px solid var(--primary-green-yellow);
+    padding: 0.5rem;
+    font-size: 16px;
+    color: var(--text-black);
+    width: 20% !important;
+}
+
+.city-select {
+    flex-grow: 1;
+    border-top: 1px solid var(--primary-green-yellow);
+    border-bottom: 1px solid var(--primary-green-yellow);
+    padding: 0.5rem;
+    font-size: 16px;
+    color: var(--text-black);
+    width: 20% !important;
+}
+
+.search-button {
+    border-top-right-radius: 20px !important;
+    border-bottom-right-radius: 20px !important;
+    background-color: var(--text-black) !important;
+    color: var(--text-black) !important;
+    padding: 0.5rem 1rem;
+    font-size: 16px;
+    width: 10% !important;
+
+}
+
+.search-button:hover {
+    box-shadow: 0 0 10px 5px var(--secondary-orange) !important;
+    transition: box-shadow 0.3s ease !important;
+}
+
+.search-input-group .form-control, 
+.search-input-group .btn {
+    height: auto;
 }

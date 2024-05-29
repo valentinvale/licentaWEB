@@ -25,6 +25,7 @@ import { useNavigate } from 'react-router-dom';
 import UserService from '../services/UserService';
 import counties_with_cities from "../Resources/counties_with_cities.json";
 import logoImage from '../Resources/LogoFurEverHome_v3.png';
+import { useLocation } from 'react-router-dom';
 
 import '../Styles/NavMenu.css';
 
@@ -46,6 +47,7 @@ function NavMenu(args) {
   const [selectedCity, setSelectedCity] = useState("");
 
   const navigate = useNavigate();
+  const location = useLocation();
 
   const getEmailFromToken = (token) => {
     try {
@@ -74,14 +76,17 @@ const handleCountyChange = (e) => {
 }
 
 const handleNavigateHome = () => {
-  navigate("/", { state: { refreshAll: true } });
+  setSelectedCounty("");
+  setSelectedCity("");
+  setKeyWords("");
+  navigate("/home");
 }
 
 const handleSearch = () => {
   if (keyWords === "" && selectedCounty === "" && selectedCity === "") {
     return;
   }
-  navigate("/", { state: { keyWords: keyWords, county: selectedCounty, city: selectedCity } });
+  navigate("/petlist", { state: { keyWords: keyWords, county: selectedCounty, city: selectedCity } });
 }
 
   useEffect(() => {
@@ -137,6 +142,13 @@ const handleSearch = () => {
   //   }
   // }, [token]);
   
+  useEffect(() => {
+    if (location.state && location.state.refreshAll) {
+      setSelectedCounty("");
+      setSelectedCity("");
+      setKeyWords("");
+    }
+  }, [location.state]);
 
   const logOut = () => {
     AuthenticationService.logOut();
@@ -155,15 +167,17 @@ const handleSearch = () => {
             style={{ width: "208px", height: "80px" }}
           />
         </NavbarBrand>
-        <div>
-          <InputGroup>
-            <Input onChange={(e) => setKeyWords(e.target.value)} />
+        <div className='search-div'>
+          <InputGroup className='search-input-group'>
+            <Input value={keyWords} className='search-box' onChange={(e) => setKeyWords(e.target.value)} />
             <Input
               id="countySelect"
               name="countySelect"
               type="select"
               defaultValue=""
+              value={selectedCounty}
               onChange={handleCountyChange}
+              className='county-select'
             >
               <option value="" disabled>Judet</option>
               <option value="">Toate</option>
@@ -178,8 +192,10 @@ const handleSearch = () => {
               name="select"
               type="select"
               defaultValue=""
+              value={selectedCity}
               disabled={selectedCounty === ""}
               onChange={(e) => setSelectedCity(e.target.value)}
+              className='city-select'
             >
               <option value="" disabled>Localitate</option>
               <option value="">Toate</option>
@@ -189,7 +205,7 @@ const handleSearch = () => {
                 </option>
               ))}
             </Input>
-            <Button onClick={handleSearch}>
+            <Button className='search-button' onClick={handleSearch}>
               <i class="bi bi-search"></i>
             </Button>
           </InputGroup>

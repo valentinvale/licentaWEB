@@ -48,6 +48,11 @@ public class PetController {
         return petService.getFilteredPets(keyWords, county, city, latitude, longitude);
     }
 
+    @GetMapping("/getrecentthree")
+    public List<Pet> getRecentThreePets() {
+        return petService.getRecentThreePets();
+    }
+
     @PostMapping("/add")
     public ResponseEntity<Pet> addPet(@RequestBody Pet pet) {
         Pet newPet = petService.addPet(pet);

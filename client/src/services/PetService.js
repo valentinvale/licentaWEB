@@ -41,6 +41,10 @@ class PetService {
         return await axios.get(`${API_URL}/getbyid/${petId}`);
     }
 
+    async getRecentThreePets() {
+        return await axios.get(`${API_URL}/getrecentthree`);
+    }
+
     async postPet(petRequest, token) {
         const config = {
             headers: { Authorization: `Bearer ${token}` },
