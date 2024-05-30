@@ -1,6 +1,7 @@
 import React, { useEffect } from "react";
 import { Container } from "reactstrap";
 import NavMenu from "./NavMenu";
+import Footer from "./Footer";
 import UserService from "../services/UserService";
 import "../Styles/Layout.css";
 
@@ -47,6 +48,7 @@ function Layout(props) {
             <Container className="main-content" tag="menu">
                 {props.children}
             </Container>
+            <Footer />
         </div>
     );
     

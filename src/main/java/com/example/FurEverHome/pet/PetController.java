@@ -36,6 +36,11 @@ public class PetController {
         return petService.getPetsByUser(userId);
     }
 
+    @GetMapping("/getbyadoptiveuser/{userId}")
+    public List<Pet> getPetsByAdoptiveUser(@PathVariable("userId") UUID userId) {
+        return petService.getPetsByAdoptiveUser(userId);
+    }
+
     @GetMapping("/getbyid/{petId}")
     public Pet getPet(@PathVariable("petId") UUID petId) {
         return petService.getPetById(petId);

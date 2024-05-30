@@ -51,17 +51,19 @@ const HomePage = () => {
 
     return (
         <div>
-            <h1>Viitorul tau prieten blanos intreaba de tine...</h1>
-            <h2>Anunturi recente</h2>
+            <h1 className='title-phrase'>Viitorul tau prieten blanos intreaba de tine...</h1>
+            <h2 className='recent-pets'>Anunturi recente</h2>
             <ImageCarouselCustom items={carouselItems} />
             <h2 id='close-pets-header'>Adopta un animalut din apropiere si ofera-i o casa!</h2>
-            <Button onClick={toggleOnlyDogs} className={`dog-filter-button ${onlyDogs ? 'active' : ''}`}>
-                <img src={dogButtonImage} alt='dog' />
-            </Button>
-            <Button onClick={toggleOnlyCats} className={`cat-filter-button ${onlyCats ? 'active' : ''}`}>
-                <img src={catButtonImage} alt='cat' />
-            </Button>
-            <div>
+            <div className='pet-type-filter-div'>
+                <Button onClick={toggleOnlyDogs} className={`dog-filter-button ${onlyDogs ? 'active' : ''}`}>
+                    <img src={dogButtonImage} alt='dog' />
+                </Button>
+                <Button onClick={toggleOnlyCats} className={`cat-filter-button ${onlyCats ? 'active' : ''}`}>
+                    <img src={catButtonImage} alt='cat' />
+                </Button>
+            </div>
+            <div className='petlist-div'>
                 <PetListComponent refreshAll={refreshAll} onlyDogs={onlyDogs} onlyCats={onlyCats} />
             </div>
         </div>

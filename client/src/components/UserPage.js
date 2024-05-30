@@ -17,6 +17,7 @@ function UserPage() {
     const [activeTab, setActiveTab] = useState('1');  
 
     const [postedPets, setPostedPets] = useState([]);
+    const [adoptedPets, setAdoptedPets] = useState([]);
 
     useEffect(() => {
         if(state && state.openedTab) {
@@ -35,6 +36,10 @@ function UserPage() {
             PetService.getPetsByUserId(auth.user.id, auth.token).then((response) => {
                 console.log(response.data);
                 setPostedPets(response.data);
+            });
+            PetService.getPetsByAdoptiveUserId(auth.user.id, auth.token).then((response) => {
+                console.log(response.data);
+                setAdoptedPets(response.data);
             });
         }
     }, [auth.user]);
@@ -98,11 +103,9 @@ function UserPage() {
                         </div>
                     </TabPane>
                     <TabPane tabId="4">
-                        <Row>
-                            <Col sm="12">
-                                <h4>Tab 4 Contents</h4>
-                            </Col>
-                        </Row>
+                        <div className='user-adopted-pets'>
+                            <PetCardFrame pets={adoptedPets} sm="12" md="8" lg="6" xl="4" />
+                        </div>
                     </TabPane>
                 </TabContent>
             </div>

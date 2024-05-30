@@ -1,0 +1,42 @@
+.footer {
+    background-image: linear-gradient(to right, var(--primary-green), var(--primary-green-yellow));
+    padding: 20px 0;
+    text-align: center;
+    box-shadow: 2px 2px 2px 2px var(--primary-text-color) !important;
+}
+
+.footer-content {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 20px;
+}
+
+.social-media {
+    margin-bottom: 20px;
+}
+
+.social-media a {
+    color: var(--secondary-text-color);
+    margin: 0 10px;
+    font-size: 24px;
+    transition: color 0.3s ease;
+}
+
+.contact-info p {
+    margin: 5px 0;
+    font-size: 16px;
+    color: var(--secondary-text-color);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.contact-info p i {
+    margin-right: 8px;
+}
+
+.footer-text {
+    margin-top: 20px;
+    font-size: 18px;
+    color: var(--text-black);
+}

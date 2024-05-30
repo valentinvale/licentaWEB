@@ -107,7 +107,7 @@
 }
 
 
-.user-posted-pets {
+.user-posted-pets, .user-adopted-pets {
     max-height: 100vh;  
     overflow-y: auto;   
     overflow-x: hidden; 

@@ -1,4 +1,16 @@
 
+.title-phrase{
+    margin-top: 50px;
+    margin-bottom: 20px;
+
+}
+
+.recent-pets{
+
+    padding-top: 25px;
+    padding-bottom: 25px;
+    border-top: 1px solid var(--primary-green);
+}
 
 h1, h2 {
     margin-top: 20px;
@@ -12,6 +24,7 @@ h1 {
 
 #close-pets-header{
     text-align: left;
+    margin-top: 50px;
 }
 
 h2 {
@@ -20,7 +33,6 @@ h2 {
     margin-top: 10px;
 }
 
-/* Carousel styling */
 .carousel-item img {
     width: 100%;
     height: auto;
@@ -30,23 +42,43 @@ h2 {
     margin-bottom: 20px;
 }
 
-/* Button styling */
-.dog-filter-button, .cat-filter-button {
-    display: inline-block;
-    margin: 10px;
-    padding: 0;
-    border: none;
-    background: none;
-    cursor: pointer;
+.pet-type-filter-div {
+    display: flex;
+    justify-content: center;
+    margin-top: 50px;
+    border-top: 1px solid var(--primary-green);
+    border-bottom: 1px solid var(--primary-green);
+    margin-bottom: 20px;
 }
 
-.dog-filter-button img, .cat-filter-button img {
-    width: 50px;
-    height: 50px;
-    border-radius: 50%;
+.dog-filter-button, .cat-filter-button {
+    display: inline-block;
+    margin: 50px;
+    padding: 0 !important;
+    border: none !important;
+    border-radius: 50% !important;
+    background: transparent !important;
+    cursor: pointer;
     transition: transform 0.3s ease;
 }
 
-.dog-filter-button img:hover, .cat-filter-button img:hover {
+.dog-filter-button img, .cat-filter-button img {
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+    
+}
+
+.dog-filter-button:hover, .cat-filter-button:hover {
     transform: scale(1.1);
+    transition: transform 0.3s ease;
+}
+
+.dog-filter-button.active, .cat-filter-button.active {
+    box-shadow: 0 0 25px var(--primary-orange);
+}
+
+.petlist-div{
+    margin-top: 50px;
+    margin-bottom: 50px;
 }

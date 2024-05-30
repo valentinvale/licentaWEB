@@ -184,4 +184,10 @@ public class PetService {
                 .limit(3)
                 .collect(Collectors.toList());
     }
+
+    public List<Pet> getPetsByAdoptiveUser(UUID userId) {
+        return petRepository.findAll().stream()
+                .filter(pet -> pet.getAdoptiveUser() != null && pet.getAdoptiveUser().getId().equals(userId))
+                .collect(Collectors.toList());
+    }
 }
