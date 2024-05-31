@@ -120,6 +120,7 @@ public class PetService {
         petRepository.save(pet);
     }
 
+    @Transactional
     public void adoptPet(UUID petId, UUID userId) {
         Pet pet = petRepository.findById(petId).orElseThrow(() -> new IllegalStateException("Pet with id " + petId + " does not exist"));
         User user = userRepository.findById(userId).orElseThrow(() -> new IllegalStateException("User with id " + userId + " does not exist"));

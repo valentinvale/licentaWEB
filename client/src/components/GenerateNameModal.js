@@ -27,7 +27,6 @@ function GenerateNameModal({ isOpen, onRequestClose, petType, token, onData }) {
  useEffect(() => {
   if (generatedName) {
       onData(generatedName);
-      // Reset after calling to prevent duplicate calls if generatedName doesn't change
       setGeneratedName(null);
   }
 }, [generatedName, onData]);

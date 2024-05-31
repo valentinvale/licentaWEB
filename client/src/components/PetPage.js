@@ -17,6 +17,7 @@ import {
 import '../Styles/PetPage.css';
 
 import { formatDate } from "../services/StringUtils";
+import SendConfirmationModal from "./SendConfirmationModal";
 
 
 
@@ -30,8 +31,18 @@ function PetPage(args) {
     const [activeIndex, setActiveIndex] = useState(0);
     const [animating, setAnimating] = useState(false);
 
+    const [sendAdoptConfirmationModalIsOpen, setSendAdoptConfirmationModalIsOpen] = useState(false);
+
     const auth = useAuth();
     const navigate = useNavigate();
+
+    const openConfirmationModal = () => {
+        setSendAdoptConfirmationModalIsOpen(true);
+    };
+
+    const closeConfirmationModal = () => {
+        setSendAdoptConfirmationModalIsOpen(false);
+    };
 
     const items = pet.imageUrls ? pet.imageUrls.map((url, index) => {
         return {
@@ -96,6 +107,9 @@ function PetPage(args) {
         } else {
             console.error("Pet user ID is not available.");
         }
+    };
+
+    const handleSendAdoptRequest = () => {
     };
 
 
@@ -182,6 +196,21 @@ function PetPage(args) {
                         >
                             <i class="bi bi-chat"></i> Trimite mesaj
                         </Button>
+                    </div>
+                ) : (null)
+            }
+
+            {
+                auth.user && auth.user.id === petUserId ? (
+                    <div className="send-adopt-request">
+                        <Button
+                            size="lg"
+                            className="adopt-request-button"
+                            onClick={openConfirmationModal}
+                        >
+                            <i class="bi bi-arrow-left-right"> </i> Trimite confirmare adoptie
+                        </Button>
+                        <SendConfirmationModal isOpen={sendAdoptConfirmationModalIsOpen} petId={id} onRequestClose={closeConfirmationModal}/>
                     </div>
                 ) : (null)
             }

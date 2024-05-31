@@ -42,7 +42,7 @@
     padding-bottom: 60px;
 }
 
-.message-user-button{
+.message-user-button, .adopt-request-button{
     /* background-color: var(--primary-green) !important; */
     background-image: linear-gradient(to right, var(--primary-green), var(--primary-green-yellow)) !important;
     color: var(--text-black) !important;
@@ -51,11 +51,11 @@
     transition: box-shadow 0.3s ease;
 }
 
-.message-user-button:hover{
+.message-user-button:hover, .adopt-request-button:hover{
     box-shadow: 0 0 20px 5px var(--primary-orange) !important;
 }
 
-.contact-user {
+.contact-user, .send-adopt-request {
     display: flex;
     justify-content: center;
     align-items: center;

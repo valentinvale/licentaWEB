@@ -40,13 +40,13 @@
   box-shadow: 0 0 10px 5px var(--secondary-orange) !important;
 }
 
-.react-modal-btn:hover {
+.react-modal-btn:hover, .confirm-button:hover {
     box-shadow: 0 0 10px 5px var(--secondary-orange) !important;
 }
 
 
 
-.react-modal-btn {
+.react-modal-btn, .confirm-button {
     border: none !important;
     box-shadow: 1px 1px 0 1px var(--primary-shadow-color) !important;
     background-color: var(--primary-orange) !important;
@@ -63,9 +63,15 @@
     cursor: pointer !important; 
 
   }
+
+  .confirm-button-div{
+    display: flex !important;
+    justify-content: center !important;
+    gap: 10px !important;
+  }
   
   #file-upload {
-    display: none; /* Hide the default file input */
+    display: none;
   }
 
  

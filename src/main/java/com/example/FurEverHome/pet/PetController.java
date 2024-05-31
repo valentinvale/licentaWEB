@@ -1,5 +1,7 @@
 package com.example.FurEverHome.pet;
 
+import com.example.FurEverHome.email.EmailService;
+import com.example.FurEverHome.user.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -13,10 +15,14 @@ import java.util.UUID;
 public class PetController {
 
     private final PetService petService;
+    private final UserService userService;
+    private final EmailService emailService;
 
     @Autowired
-    public PetController(PetService petService) {
+    public PetController(PetService petService, UserService userService, EmailService emailService) {
         this.petService = petService;
+        this.userService = userService;
+        this.emailService = emailService;
     }
 
     @GetMapping("/get")
@@ -83,14 +89,39 @@ public class PetController {
     }
 
     @PutMapping(path = "/adoptpet/{petId}/{userId}")
-    public void adoptPet(@PathVariable("petId") UUID petId, @PathVariable("userId") UUID userId) {
-        petService.adoptPet(petId, userId);
+    public ResponseEntity<String> adoptPet(@PathVariable("petId") UUID petId, @PathVariable("userId") UUID userId) {
+        try {
+            petService.adoptPet(petId, userId);
+            return ResponseEntity.ok("Pet adoption successful");
+        } catch (IllegalStateException e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        } catch (Exception e) {
+            return ResponseEntity.status(500).body("An unexpected error occurred");
+        }
     }
 
     @PutMapping(path = "/uploadimages/{petId}")
     public ResponseEntity<Pet> uploadImages(@PathVariable("petId") UUID petId, @RequestParam("images") MultipartFile[] images) {
         Pet updatedPet = petService.uploadImages(petId, images);
         return ResponseEntity.ok(updatedPet);
+    }
+
+    @PostMapping("/sendconfirmation")
+    public ResponseEntity<String> sendConfirmationEmail(@RequestParam("userId") UUID userId,
+                                                        @RequestParam("petId") UUID petId) {
+
+        String userEmail = userService.getEmailById(userId.toString());
+        String confirmationLink = "http://localhost:3000/confirm-adoption?userId=" + userId + "&petId=" + petId;
+        Pet pet = petService.getPetById(petId);
+        String subject = "Confirmare adoptie pentru " + pet.getName();
+        String text = "Salut! " + "!\n\n" +
+                "Felicitari! Ai primit o cerere de adoptie pentru " + pet.getName() + ".\n" +
+                "Daca doresti sa accepti cererea, te rugam sa accesezi link-ul de mai jos:\n" +
+                confirmationLink + "\n\n" +
+                "Daca nu doresti sa accepti cererea, te rugam sa ignori acest mesaj.\n\n" +
+                "Cu drag,\nEchipa FurEverHome";
+        emailService.sendEmail(userEmail, subject, text);
+        return ResponseEntity.ok("Email sent successfully");
     }
 
 }

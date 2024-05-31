@@ -36,4 +36,9 @@ public class UserService {
         User user = userRepository.findById(UUID.fromString(userId)).orElseThrow(() -> new RuntimeException("User not found"));
         return user.getRealUsername();
     }
+
+    public String getEmailById(String userId) {
+        User user = userRepository.findById(UUID.fromString(userId)).orElseThrow(() -> new RuntimeException("User not found"));
+        return user.getEmail();
+    }
 }
