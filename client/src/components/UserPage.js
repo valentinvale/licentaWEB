@@ -57,7 +57,7 @@ function UserPage() {
                             className={activeTab === '1' ? 'active' : ''}
                             onClick={() => toggle('1')}
                         >
-                            Informatii cont
+                            Informații cont
                         </NavLink>
                     </NavItem>
                     <NavItem>
@@ -73,7 +73,7 @@ function UserPage() {
                             className={activeTab === '3' ? 'active' : ''}
                             onClick={() => toggle('3')}
                         >
-                            Anunturile tale
+                            Anunțurile tale
                         </NavLink>
                     </NavItem>
                     <NavItem>
@@ -81,7 +81,7 @@ function UserPage() {
                             className={activeTab === '4' ? 'active' : ''}
                             onClick={() => toggle('4')}
                         >
-                            Animalutele tale
+                            Animăluțele tale
                         </NavLink>
                     </NavItem>
                 </Nav>

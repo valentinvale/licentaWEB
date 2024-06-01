@@ -1,0 +1,23 @@
+.my-button:hover{
+    box-shadow: 0 0 10px 5px var(--secondary-orange) !important;
+}
+
+
+
+.my-button {
+    border: none !important;
+    box-shadow: 1px 1px 0 1px var(--primary-shadow-color) !important;
+    background-color: var(--primary-orange) !important;
+    border-color: var(--primary-orange) !important;
+    color: var(--text-black) !important;
+    padding: 5px 10px !important;
+    border-radius: 10px !important;
+    font-size: 14px !important;
+    cursor: pointer !important;
+    margin-left: 3px !important;
+    margin-right: 3px !important;
+    transition: box-shadow 0.3s ease !important;
+    display: inline-block !important; 
+    cursor: pointer !important; 
+
+  }

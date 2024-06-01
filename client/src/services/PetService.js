@@ -85,6 +85,13 @@ class PetService {
     
         return await axios.put(`${API_URL}/uploadimages/${petId}`, formData, config);
     }
+
+    async adoptPet(petId, userId, token) {
+        const config = {
+            headers: { Authorization: `Bearer ${token}` },
+        };
+        return await axios.put(`${API_URL}/adoptpet/${petId}/${userId}`, null, config);
+    }
     
 
 }

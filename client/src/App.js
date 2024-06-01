@@ -10,6 +10,8 @@ import PetPage from './components/PetPage';
 import { AuthContextProvider } from './Context/AuthContext';
 import UserPage from './components/UserPage';
 import HomePage from './components/HomePage';
+import ConfirmAdoption from './components/ConfirmAdoption';
+import VetClinicsPage from './components/VetClinicsPage';
 
 function App() {
   return (
@@ -24,6 +26,8 @@ function App() {
           <Route path="/postpet" element={<PostPet />} />
           <Route path="/pets/:id" element={<PetPage />} />
           <Route path="/user" element={<UserPage />} />
+          <Route path="/confirm-adoption" element={<ConfirmAdoption />} />
+          <Route path="/vetclinics" element={<VetClinicsPage />} />
         </Routes>
       </Layout>
     </AuthContextProvider>

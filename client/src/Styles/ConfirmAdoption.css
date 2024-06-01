@@ -1,0 +1,14 @@
+.confirm-adoption-div{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    margin-top: 50px;
+    height: 100%;
+}
+
+.confirm-button{
+    margin-top: 20px;
+    margin-bottom: 210px;
+}
+

@@ -341,7 +341,7 @@ function PostPet(props) {
                     type="select"
                     onChange={handleCountyChange}
                     >
-                    <option>Alege Judetul</option>
+                    <option>Alege Județul</option>
                     {countiesWithCities.map((county, index) => (
                         <option key={index}>{county.county_name}</option>
                     ))}
@@ -350,7 +350,7 @@ function PostPet(props) {
                     {' '}
                     <FormGroup>
                         <Label for="petCity">
-                            Oras
+                            Oraș
                         </Label>
                         <Input
                         id="petCity"
@@ -359,7 +359,7 @@ function PostPet(props) {
                         disabled={!selectedCounty}
                         onChange={(e) => setSelectedCity(e.target.value)}
                         >
-                        <option>Alege Orasul</option>
+                        <option>Alege Orașul</option>
                         {cityList.map((city, index) => (
                             <option key={index}>{city.nume}</option>
                         ))}
@@ -379,7 +379,7 @@ function PostPet(props) {
                         onChange={handleImageChange}
                         />
                         <FormText>
-                        Alege intre 1 si 10 poze cu animalul tau. Pozele pot avea dimensioni maxime de 5MB.
+                        Alege între 1 si 10 poze cu animalul tău. Pozele pot avea dimensiunea maximă de 5MB.
                         </FormText>
                     </FormGroup>
                     {' '}

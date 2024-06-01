@@ -51,10 +51,10 @@ const HomePage = () => {
 
     return (
         <div>
-            <h1 className='title-phrase'>Viitorul tau prieten blanos intreaba de tine...</h1>
-            <h2 className='recent-pets'>Anunturi recente</h2>
+            <h1 className='title-phrase'>Viitorul tău prieten blănos întreabă de tine...</h1>
+            <h2 className='recent-pets'>Anunțuri recente</h2>
             <ImageCarouselCustom items={carouselItems} />
-            <h2 id='close-pets-header'>Adopta un animalut din apropiere si ofera-i o casa!</h2>
+            <h2 id='close-pets-header'>Adoptă un animăluț din apropiere si oferă-i o casă!</h2>
             <div className='pet-type-filter-div'>
                 <Button onClick={toggleOnlyDogs} className={`dog-filter-button ${onlyDogs ? 'active' : ''}`}>
                     <img src={dogButtonImage} alt='dog' />
