@@ -29,6 +29,10 @@ class UserService {
     return await axios.get(`${API_URL}/getbyid/${id}`, config);
   }
 
+  async getUserByIdSafe(id) {
+    return await axios.get(`${API_URL}/getbyidsafe/${id}`);
+  }
+
   async getUsernameById(id, token) {
     const config = {
       headers: { Authorization: `Bearer ${token}` },

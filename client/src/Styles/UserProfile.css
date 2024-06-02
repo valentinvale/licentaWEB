@@ -1,0 +1,53 @@
+.container {
+    padding: 20px;
+}
+
+.row {
+    margin-bottom: 20px;
+}
+
+h2{
+    margin-bottom: 50px;
+    padding-bottom: 50px;
+    border-bottom: 1px solid var(--primary-green);
+}
+
+.reports-title{
+    text-align: left !important;
+    margin-bottom: 50px;
+}
+
+.report-text {
+    font-weight: bold;
+}
+
+.reporting-user, .reporting-pet {
+    font-style: italic;
+}
+
+.report-container {
+    border: 2px solid;
+    padding: 15px;
+    margin-bottom: 20px;
+    border-radius: 5px;
+}
+
+.report-container.unchecked {
+    border-color: yellow;
+}
+
+.report-container.checked {
+    border-color: orange;
+}
+
+.report-container.done-by-admin {
+    border-color: red;
+}
+
+#report-text-area {
+    margin-bottom: 10px;
+}
+
+#pet-select {
+    margin-bottom: 20px;
+}

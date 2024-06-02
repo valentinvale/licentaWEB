@@ -2,10 +2,7 @@ package com.example.FurEverHome.user;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -37,6 +34,11 @@ public class UserController {
         return userService.getUserById(userId);
     }
 
+    @GetMapping("/getbyidsafe/{userId}")
+    public UserSafeDTO getUserByIdSafe(@PathVariable String userId) {
+        return userService.getUserByIdSafe(userId);
+    }
+
     @GetMapping("/getusername/{userId}")
     public String getUsernameById(@PathVariable String userId) {
         return userService.getUsernameById(userId);
@@ -45,6 +47,12 @@ public class UserController {
     @GetMapping("/getemailbyid/{userId}")
     public String getEmailById(@PathVariable String userId) {
         return userService.getEmailById(userId);
+    }
+
+    @PutMapping("/makeadmin/{userId}")
+    @PreAuthorize("hasAnyRole('ADMIN')")
+    public void makeAdmin(@PathVariable String userId) {
+        userService.makeAdmin(userId);
     }
 
 }

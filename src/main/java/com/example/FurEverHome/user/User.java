@@ -1,6 +1,7 @@
 package com.example.FurEverHome.user;
 
 import com.example.FurEverHome.pet.Pet;
+import com.example.FurEverHome.reports.Report;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.*;
@@ -35,6 +36,14 @@ public class User implements UserDetails {
     @JsonIgnore
     @OneToMany(mappedBy = "adoptiveUser")
     private Set<Pet> adoptedPets = new HashSet<>();
+
+    @JsonIgnore
+    @OneToMany(mappedBy = "reportedUser")
+    private Set<Report> reportsAgainstUser = new HashSet<>();
+
+    @JsonIgnore
+    @OneToMany(mappedBy = "reportingUser")
+    private Set<Report> reportsByUser = new HashSet<>();
 
     @Enumerated(jakarta.persistence.EnumType.STRING)
     private Role role;
@@ -79,4 +88,8 @@ public class User implements UserDetails {
     public String getRealUsername() {
         return username;
     }
+
+
+
+
 }

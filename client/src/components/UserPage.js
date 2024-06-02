@@ -33,11 +33,11 @@ function UserPage() {
     useEffect(() => {
         if (auth.user) {
             console.log("utilizator:", auth.userEmail);
-            PetService.getPetsByUserId(auth.user.id, auth.token).then((response) => {
+            PetService.getPetsByUserId(auth.user.id).then((response) => {
                 console.log(response.data);
                 setPostedPets(response.data);
             });
-            PetService.getPetsByAdoptiveUserId(auth.user.id, auth.token).then((response) => {
+            PetService.getPetsByAdoptiveUserId(auth.user.id).then((response) => {
                 console.log(response.data);
                 setAdoptedPets(response.data);
             });

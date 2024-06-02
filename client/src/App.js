@@ -12,6 +12,7 @@ import UserPage from './components/UserPage';
 import HomePage from './components/HomePage';
 import ConfirmAdoption from './components/ConfirmAdoption';
 import VetClinicsPage from './components/VetClinicsPage';
+import UserProfile from './components/UserProfile';
 
 function App() {
   return (
@@ -28,6 +29,7 @@ function App() {
           <Route path="/user" element={<UserPage />} />
           <Route path="/confirm-adoption" element={<ConfirmAdoption />} />
           <Route path="/vetclinics" element={<VetClinicsPage />} />
+          <Route path='/profile' element={<UserProfile />} />
         </Routes>
       </Layout>
     </AuthContextProvider>

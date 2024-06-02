@@ -26,7 +26,10 @@ public class SecurityConfig {
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers("/api/v1/auth/**", "/api/v1/pet/get", "/api/v1/pet/getbyid/**",
                                 "/api/v1/pet/getbydistance", "/api/v1/pet/getfiltered",
-                                "/api/v1/pet/getrecentthree", "/ws/**").permitAll() // to be changed
+                                "/api/v1/pet/getrecentthree", "/api/v1/user/getbyidsafe/**",
+                                "/api/v1/pet/getbyuser/**", "/api/v1/pet/getbyadoptiveuser/**",
+                                "/api/v1/report/getbyreporteduser/**", "/api/v1/report/getbyreportinguser/**",
+                                "/ws/**").permitAll() // to be changed
                         .anyRequest().authenticated()
                 )
                 .sessionManagement(session -> session

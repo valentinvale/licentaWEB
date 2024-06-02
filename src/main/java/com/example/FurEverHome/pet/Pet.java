@@ -1,5 +1,6 @@
 package com.example.FurEverHome.pet;
 
+import com.example.FurEverHome.reports.Report;
 import com.example.FurEverHome.user.User;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -9,7 +10,9 @@ import org.springframework.cglib.core.Local;
 
 import java.time.LocalDate;
 import java.time.Period;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 import java.util.UUID;
 import java.util.logging.Logger;
 
@@ -47,6 +50,10 @@ public class Pet {
     @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "adoptive_user_id", referencedColumnName = "id")
     private User adoptiveUser;
+
+    @JsonIgnore
+    @OneToMany(mappedBy = "pet")
+    private Set<Report> reports = new HashSet<>();
 
     public Pet() {
         this.hasBeenAdopted = false;
@@ -195,6 +202,14 @@ public class Pet {
 
     public void setLongitude(Double longitude) {
         this.longitude = longitude;
+    }
+
+    public Set<Report> getReports() {
+        return reports;
+    }
+
+    public void setReports(Set<Report> reports) {
+        this.reports = reports;
     }
 
     @Override

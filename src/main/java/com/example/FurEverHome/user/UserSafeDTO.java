@@ -8,24 +8,22 @@ import java.util.Set;
 import java.util.UUID;
 
 @Data
-public class UserDTO {
+public class UserSafeDTO {
     private UUID id;
     private String username;
     private String firstName;
     private String lastName;
-    private String email;
     @Enumerated(jakarta.persistence.EnumType.STRING)
     private Role role;
     private Set<Report> reportsAgainstUser;
     private Set<Report> reportsByUser;
 
-    public static UserDTO fromUser(User user) {
-        UserDTO userDTO = new UserDTO();
+    public static UserSafeDTO fromUser(User user) {
+        UserSafeDTO userDTO = new UserSafeDTO();
         userDTO.setId(user.getId());
         userDTO.setUsername(user.getRealUsername());
         userDTO.setFirstName(user.getFirstName());
         userDTO.setLastName(user.getLastName());
-        userDTO.setEmail(user.getEmail());
         userDTO.setRole(user.getRole());
         userDTO.setReportsAgainstUser(user.getReportsAgainstUser());
         userDTO.setReportsByUser(user.getReportsByUser());

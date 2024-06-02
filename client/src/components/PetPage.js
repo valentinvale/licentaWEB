@@ -4,6 +4,7 @@ import WebsocketService from "../services/WebsocketService";
 import { useAuth } from "../Context/AuthContext";
 import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
+import { Link } from "react-router-dom";
 
 import {
     Carousel,
@@ -178,7 +179,11 @@ function PetPage(args) {
                 <h3>Sex: {pet.sex}</h3>
                 <h3>{pet.age ? "Varsta: " + pet.age + " ani" : "Varsta necunoscuta"}</h3>
                 <h3>{pet.birthDate ? "Data nasterii: " + formatDate(pet.birthDate) : "Data nasterii necunoscuta"}</h3>
-                <h3>Postat de: {petUsername}</h3>
+                <h3>Postat de: 
+                    <Link to={`/profile?userId=${petUserId}`} style={{ textDecoration: 'none'}}>
+                        {petUsername}
+                    </Link>
+                </h3>
                 <h3>Postat la data de: {formatDate(pet.dateAdded)}</h3>
                 <h3><i class="bi bi-geo-alt"></i>{" " + pet.oras + ", " + pet.judet}</h3>
                 <div className="pet-description">

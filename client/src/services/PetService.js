@@ -28,22 +28,13 @@ class PetService {
         });
     }
 
-    async getPetsByUserId(userId, token) {
+    async getPetsByUserId(userId) {
 
-        const config = {
-            headers: { Authorization: `Bearer ${token}` },
-        };
-
-        return await axios.get(`${API_URL}/getbyuser/${userId}`, config);
+        return await axios.get(`${API_URL}/getbyuser/${userId}`);
     }
 
-    async getPetsByAdoptiveUserId(userId, token) {
-
-        const config = {
-            headers: { Authorization: `Bearer ${token}` },
-        };
-
-        return await axios.get(`${API_URL}/getbyadoptiveuser/${userId}`, config);
+    async getPetsByAdoptiveUserId(userId) {
+        return await axios.get(`${API_URL}/getbyadoptiveuser/${userId}`);
 
     }
 

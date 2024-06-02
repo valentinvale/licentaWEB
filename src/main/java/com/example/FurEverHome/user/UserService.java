@@ -41,4 +41,15 @@ public class UserService {
         User user = userRepository.findById(UUID.fromString(userId)).orElseThrow(() -> new RuntimeException("User not found"));
         return user.getEmail();
     }
+
+    public UserSafeDTO getUserByIdSafe(String userId) {
+        User user = userRepository.findById(UUID.fromString(userId)).orElseThrow(() -> new RuntimeException("User not found"));
+        return UserSafeDTO.fromUser(user);
+    }
+
+    public void makeAdmin(String userId) {
+        User user = userRepository.findById(UUID.fromString(userId)).orElseThrow(() -> new RuntimeException("User not found"));
+        user.setRole(Role.ADMIN);
+        userRepository.save(user);
+    }
 }

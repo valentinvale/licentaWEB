@@ -34,7 +34,9 @@ public class PetService {
         this.geocodingService = geocodingService;
     }
     public List<Pet> getPets() {
-        return petRepository.findAll();
+        return petRepository.findAll().stream()
+                .filter(pet -> !pet.getHasBeenAdopted())
+                .collect(Collectors.toList());
     }
 
     public List<Pet> getPetsByUser(UUID userId) {
@@ -43,6 +45,9 @@ public class PetService {
 
     public List<Pet> getPetsSortedByDistance(Double userLatitude, Double userLongitude){
         List<Pet> pets = petRepository.findAll();
+        pets = pets.stream()
+                .filter(pet -> !pet.getHasBeenAdopted())
+                .collect(Collectors.toList());
 
         return pets.stream()
                 .sorted((Pet p1, Pet p2) -> {
@@ -173,6 +178,7 @@ public class PetService {
                         double dist2 = GeoUtils.haversineDistance(userLatitude, userLongitude, p2.getLatitude(), p2.getLongitude());
                         return Double.compare(dist1, dist2);
                     })
+                    .filter(pet -> !pet.getHasBeenAdopted())
                     .collect(Collectors.toList());
         }
         return pets;
