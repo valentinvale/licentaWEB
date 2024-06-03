@@ -1,5 +1,6 @@
 import React, { useRef } from "react";
 import PetService from "../services/PetService";
+import AIService from "../services/AIService";
 import WebsocketService from "../services/WebsocketService";
 import { useAuth } from "../Context/AuthContext";
 import { useEffect, useState } from "react";
@@ -31,6 +32,8 @@ function PetPage(args) {
 
     const [activeIndex, setActiveIndex] = useState(0);
     const [animating, setAnimating] = useState(false);
+
+    const [petCompatibility, setPetCompatibility] = useState('');
 
     const [sendAdoptConfirmationModalIsOpen, setSendAdoptConfirmationModalIsOpen] = useState(false);
 
@@ -70,6 +73,17 @@ function PetPage(args) {
             WebsocketService.disconnect();
         };
     }, [auth.user, id]);
+
+
+    useEffect(() => {
+        if(auth.user && id && auth.user.activityLevel){
+            AIService.predictPetCompatibility(auth.user.id, id, auth.token).then(response => {
+                console.log("Compatibility response:", response.data);
+                setPetCompatibility(response.data.compatibility_percentage);
+            });
+        }
+    }, [auth.user, id]);
+
 
     useEffect(() => {
         if (auth.user && petUserId) {
@@ -147,6 +161,19 @@ function PetPage(args) {
         );
     });
 
+    const getCharacteristics = (pet) => {
+        const characteristics = [
+            `Nivel de activitate: ${pet.activityLevel}`,
+            `Nevoi de îngrijire: ${pet.careNeeds}`,
+            `Nivel de zgomot: ${pet.noiseLevel}`,
+            `Bun cu copiii: ${pet.goodWithKids}`,
+            `Bun cu alte animale: ${pet.goodWithPets}`,
+            `Temperament: ${pet.temperament}`
+        ];
+
+        return characteristics.join(', ');
+    };
+
     return (
         <div className="pet-page">
             <Carousel
@@ -184,11 +211,20 @@ function PetPage(args) {
                         {petUsername}
                     </Link>
                 </h3>
+                <h3>
+                    Compatibilitate: {petCompatibility ? ((parseFloat(petCompatibility) * 100) < 0.01 ? "<0.01%" : (parseFloat(petCompatibility)).toFixed(2) + "%") : "Calculand..."}
+                </h3>
                 <h3>Postat la data de: {formatDate(pet.dateAdded)}</h3>
                 <h3><i class="bi bi-geo-alt"></i>{" " + pet.oras + ", " + pet.judet}</h3>
                 <div className="pet-description">
                     <h3>Descriere:</h3>
                     <p>{pet.description}</p>
+                </div>
+                <div className="pet-description">
+                    <h3>Caracteristici</h3>
+                    <p>
+                        {getCharacteristics(pet)}
+                    </p>
                 </div>
             </div>
             {

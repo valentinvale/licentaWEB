@@ -14,6 +14,7 @@ function PredictBreedModal({ isOpen, onRequestClose, petType, token, onData }) {
   const [isLoading, setIsLoading] = useState(false);
   const [predictedBreed, setPredictedBreed] = useState(null);
   const [language, setLanguage] = useState('en');
+  const [response, setResponse] = useState(null);
 
 
  useEffect(() => {
@@ -26,7 +27,15 @@ function PredictBreedModal({ isOpen, onRequestClose, petType, token, onData }) {
 
  useEffect(() => {
   if (predictedBreed) {
-      onData(predictedBreed);
+    onData({
+      breed: predictedBreed,
+      temperament: response.data.temperament,
+      activityLevel: response.data.activityLevel,
+      careNeeds: response.data.careNeeds,
+      noiseLevel: response.data.noiseLevel,
+      goodWithKids: response.data.goodWithKids,
+      goodWithPets: response.data.goodWithPets
+    });
       setPredictedBreed(null);
       setLanguage('en');
   }
@@ -51,8 +60,10 @@ function PredictBreedModal({ isOpen, onRequestClose, petType, token, onData }) {
       AIService.predictPetBreed(selectedFile, selectedPetType, token).then((response) => {
         if(language === 'ro'){
           setPredictedBreed(response.data.breedRo);
+          setResponse(response);
         } else{
             setPredictedBreed(response.data.breed);
+            setResponse(response);
         }
       }).catch((error) => {
           alert('A aparut o eroare la detectarea rasei');

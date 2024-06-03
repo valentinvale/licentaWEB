@@ -109,7 +109,14 @@ const PetListComponent = ({ onlyDogs, onlyCats }) => {
                 });
             }
         }
-    }, [location.state, onlyDogs, onlyCats]);
+        if(searchParams?.sort){
+            if(searchParams.sort === "compatibility" && user.id && token){
+                PetService.getPetsSortedByCompatibility(user.id, token).then((response) => {
+                    filterPets(response.data);
+                });
+            }
+        }
+    }, [location.state, onlyDogs, onlyCats, user.id, token]);
 
     const indexOfLastPet = currentPage * petsPerPage;
     const indexOfFirstPet = indexOfLastPet - petsPerPage;

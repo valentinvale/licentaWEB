@@ -52,4 +52,17 @@ public class UserService {
         user.setRole(Role.ADMIN);
         userRepository.save(user);
     }
+
+    public void updateFeatures(String userId, Integer activityLevel, Integer hasChildren, Integer hasOtherPets, Integer hypoallergenic, Integer livingEnvironment, Integer lowMaintenance, Integer personality, Integer workSchedule) {
+        User user = userRepository.findById(UUID.fromString(userId)).orElseThrow(() -> new RuntimeException("User not found"));
+        user.setActivityLevel(activityLevel);
+        user.setHasChildren(hasChildren);
+        user.setHasOtherPets(hasOtherPets);
+        user.setHypoallergenic(hypoallergenic);
+        user.setLivingEnvironment(livingEnvironment);
+        user.setLowMaintenance(lowMaintenance);
+        user.setPersonality(personality);
+        user.setWorkSchedule(workSchedule);
+        userRepository.save(user);
+    }
 }

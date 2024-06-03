@@ -5,6 +5,7 @@ import com.example.FurEverHome.user.User;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import jakarta.annotation.Nullable;
 import jakarta.persistence.*;
 import org.springframework.cglib.core.Local;
 
@@ -41,6 +42,18 @@ public class Pet {
 
     private Double latitude;
     private Double longitude;
+    @Nullable
+    private String temperament;
+    @Nullable
+    private String activityLevel;
+    @Nullable
+    private String careNeeds;
+    @Nullable
+    private String noiseLevel;
+    @Nullable
+    private String goodWithKids;
+    @Nullable
+    private String goodWithPets;
 
     @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "user_id", referencedColumnName = "id")
@@ -210,6 +223,54 @@ public class Pet {
 
     public void setReports(Set<Report> reports) {
         this.reports = reports;
+    }
+
+    public String getTemperament() {
+        return temperament;
+    }
+
+    public void setTemperament(String temperament) {
+        this.temperament = temperament;
+    }
+
+    public String getActivityLevel() {
+        return activityLevel;
+    }
+
+    public void setActivityLevel(String activityLevel) {
+        this.activityLevel = activityLevel;
+    }
+
+    public String getCareNeeds() {
+        return careNeeds;
+    }
+
+    public void setCareNeeds(String careNeeds) {
+        this.careNeeds = careNeeds;
+    }
+
+    public String getNoiseLevel() {
+        return noiseLevel;
+    }
+
+    public void setNoiseLevel(String noiseLevel) {
+        this.noiseLevel = noiseLevel;
+    }
+
+    public String getGoodWithKids() {
+        return goodWithKids;
+    }
+
+    public void setGoodWithKids(String goodWithKids) {
+        this.goodWithKids = goodWithKids;
+    }
+
+    public String getGoodWithPets() {
+        return goodWithPets;
+    }
+
+    public void setGoodWithPets(String goodWithPets) {
+        this.goodWithPets = goodWithPets;
     }
 
     @Override

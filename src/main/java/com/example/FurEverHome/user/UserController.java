@@ -55,4 +55,8 @@ public class UserController {
         userService.makeAdmin(userId);
     }
 
+    @PutMapping("/updatefeatures/{userId}")
+    public void updateFeatures(@PathVariable String userId, @RequestParam(required = true) Integer activityLevel, @RequestParam(required = true) Integer hasChildren, @RequestParam(required = true) Integer hasOtherPets, @RequestParam(required = true) Integer hypoallergenic, @RequestParam(required = true) Integer livingEnvironment, @RequestParam(required = true) Integer lowMaintenance, @RequestParam(required = true) Integer personality, @RequestParam(required = true) Integer workSchedule) {
+        userService.updateFeatures(userId, activityLevel, hasChildren, hasOtherPets, hypoallergenic, livingEnvironment, lowMaintenance, personality, workSchedule);
+    }
 }

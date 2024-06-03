@@ -17,6 +17,7 @@ public class UserSafeDTO {
     private Role role;
     private Set<Report> reportsAgainstUser;
     private Set<Report> reportsByUser;
+    private Integer activityLevel;
 
     public static UserSafeDTO fromUser(User user) {
         UserSafeDTO userDTO = new UserSafeDTO();
@@ -27,6 +28,7 @@ public class UserSafeDTO {
         userDTO.setRole(user.getRole());
         userDTO.setReportsAgainstUser(user.getReportsAgainstUser());
         userDTO.setReportsByUser(user.getReportsByUser());
+        userDTO.setActivityLevel(user.getActivityLevel());
         return userDTO;
     }
 }

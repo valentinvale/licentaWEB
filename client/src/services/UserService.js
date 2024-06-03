@@ -41,5 +41,19 @@ class UserService {
     return await axios.get(`${API_URL}/getusername/${id}`, config);
   }
 
+  async updateUserFeatures(id, features, token) {
+    const config = {
+        headers: { Authorization: `Bearer ${token}` },
+    };
+
+    const params = new URLSearchParams(features).toString();
+    const url = `${API_URL}/updatefeatures/${id}?${params}`;
+
+    console.log("Token:", token);
+    console.log("Features URL:", url);
+
+    return await axios.put(url, {}, config);
+}
+
 }
 export default new UserService();

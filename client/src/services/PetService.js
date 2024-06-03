@@ -46,6 +46,13 @@ class PetService {
         return await axios.get(`${API_URL}/getrecentthree`);
     }
 
+    async getPetsSortedByCompatibility(userId, token) {
+        const config = {
+            headers: { Authorization: `Bearer ${token}` },
+        };
+        return await axios.get(`${API_URL}/getsortedbycompatibility/${userId}`, config);
+    }
+
     async postPet(petRequest, token) {
         const config = {
             headers: { Authorization: `Bearer ${token}` },

@@ -64,6 +64,11 @@ public class PetController {
         return petService.getRecentThreePets();
     }
 
+    @GetMapping("/getsortedbycompatibility/{userId}")
+    public List<Pet> getPetsSortedByCompatibility(@PathVariable("userId") UUID userId) {
+        return petService.getPetsSortedByCompatibility(userId);
+    }
+
     @PostMapping("/add")
     public ResponseEntity<Pet> addPet(@RequestBody Pet pet) {
         Pet newPet = petService.addPet(pet);

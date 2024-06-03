@@ -18,6 +18,7 @@ public class UserDTO {
     private Role role;
     private Set<Report> reportsAgainstUser;
     private Set<Report> reportsByUser;
+    private Integer activityLevel;
 
     public static UserDTO fromUser(User user) {
         UserDTO userDTO = new UserDTO();
@@ -29,6 +30,7 @@ public class UserDTO {
         userDTO.setRole(user.getRole());
         userDTO.setReportsAgainstUser(user.getReportsAgainstUser());
         userDTO.setReportsByUser(user.getReportsByUser());
+        userDTO.setActivityLevel(user.getActivityLevel());
         return userDTO;
     }
 }

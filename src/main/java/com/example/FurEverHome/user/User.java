@@ -4,6 +4,7 @@ import com.example.FurEverHome.pet.Pet;
 import com.example.FurEverHome.reports.Report;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import jakarta.annotation.Nullable;
 import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.GenericGenerator;
@@ -28,6 +29,23 @@ public class User implements UserDetails {
     private String lastName;
     private String email;
     private String password;
+
+    @Nullable
+    private Integer personality; // 1 for extroverted, 0 for introverted
+    @Nullable
+    private Integer activityLevel; // 0 for sedentary, 1 for moderately-active, 2 for very-active
+    @Nullable
+    private Integer workSchedule; // 0 for full-time, 1 for part-time, 2 for remote
+    @Nullable
+    private Integer livingEnvironment; // 0 for apartment, 1 for house-with-yard
+    @Nullable
+    private Integer hasChildren; // 1 for yes, 0 for no
+    @Nullable
+    private Integer hasOtherPets; // 1 for yes, 0 for no
+    @Nullable
+    private Integer hypoallergenic; // 1 for yes, 0 for no
+    @Nullable
+    private Integer lowMaintenance; // 1 for yes, 0 for no
 
     @JsonIgnore
     @OneToMany(mappedBy = "user")

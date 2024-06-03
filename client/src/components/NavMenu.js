@@ -26,6 +26,7 @@ import UserService from '../services/UserService';
 import counties_with_cities from "../Resources/counties_with_cities.json";
 import logoImage from '../Resources/LogoFurEverHome_v3.png';
 import { useLocation } from 'react-router-dom';
+import { useAuth } from '../Context/AuthContext';
 
 import '../Styles/NavMenu.css';
 
@@ -48,6 +49,7 @@ function NavMenu(args) {
 
   const navigate = useNavigate();
   const location = useLocation();
+  const auth = useAuth();
 
   const getEmailFromToken = (token) => {
     try {
@@ -87,6 +89,10 @@ const handleSearch = () => {
     return;
   }
   navigate("/petlist", { state: { keyWords: keyWords, county: selectedCounty, city: selectedCity } });
+}
+
+const handleCompatibilitySort = () => {
+  navigate("/petlist", { state: { sort: "compatibility" } });
 }
 
   useEffect(() => {
@@ -208,7 +214,15 @@ const handleSearch = () => {
             <Button className='search-button' onClick={handleSearch}>
               <i class="bi bi-search"></i>
             </Button>
+            
           </InputGroup>
+          {
+              auth.user && auth.user.activityLevel ? (
+                <Button className='my-button' onClick={handleCompatibilitySort}>
+                    <i class="bi bi-filter"></i>
+                </Button>
+              ) : null
+            }
         </div>
         <NavbarToggler onClick={toggle} />
         <Collapse isOpen={isOpen} navbar>
@@ -224,6 +238,8 @@ const handleSearch = () => {
                   <DropdownItem onClick={() => navigate("/user")}>Contul Tău</DropdownItem>
                   <DropdownItem divider />
                   <DropdownItem onClick={logOut}>Iesi din cont</DropdownItem>
+                  <DropdownItem divider />
+                  <DropdownItem onClick={() => navigate("/createfeaturesprofile")}>Creează Profil Personalitate</DropdownItem>
                 </DropdownMenu>
               </UncontrolledDropdown>) : 
               (

@@ -13,6 +13,7 @@ import HomePage from './components/HomePage';
 import ConfirmAdoption from './components/ConfirmAdoption';
 import VetClinicsPage from './components/VetClinicsPage';
 import UserProfile from './components/UserProfile';
+import CreateFeaturesProfile from './components/CreateFeaturesProfile';
 
 function App() {
   return (
@@ -30,6 +31,7 @@ function App() {
           <Route path="/confirm-adoption" element={<ConfirmAdoption />} />
           <Route path="/vetclinics" element={<VetClinicsPage />} />
           <Route path='/profile' element={<UserProfile />} />
+          <Route path="/createfeaturesprofile" element={<CreateFeaturesProfile />} />
         </Routes>
       </Layout>
     </AuthContextProvider>

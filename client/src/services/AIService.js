@@ -33,5 +33,17 @@ class AIService {
         return await axios.post(`${API_URL}/predict-pet-breed`, formData, config);
     }
 
+    async predictPetCompatibility(userId, petId, token){
+        const config = {
+            headers: {
+                    'Authorization': `Bearer ${token}`,
+                    'Content-Type': 'application/json'
+                },
+        };
+
+        return await axios.post(`${API_URL}/predict-pet-compatibility/${userId}/${petId}`, {}, config);
+
+    }
+
 }
 export default new AIService();
