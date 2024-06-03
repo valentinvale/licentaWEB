@@ -55,5 +55,37 @@ class UserService {
     return await axios.put(url, {}, config);
 }
 
+  async addFavoritePet(userId, petId, token) {
+    const config = {
+      headers: { Authorization: `Bearer ${token}` },
+    };
+
+    return await axios.post(`${API_URL}/addfavorite/${userId}/${petId}`, {}, config);
+  }
+
+  async removeFavoritePet(userId, petId, token) {
+    const config = {
+      headers: { Authorization: `Bearer ${token}` },
+    };
+
+    return await axios.post(`${API_URL}/removefavorite/${userId}/${petId}`, {}, config);
+  }
+
+  async getFavoritePets(userId, token) {
+    const config = {
+      headers: { Authorization: `Bearer ${token}` },
+    };
+
+    return await axios.get(`${API_URL}/getfavorites/${userId}`, config);
+  }
+
+  async checkIfFavorite(userId, petId, token) {
+    const config = {
+      headers: { Authorization: `Bearer ${token}` },
+    };
+
+    return await axios.get(`${API_URL}/checkiffavorite/${userId}/${petId}`, config);
+  }
+
 }
 export default new UserService();

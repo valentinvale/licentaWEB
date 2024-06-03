@@ -63,6 +63,14 @@ public class User implements UserDetails {
     @OneToMany(mappedBy = "reportingUser")
     private Set<Report> reportsByUser = new HashSet<>();
 
+    @ManyToMany
+    @JoinTable(
+            name = "user_favorites",
+            joinColumns = @JoinColumn(name = "user_id"),
+            inverseJoinColumns = @JoinColumn(name = "pet_id")
+    )
+    private Set<Pet> favorites = new HashSet<>();
+
     @Enumerated(jakarta.persistence.EnumType.STRING)
     private Role role;
 

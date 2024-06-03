@@ -9,6 +9,7 @@ import '../Styles/UserPage.css';
 import PetListComponent from './PetListComponent';
 import PetCardFrame from './PetCardFrame';
 import ChatComponent from './ChatComponent';
+import UserService from '../services/UserService';
 
 function UserPage() {
     const auth = useAuth();
@@ -16,6 +17,7 @@ function UserPage() {
     const { state } = useLocation();
     const [activeTab, setActiveTab] = useState('1');  
 
+    const [favoritePets, setFavoritePets] = useState([]);
     const [postedPets, setPostedPets] = useState([]);
     const [adoptedPets, setAdoptedPets] = useState([]);
 
@@ -40,6 +42,10 @@ function UserPage() {
             PetService.getPetsByAdoptiveUserId(auth.user.id).then((response) => {
                 console.log(response.data);
                 setAdoptedPets(response.data);
+            });
+            UserService.getFavoritePets(auth.user.id, auth.token).then((response) => {
+                console.log(response.data);
+                setFavoritePets(response.data);
             });
         }
     }, [auth.user]);
@@ -84,6 +90,14 @@ function UserPage() {
                             Animăluțele tale
                         </NavLink>
                     </NavItem>
+                    <NavItem>
+                        <NavLink
+                            className={activeTab === '5' ? 'active' : ''}
+                            onClick={() => toggle('5')}
+                        >
+                            Animăluțele tale preferate
+                        </NavLink>
+                    </NavItem>
                 </Nav>
                 <TabContent activeTab={activeTab} className='tab-content'>
                     <TabPane tabId="1">
@@ -105,6 +119,11 @@ function UserPage() {
                     <TabPane tabId="4">
                         <div className='user-adopted-pets'>
                             <PetCardFrame pets={adoptedPets} sm="12" md="8" lg="6" xl="4" />
+                        </div>
+                    </TabPane>
+                    <TabPane tabId="5">
+                        <div className='user-favorite-pets'>
+                            <PetCardFrame pets={favoritePets} sm="12" md="8" lg="6" xl="4" />
                         </div>
                     </TabPane>
                 </TabContent>

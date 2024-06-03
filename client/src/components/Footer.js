@@ -19,9 +19,9 @@ const Footer = () => {
                 <div className="contact-info">
                     <p><i className="bi bi-telephone"></i> +123 456 7890</p>
                     <p><i className="bi bi-envelope"></i> help@fureverhome.com</p>
-                    <p><i className="bi bi-geo-alt"></i> Strada Leilor, Drobeta-Turnu Severin, Mehedinti</p>
+                    <p><i className="bi bi-geo-alt"></i> Strada Leilor, Drobeta-Turnu Severin, Mehedinți</p>
                 </div>
-                <p className="footer-text">Adopta un prieten blanos si ofera-i o casa!</p>
+                <p className="footer-text">Adoptă un prieten blănos si oferă-i o casă!</p>
             </div>
         </footer>
     );

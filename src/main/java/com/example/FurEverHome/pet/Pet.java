@@ -68,6 +68,10 @@ public class Pet {
     @OneToMany(mappedBy = "pet")
     private Set<Report> reports = new HashSet<>();
 
+    @JsonIgnore
+    @ManyToMany(mappedBy = "favorites")
+    private Set<User> favoritedBy = new HashSet<>();
+
     public Pet() {
         this.hasBeenAdopted = false;
         this.dateAdded = LocalDate.now();
@@ -271,6 +275,14 @@ public class Pet {
 
     public void setGoodWithPets(String goodWithPets) {
         this.goodWithPets = goodWithPets;
+    }
+
+    public Set<User> getFavoritedBy() {
+        return favoritedBy;
+    }
+
+    public void setFavoritedBy(Set<User> favoritedBy) {
+        this.favoritedBy = favoritedBy;
     }
 
     @Override

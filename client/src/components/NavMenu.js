@@ -16,7 +16,8 @@ import {
   Input,
   Button,
   ButtonDropdown,
-  Label
+  Label,
+  Tooltip
 } from 'reactstrap';
 
 import 'bootstrap-icons/font/bootstrap-icons.css';
@@ -33,8 +34,10 @@ import '../Styles/NavMenu.css';
 
 function NavMenu(args) {
   const [isOpen, setIsOpen] = useState(false);
+  const [tooltipOpen, setTooltipOpen] = useState(false);
 
   const toggle = () => setIsOpen(!isOpen);
+  const toggleTooltip = () => setTooltipOpen(!tooltipOpen);
 
   const [isUserLoggedIn, setIsUserLoggedIn] = useState(false);
   const [username, setUsername] = useState("");
@@ -216,11 +219,16 @@ const handleCompatibilitySort = () => {
             </Button>
             
           </InputGroup>
-          {
+            {
               auth.user && auth.user.activityLevel ? (
-                <Button className='my-button' onClick={handleCompatibilitySort}>
-                    <i class="bi bi-filter"></i>
-                </Button>
+                <>
+                  <Button className='my-button' id='compatibilitySortButton' onClick={handleCompatibilitySort}>
+                      <i class="bi bi-filter"></i>
+                  </Button>
+                  <Tooltip placement="bottom" isOpen={tooltipOpen} target="compatibilitySortButton" toggle={toggleTooltip}>
+                    Sortează după compatibilitate
+                  </Tooltip>
+                </>
               ) : null
             }
         </div>

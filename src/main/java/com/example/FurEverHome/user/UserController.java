@@ -1,10 +1,12 @@
 package com.example.FurEverHome.user;
 
+import com.example.FurEverHome.pet.Pet;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Set;
 
 
 @RestController
@@ -58,5 +60,25 @@ public class UserController {
     @PutMapping("/updatefeatures/{userId}")
     public void updateFeatures(@PathVariable String userId, @RequestParam(required = true) Integer activityLevel, @RequestParam(required = true) Integer hasChildren, @RequestParam(required = true) Integer hasOtherPets, @RequestParam(required = true) Integer hypoallergenic, @RequestParam(required = true) Integer livingEnvironment, @RequestParam(required = true) Integer lowMaintenance, @RequestParam(required = true) Integer personality, @RequestParam(required = true) Integer workSchedule) {
         userService.updateFeatures(userId, activityLevel, hasChildren, hasOtherPets, hypoallergenic, livingEnvironment, lowMaintenance, personality, workSchedule);
+    }
+
+    @PostMapping("/addfavorite/{userId}/{petId}")
+    public void addFavorite(@PathVariable String userId, @PathVariable String petId) {
+        userService.addFavorite(userId, petId);
+    }
+
+    @PostMapping("/removefavorite/{userId}/{petId}")
+    public void removeFavorite(@PathVariable String userId, @PathVariable String petId) {
+        userService.removeFavorite(userId, petId);
+    }
+
+    @GetMapping("/getfavorites/{userId}")
+    public Set<Pet> getFavorites(@PathVariable String userId) {
+        return userService.getFavorites(userId);
+    }
+
+    @GetMapping("/checkiffavorite/{userId}/{petId}")
+    public boolean checkIfFavorite(@PathVariable String userId, @PathVariable String petId) {
+        return userService.checkIfFavorite(userId, petId);
     }
 }

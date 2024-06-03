@@ -20,6 +20,7 @@ import '../Styles/PetPage.css';
 
 import { formatDate } from "../services/StringUtils";
 import SendConfirmationModal from "./SendConfirmationModal";
+import UserService from "../services/UserService";
 
 
 
@@ -28,6 +29,7 @@ function PetPage(args) {
     const [pet, setPet] = useState({});
     const [petUsername, setPetUsername] = useState('');
     const [petUserId, setPetUserId] = useState('');
+    const [isFavorite, setIsFavorite] = useState(false);
     const conversationExists = useRef(false);
 
     const [activeIndex, setActiveIndex] = useState(0);
@@ -57,12 +59,22 @@ function PetPage(args) {
         };
     }) : [];
 
+    const checkIfFavorite = (petId) => {
+        UserService.checkIfFavorite(auth.user.id, petId, auth.token).then(response => {
+            console.log("Is favorite response:", response.data);
+            setIsFavorite(response.data);
+        });
+    };
+
     useEffect(() => {
         PetService.getPetById(id).then(response => {
             console.log("Pet response:", response.data);
             setPet(response.data);
             setPetUsername(response.data.user.realUsername);
             setPetUserId(response.data.user.id);
+            if (auth.user && auth.user.id !== response.data.user.id) {
+                checkIfFavorite(response.data.id);
+            }
         });
 
         if (auth.user) {
@@ -77,6 +89,7 @@ function PetPage(args) {
 
     useEffect(() => {
         if(auth.user && id && auth.user.activityLevel){
+
             AIService.predictPetCompatibility(auth.user.id, id, auth.token).then(response => {
                 console.log("Compatibility response:", response.data);
                 setPetCompatibility(response.data.compatibility_percentage);
@@ -94,6 +107,10 @@ function PetPage(args) {
             }).catch(err => console.error("Failed to fetch messages:", err));
         }
     }, [auth.user, petUserId]);
+
+    // useEffect(() => {
+    //     console.log("Is favorite:", isFavorite);
+    // }, [isFavorite]);
 
     const onMessageReceived = (message) => {
         console.log("Received message:", message);
@@ -143,6 +160,18 @@ function PetPage(args) {
     const goToIndex = (newIndex) => {
         if (animating) return;
         setActiveIndex(newIndex);
+    };
+
+    const toggleFavorite = () => {
+        if (isFavorite) {
+            UserService.removeFavoritePet(auth.user.id, pet.id, auth.token).then(() => {
+                setIsFavorite(false);
+            });
+        } else {
+            UserService.addFavoritePet(auth.user.id, pet.id, auth.token).then(() => {
+                setIsFavorite(true);
+            });
+        }
     };
 
     const slides = items.map((item) => {
@@ -201,6 +230,19 @@ function PetPage(args) {
             />
             </Carousel>
             <div className="pet-info">
+                {
+                    auth.user && auth.user.id !== petUserId ? (
+                        <>
+                            <Button color="link" onClick={toggleFavorite}>
+                                <i className={`bi ${isFavorite ? 'bi-heart-fill' : 'bi-heart'}`} style={{ fontSize: '2rem', color: isFavorite ? 'red' : 'black' }}></i>
+                        
+                            </Button>
+                            Adaugă la favorite
+                        </>
+                    ) : (null)
+                }
+                
+                
                 <h1>Nume: {pet.name}</h1>
                 <h3>Rasa: {pet.breed}</h3>
                 <h3>Sex: {pet.sex}</h3>
