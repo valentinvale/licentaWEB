@@ -167,3 +167,12 @@ border-left-color: var(--secondary-orange) !important;
 .tooltip.bs-tooltip-end .tooltip-arrow::before, .tooltip.bs-tooltip-auto[data-popper-placement^="right"] .tooltip-arrow::before {
 border-right-color: var(--secondary-orange) !important;
 }
+
+.generated-name-image, .predicted-breed-image {
+    width: 100%;
+    max-width: 100px;
+    height: auto;
+    margin-top: 10px;
+    border: 1px solid var(--primary-orange);
+    border-radius: 5px;
+}

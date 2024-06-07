@@ -188,7 +188,7 @@ const handleCompatibilitySort = () => {
               onChange={handleCountyChange}
               className='county-select'
             >
-              <option value="" disabled>Judet</option>
+              <option value="" disabled>Județ</option>
               <option value="">Toate</option>
               {countiesWithCities.map((county) => (
                 <option value={county.county_name} key={county.county_name}>
@@ -245,7 +245,7 @@ const handleCompatibilitySort = () => {
                 <DropdownMenu right>
                   <DropdownItem onClick={() => navigate("/user")}>Contul Tău</DropdownItem>
                   <DropdownItem divider />
-                  <DropdownItem onClick={logOut}>Iesi din cont</DropdownItem>
+                  <DropdownItem onClick={logOut}>Ieși din cont</DropdownItem>
                   <DropdownItem divider />
                   <DropdownItem onClick={() => navigate("/createfeaturesprofile")}>Creează Profil Personalitate</DropdownItem>
                 </DropdownMenu>

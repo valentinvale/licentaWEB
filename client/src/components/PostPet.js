@@ -37,7 +37,9 @@ function PostPet(props) {
     const [tooltipBreedOpen, setTooltipBreedOpen] = useState(false);
     const toggleBreed = () => setTooltipBreedOpen(!tooltipBreedOpen);
 
-    // New state variables
+    const [nameImageURL, setNameImageURL] = useState("");
+    const [breedImageURL, setBreedImageURL] = useState("");
+
     const [temperament, setTemperament] = useState("");
     const [activityLevel, setActivityLevel] = useState("");
     const [careNeeds, setCareNeeds] = useState("");
@@ -87,6 +89,11 @@ function PostPet(props) {
         setPetName(name);
     };
 
+    const handleGeneratedNameChange = (data) => {
+        setPetName(data.name);
+        setNameImageURL(data.imageURL);
+    }
+
     const handleBreedChange = (data) => {
         setPetBreed(data.breed);
         setTemperament(data.temperament);
@@ -95,6 +102,7 @@ function PostPet(props) {
         setNoiseLevel(data.noiseLevel);
         setGoodWithKids(data.goodWithKids);
         setGoodWithPets(data.goodWithPets);
+        setBreedImageURL(data.imageURL);
     };
 
     const handleCountyChange = (e) => {
@@ -232,7 +240,7 @@ function PostPet(props) {
                 </div>
             ) : (
                 <div>
-                    <h1 className="post-pet-title">Posteaza un Animalut</h1>
+                    <h1 className="post-pet-title">Postează un Animăluț</h1>
                     <Form>
                         <FormGroup className="name-input-group">
                             <Label for="petName">Nume</Label>
@@ -247,11 +255,17 @@ function PostPet(props) {
                                 />
                                 <button id="generate-name-btn" onClick={(e) => openModal(e)} className="generate-name-btn">Genereaza nume</button>
                                 <Tooltip placement="bottom" isOpen={tooltipOpen} target="generate-name-btn" toggle={toggle}>
-                                    Genereaza un nume pentru animalutul tau, folosindu-se de inteligenta artificiala pentru a detecta culorile sale 
-                                    si a cauta nume utilizate pentru animale de culorile respective pe forumuri populare.
+                                    Generează un nume pentru animăluțul tău, folosindu-se de inteligența artificială pentru a detecta culorile sale 
+                                    și a căuta nume utilizate pentru animale de culorile respective pe forumuri populare.
                                 </Tooltip>
-                                <GenerateNameModal token={token} petType={isDog ? "dog" : "cat"} onData={handleNameChange} isOpen={modalIsOpen} onRequestClose={closeModal} />
+                                <GenerateNameModal token={token} petType={isDog ? "dog" : "cat"} onData={handleGeneratedNameChange} isOpen={modalIsOpen} onRequestClose={closeModal} />
+                                
                             </div>
+                            {
+                                nameImageURL.length > 0 ? (
+                                    <img src={nameImageURL} alt="Generated Name Image" className="generated-name-image" />
+                                ) : null
+                            }
                         </FormGroup>
                         {' '}
                         <FormGroup check>
@@ -312,11 +326,16 @@ function PostPet(props) {
                                 <Input type="text" name="petBreed" id="petBreed" value={petBreed} placeholder="Rasa animalului" onChange={(e) => setPetBreed(e.target.value)} />
                                 <button id="predict-breed-btn" onClick={(e) => openBreedModal(e)} className="predict-breed-btn">Detecteaza Rasa</button>
                                 <Tooltip placement="bottom" isOpen={tooltipBreedOpen} target="predict-breed-btn" toggle={toggleBreed}>
-                                    Detecteaza rasa animalutului tau, folosindu-se de inteligenta artificiala pentru a observa trasaturile sale 
-                                    si a cauta rasa care se potriveste cel mai bine. Alegeti tipul animalului corescpunzator pentru a obtine rezultate mai precise.
+                                    Detectează rasa animăluțului tău, folosindu-se de inteligența artificială pentru a observa trasaturile sale 
+                                    si a căuta rasa care se potrivește cel mai bine. Alegeti tipul animalului corespunzator pentru a obține rezultate mai precise.
                                 </Tooltip>
                                 <PredictBreedModal token={token} petType={isDog ? "dog" : "cat"} onData={handleBreedChange} isOpen={modalBreedIsOpen} onRequestClose={closeBreedModal} />
                             </div>
+                            {
+                                breedImageURL.length > 0 ? (
+                                    <img src={breedImageURL} alt="Predicted Breed Image" className="predicted-breed-image" />
+                                ) : null
+                            }
                         </FormGroup>
                         {' '}
                         <FormGroup switch>

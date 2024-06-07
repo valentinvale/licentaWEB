@@ -15,6 +15,7 @@ function PredictBreedModal({ isOpen, onRequestClose, petType, token, onData }) {
   const [predictedBreed, setPredictedBreed] = useState(null);
   const [language, setLanguage] = useState('en');
   const [response, setResponse] = useState(null);
+  const [imageURL, setImageURL] = useState(null);
 
 
  useEffect(() => {
@@ -23,6 +24,7 @@ function PredictBreedModal({ isOpen, onRequestClose, petType, token, onData }) {
     setPredictedBreed(null);
     setIsLoading(false);
     setLanguage('en');
+    setImageURL(null);
  }, []);
 
  useEffect(() => {
@@ -34,7 +36,8 @@ function PredictBreedModal({ isOpen, onRequestClose, petType, token, onData }) {
       careNeeds: response.data.careNeeds,
       noiseLevel: response.data.noiseLevel,
       goodWithKids: response.data.goodWithKids,
-      goodWithPets: response.data.goodWithPets
+      goodWithPets: response.data.goodWithPets,
+      imageURL: imageURL
     });
       setPredictedBreed(null);
       setLanguage('en');
@@ -46,6 +49,11 @@ function PredictBreedModal({ isOpen, onRequestClose, petType, token, onData }) {
     const file = event.target.files[0];
     setSelectedFile(file);
     setFileName(file ? file.name : "Niciun fisier selectat");
+    if (file) {
+      setImageURL(URL.createObjectURL(file));
+    } else {
+      setImageURL(null);
+    }
   };
 
   const handlePredictBreed = () => {

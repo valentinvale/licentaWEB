@@ -14,6 +14,7 @@ function GenerateNameModal({ isOpen, onRequestClose, petType, token, onData }) {
   const [isLoading, setIsLoading] = useState(false);
   const [generatedName, setGeneratedName] = useState(null);
   const [usePetType, setUsePetType] = useState(false);
+  const [imageURL, setImageURL] = useState(null);
 
 
  useEffect(() => {
@@ -22,11 +23,15 @@ function GenerateNameModal({ isOpen, onRequestClose, petType, token, onData }) {
     setGeneratedName(null);
     setIsLoading(false);
     setUsePetType(false);
+    setImageURL(null);
  }, []);
 
  useEffect(() => {
   if (generatedName) {
-      onData(generatedName);
+      onData({
+          name: generatedName,
+          imageURL: imageURL
+      });
       setGeneratedName(null);
   }
 }, [generatedName, onData]);
@@ -36,6 +41,11 @@ function GenerateNameModal({ isOpen, onRequestClose, petType, token, onData }) {
     const file = event.target.files[0];
     setSelectedFile(file);
     setFileName(file ? file.name : "Niciun fisier selectat");
+    if (file) {
+      setImageURL(URL.createObjectURL(file));
+    } else {
+      setImageURL(null);
+    }
   };
 
   const handleGenerateName = () => {

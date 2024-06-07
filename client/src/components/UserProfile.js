@@ -19,6 +19,7 @@ const UserProfile = () => {
     const [userReports, setUserReports] = useState([]);
     const [userPets, setUserPets] = useState([]);
     const [userAdoptedPets, setUserAdoptedPets] = useState([]);
+    const [allUserPets, setAllUserPets] = useState([]);
     const [reportText, setReportText] = useState('');
     const [selectedPetIdForReport, setSelectedPetIdForReport] = useState(null);
 
@@ -32,9 +33,11 @@ const UserProfile = () => {
             });
             PetService.getPetsByUserId(userId).then((response) => {
                 setUserPets(response.data);
+                setAllUserPets(response.data);
             });
             PetService.getPetsByAdoptiveUserId(userId).then((response) => {
                 setUserAdoptedPets(response.data);
+                setAllUserPets(allUserPets.concat(response.data));
             });
         });
     }, [userId]);
@@ -82,13 +85,13 @@ const UserProfile = () => {
             <div className='row'>
                 <div className='col-12'>
                     <h2>Animale postate</h2>
-                    <PetCardFrame pets={userPets}/>
+                    <PetCardFrame pets={userPets} sm="12" md="6" lg="4" xl="3"/>
                 </div>
             </div>
             <div className='row'>
                 <div className='col-12'>
                     <h2>Animale adoptate</h2>
-                    <PetCardFrame pets={userAdoptedPets}/>
+                    <PetCardFrame pets={userAdoptedPets} sm="12" md="6" lg="4" xl="3"/>
                 </div>
             </div>
             <div>
@@ -125,35 +128,41 @@ const UserProfile = () => {
                         ) : null}
                     </div>
                 ))}
-
-                <p>
-                    Dacă consideri că acest utilizator încalcă regulile platformei, te rugăm să ne anunți.
-                </p>
-                <FormGroup>
-                    <Label for="report-text-area">
-                        Scrie aici motivul pentru care raportezi acest utilizator:
-                    </Label>
-                    <Input
-                    id="report-text-area"
-                    name="report-text-area"
-                    type="textarea"
-                    value={reportText}
-                    onChange={(event) => setReportText(event.target.value)}
-                    />
-                </FormGroup>
-                <Label for='pet-select'>Selectează animalul pentru care vrei să raportezi:</Label>
-                <Input
-                    id='pet-select'
-                    name='pet-select'
-                    type='select'
-                    onChange={(event) => setSelectedPetIdForReport(event.target.value)}
-                >
-                    <option value=''>Selectează animalul</option>
-                    {userPets.map(pet => (
-                        <option key={pet.id} value={pet.id}>{pet.name}</option>
-                    ))}
-                </Input>
-                <Button onClick={handlePostReport} className="my-button">Raportează</Button>
+                {
+                    auth.user && auth.user.id !== userId ? ( 
+                        <>
+                            <p>
+                                Dacă consideri că acest utilizator încalcă regulile platformei, te rugăm să ne anunți.
+                            </p>
+                            <FormGroup>
+                                <Label for="report-text-area">
+                                    Scrie aici motivul pentru care raportezi acest utilizator:
+                                </Label>
+                                <Input
+                                id="report-text-area"
+                                name="report-text-area"
+                                type="textarea"
+                                value={reportText}
+                                onChange={(event) => setReportText(event.target.value)}
+                                />
+                            </FormGroup>
+                            <Label for='pet-select'>Selectează animalul pentru care vrei să raportezi:</Label>
+                            <Input
+                                id='pet-select'
+                                name='pet-select'
+                                type='select'
+                                onChange={(event) => setSelectedPetIdForReport(event.target.value)}
+                            >
+                                <option value=''>Selectează animalul</option>
+                                {allUserPets.map(pet => (
+                                    <option key={pet.id} value={pet.id}>{pet.name}</option>
+                                ))}
+                            </Input>
+                            <Button onClick={handlePostReport} className="my-button">Raportează</Button>
+                        </>
+                    ) : null
+                }
+                
             </div>
         </div>
     );
