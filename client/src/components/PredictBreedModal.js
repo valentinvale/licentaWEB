@@ -106,7 +106,7 @@ function PredictBreedModal({ isOpen, onRequestClose, petType, token, onData }) {
         </div>) : 
         (
           <div>
-            <h2>Genereaza un nume</h2>
+            <h2>Detectează rasa</h2>
             <div className='file-upload-container'>
               <label htmlFor='file-upload' className='react-modal-btn' id='file-upload-label'>
                 Incarca fisier

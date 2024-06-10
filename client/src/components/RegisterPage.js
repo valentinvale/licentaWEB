@@ -69,8 +69,6 @@ function RegisterPage(props) {
             return;
         }
 
-        // to do: check if email is already in use and if username is already in use
-
         const emailRegex = /\S+@\S+\.\S+/;
         if (!emailRegex.test(email)) {
             alert("Please enter a valid email");

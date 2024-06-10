@@ -38,7 +38,14 @@ function CreateFeaturesProfile(props) {
             workSchedule
         };
 
-        UserService.updateUserFeatures(auth.user.id, features, auth.token)
+        UserService.updateUserFeatures(auth.user.id, features, auth.token).then((response) => {
+            if(response.status === 200){
+                alert("Features updated successfully");
+                navigate("/");
+            } else {
+                alert("Failed to update features");
+            }
+        });
     };
 
     const updateUserFeatures = (userId, activityLevel, hasChildren, hasOtherPets, hypoallergenic, lowMaintenance, personality, workSchedule) => {
