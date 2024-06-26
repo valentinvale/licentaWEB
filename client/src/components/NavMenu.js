@@ -220,7 +220,7 @@ const handleCompatibilitySort = () => {
             
           </InputGroup>
             {
-              auth.user && auth.user.activityLevel ? (
+              auth.user && auth.user.activityLevel !== null ? (
                 <>
                   <Button className='my-button' id='compatibilitySortButton' onClick={handleCompatibilitySort}>
                       <i class="bi bi-filter"></i>

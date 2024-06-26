@@ -88,14 +88,15 @@ function PetPage(args) {
 
 
     useEffect(() => {
-        if(auth.user && id && auth.user.activityLevel){
+        console.log("User:", auth.user);
+        if(auth.user && id && auth.user.activityLevel !== null){
 
             AIService.predictPetCompatibility(auth.user.id, id, auth.token).then(response => {
                 console.log("Compatibility response:", response.data);
                 setPetCompatibility(response.data.compatibility_percentage);
             });
         }
-    }, [auth.user, id]);
+    }, [auth.user, id, pet]);
 
 
     useEffect(() => {

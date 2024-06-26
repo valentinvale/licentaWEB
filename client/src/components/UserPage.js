@@ -112,18 +112,24 @@ function UserPage() {
                         <ChatComponent openedRecipient={state ? state.recipientId : null} />
                     </TabPane>
                     <TabPane tabId="3">
-                        <div className='user-posted-pets'>
-                            <PetCardFrame pets={postedPets} sm="12" md="8" lg="6" xl="4" />
+                        <div className='user-posted-pets row'>
+                            <div className='col-12'>
+                                <PetCardFrame pets={postedPets} sm="12" md="8" lg="6" xl="4" />
+                            </div>
                         </div>
                     </TabPane>
                     <TabPane tabId="4">
-                        <div className='user-adopted-pets'>
-                            <PetCardFrame pets={adoptedPets} sm="12" md="8" lg="6" xl="4" />
+                        <div className='user-adopted-pets row'>
+                            <div className='col-12'>
+                                <PetCardFrame pets={adoptedPets} sm="12" md="8" lg="6" xl="4" />
+                            </div>
                         </div>
                     </TabPane>
                     <TabPane tabId="5">
-                        <div className='user-favorite-pets'>
-                            <PetCardFrame pets={favoritePets} sm="12" md="8" lg="6" xl="4" />
+                        <div className='user-favorite-pets row'>
+                            <div className='col-12'>
+                                <PetCardFrame pets={favoritePets} sm="12" md="8" lg="6" xl="4" />
+                            </div>
                         </div>
                     </TabPane>
                 </TabContent>

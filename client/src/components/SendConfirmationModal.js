@@ -83,6 +83,7 @@ function SendConfirmationModal({ isOpen, onRequestClose, petId, onData }) {
                     setSelectedCorespondentUsername(corespondentsUsernames[e.target.value]);
                     }}
                 >
+                    <option value="">Selecteaza un utilizator</option>
                     {
                     corespondentsIds.map((id, index) => {
                         return (
