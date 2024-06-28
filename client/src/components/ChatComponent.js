@@ -1,27 +1,24 @@
 import React, { useEffect, useState } from 'react';
 import { useAuth } from '../Context/AuthContext';
 import WebsocketService from '../services/WebsocketService';
-
-import { Nav, NavItem, NavLink, TabContent, TabPane, Row, Col, Card, CardTitle, CardText, Button, Input, InputGroup } from 'reactstrap';
-
+import { Nav, NavItem, NavLink, TabContent, TabPane, Card, CardText, Button, Input, InputGroup } from 'reactstrap';
 import '../Styles/ChatComponent.css';
 import UserService from '../services/UserService';
 
 function ChatComponent(props) {
-    const [activeTab, setActiveTab] = useState(props.openedRecipient || '');
+    const [activeTab, setActiveTab] = useState('');
     const activeTabRef = React.useRef(activeTab);
     const [corespondents, setCorespondents] = useState([]);
-    const [corespondentUsernames, setCorespondentUsernames] = useState([]);
+    const [corespondentUsernames, setCorespondentUsernames] = useState({});
     const [messages, setMessages] = useState([]);
     const [messageInput, setMessageInput] = useState('');
     const auth = useAuth();
 
     useEffect(() => {
-        if(props.openedRecipient) {
-            console.log("Opened recipient:", props.openedRecipient);
+        if (props.openedRecipient) {
             setActiveTab(props.openedRecipient);
         }
-    }, []);
+    }, [props.openedRecipient]);
 
     useEffect(() => {
         activeTabRef.current = activeTab;
@@ -29,62 +26,52 @@ function ChatComponent(props) {
 
     useEffect(() => {
         if (auth.user) {
-        
-            console.log("Fetching conversations for user:", auth.user.id);
-            WebsocketService.getConversations(auth.user.id, auth.token).then(response => {
-                console.log("Conversations:", response.data);
-                if (response.data.length > 0) {
-                    setCorespondents(response.data);
-                    response.data.forEach(corespondent => {
-                        UserService.getUsernameById(corespondent, auth.token).then(res => {
-                            setCorespondentUsernames(prev => ({ ...prev, [corespondent]: res.data }));
+            WebsocketService.getConversations(auth.user.id, auth.token)
+                .then(response => {
+                    if (response.data.length > 0) {
+                        setCorespondents(response.data);
+                        response.data.forEach(corespondent => {
+                            UserService.getUsernameById(corespondent, auth.token)
+                                .then(res => {
+                                    setCorespondentUsernames(prev => ({ ...prev, [corespondent]: res.data }));
+                                });
                         });
-                    });
-                    if(props.openedRecipient) {
-                        console.log("Opened recipient:", props.openedRecipient);
-                        setActiveTab(props.openedRecipient);
-                    } else {
-                        setActiveTab(response.data[0]);
+                        const initialTab = props.openedRecipient || response.data[0];
+                        setActiveTab(initialTab);
+                        fetchMessages(initialTab);
                     }
-                    fetchMessages(response.data[0]);
-                } else {
-                    console.log("No conversations found.");
-                }
-            }).catch(err => console.error("Failed to fetch conversations:", err));
+                })
+                .catch(err => console.error("Failed to fetch conversations:", err));
 
             WebsocketService.connect(auth.user.id, onMessageReceived, onConnected, onError);
         }
         return () => WebsocketService.disconnect();
     }, [auth.user]);
 
-    
     useEffect(() => {
         if (corespondents.length > 0) {
-            if(props.openedRecipient) {
-                console.log("Opened recipient:", props.openedRecipient);
-                setActiveTab(props.openedRecipient);
-                fetchMessages(props.openedRecipient);
-            }
-            else{
-                setActiveTab(corespondents[0]);
-                fetchMessages(corespondents[0]);
-            }
-            
+            const initialTab = props.openedRecipient || corespondents[0];
+            setActiveTab(initialTab);
+            fetchMessages(initialTab);
         }
     }, [corespondents]);
-    
 
     const onMessageReceived = (message) => {
-        console.log("Received message:", message);
-
-        if (message.senderId === activeTabRef.current || message.receiverId === activeTabRef.current) {
-            setMessages(prevMessages => [...prevMessages, message]);
+        const formattedMessage = formatMessageTimestamp(message);
+        console.log("Received message:", formattedMessage);
+        if (formattedMessage.senderId === activeTabRef.current || formattedMessage.receiverId === activeTabRef.current) {
+            setMessages(prevMessages => [...prevMessages, formattedMessage]);
         } else {
             updateConversations();
         }
-
     };
-    
+
+    const formatMessageTimestamp = (message) => {
+        return {
+            ...message,
+            timestamp: message.timestamp ? new Date(message.timestamp) : new Date()
+        };
+    };
 
     const onConnected = (frame) => {
         console.log("WebSocket Connected:", frame);
@@ -95,33 +82,32 @@ function ChatComponent(props) {
     };
 
     const updateConversations = () => {
-        WebsocketService.getConversations(auth.user.id, auth.token).then(response => {
-            console.log("Conversations:", response.data);
-            if (response.data.length > 0) {
-                setCorespondents(response.data);
-                response.data.forEach(corespondent => {
-                    UserService.getUsernameById(corespondent, auth.token).then(res => {
-                        setCorespondentUsernames(prev => ({ ...prev, [corespondent]: res.data }));
+        WebsocketService.getConversations(auth.user.id, auth.token)
+            .then(response => {
+                if (response.data.length > 0) {
+                    setCorespondents(response.data);
+                    response.data.forEach(corespondent => {
+                        UserService.getUsernameById(corespondent, auth.token)
+                            .then(res => {
+                                setCorespondentUsernames(prev => ({ ...prev, [corespondent]: res.data }));
+                            });
                     });
-                });
-            } else {
-                console.log("No conversations found.");
-            }
-        }).catch(err => console.error("Failed to fetch conversations:", err));
+                }
+            })
+            .catch(err => console.error("Failed to fetch conversations:", err));
     };
 
     const fetchMessages = (corespondentId) => {
-        console.log("fetching messages", corespondentId);
-        WebsocketService.getMessages(auth.user.id, corespondentId, auth.token).then(response => {
-            setMessages(response.data);
-            console.log("mesaje:", response.data);
-        });
+        WebsocketService.getMessages(auth.user.id, corespondentId, auth.token)
+            .then(response => {
+                const formattedMessages = response.data.map(formatMessageTimestamp);
+                setMessages(formattedMessages);
+            });
     };
 
     const isCurrentUser = (messageSenderId) => {
         return messageSenderId === auth.user.id;
     };
-
 
     const toggle = tabId => {
         if (activeTab !== tabId) {
@@ -133,14 +119,20 @@ function ChatComponent(props) {
 
     const handleSendMessage = () => {
         if (messageInput && activeTab) {
-            console.log("aici", auth.user.id, activeTab, messageInput);
-            WebsocketService.sendMessage(auth.user.id, activeTab, messageInput).then(() => {
-                fetchMessages(activeTab);
-                setMessageInput('');
-            });
-            
+            const message = {
+                senderId: auth.user.id,
+                receiverId: activeTab,
+                content: messageInput,
+                timestamp: new Date().toISOString()
+            };
+            WebsocketService.sendMessage(auth.user.id, activeTab, messageInput)
+                .then(() => {
+                    const formattedMessage = formatMessageTimestamp(message);
+                    // setMessages(prevMessages => [...prevMessages, formattedMessage]);
+                    setMessageInput('');
+                });
         }
-    }
+    };
 
     if (activeTab === '') {
         return <div>Loading...</div>;
@@ -163,24 +155,19 @@ function ChatComponent(props) {
                 </Nav>
                 <TabContent activeTab={activeTab} className='chat-tab-content'>
                     <TabPane tabId={activeTab}>
-                        
-                        <div className='chat-main-content'>     
+                        <div className='chat-main-content'>
                             <div className="chat-messages-container">
                                 {messages.map((message, index) => (
-                                    <Card 
-                                        body 
+                                    <Card
+                                        body
                                         key={index}
                                         className={`message-card ${isCurrentUser(message.senderId) ? 'current-user' : ''}`}
                                     >
                                         <CardText>{message.content}</CardText>
-                                        
-                                        <CardText className='message-hour'>{new Date(message.timestamp).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', hour12: false })}</CardText>
-
+                                        <CardText className='message-hour'>{message.timestamp.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', hour12: false })}</CardText>
                                     </Card>
                                 ))}
                             </div>
-                            
-
                             <InputGroup className='message-input-group'>
                                 <Input placeholder="Scrie un mesaj..." value={messageInput} onChange={(e) => setMessageInput(e.target.value)} />
                                 <Button onClick={handleSendMessage}><i className="bi bi-send send-button-text"></i></Button>
